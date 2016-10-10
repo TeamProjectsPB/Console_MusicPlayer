@@ -28,6 +28,10 @@ namespace Console_MusicPlayer.View.Windows
         private Button previousTrackBtn;
         private Label startLabel;
         private Label endLabel;
+        private Label artistLabel;
+        private Label nameLabel;
+        private Label albumLabel;
+        private Label rankLabel;
 
 
 
@@ -35,7 +39,7 @@ namespace Console_MusicPlayer.View.Windows
         public MainWindow()
             : base(0, 0, Console.WindowWidth, Console.WindowHeight, null)
         {
-            
+
 
             fileMenu = BulidFileMenu();
             settingMenu = BuildSettingMenu();
@@ -46,6 +50,16 @@ namespace Console_MusicPlayer.View.Windows
             libraryTextBox = new Label("Biblioteka", 3, 10, "libraryTextBox", this);
             playlistTextBox = new Label("Playlisty", 19, 10, "playlistTextBox", this);
             musicTextBox = new Label("Utwory", 3, 77, "musicTextBox", this);
+            artistLabel = new Label("Artysta", 4, 37, "artistLabel", this);
+            nameLabel = new Label("Nazwa utworu", 4, 55, "nameLabel", this);
+            albumLabel = new Label("Album", 4, 85, "albumLabel", this);
+            rankLabel = new Label("Ocena", 4, 105, "rankLabel", this);
+
+            artistLabel.BackgroundColour = ConsoleColor.DarkGray;
+            albumLabel.BackgroundColour = ConsoleColor.DarkGray;
+            nameLabel.BackgroundColour = ConsoleColor.DarkGray;
+            rankLabel.BackgroundColour = ConsoleColor.DarkGray;
+
             controlsLabel = new Label("Sterowanie", 40, 65, "controlLabel", this);
 
             stopBtn = new Button(44, 55, "  ■  ", "stopBtn", this){ Action = delegate () { Stop(); } };
@@ -101,9 +115,10 @@ namespace Console_MusicPlayer.View.Windows
         #endregion
 
         #region UI_Draw
+
         public override void ReDraw()
         {
-            WindowManager.DrawColourBlock(ConsoleColor.DarkGray, 4, 2, 18, 30);
+            //DrawUIContainers();
         }
         public void DrawUIContainers()
         {
@@ -130,6 +145,10 @@ namespace Console_MusicPlayer.View.Windows
             Inputs.Add(startLabel);
             Inputs.Add(endLabel);
             Inputs.Add(pouseBtn);
+            Inputs.Add(artistLabel);
+            Inputs.Add(albumLabel);
+            Inputs.Add(nameLabel);
+            Inputs.Add(rankLabel);
         }
 
         private Menu BulidFileMenu()

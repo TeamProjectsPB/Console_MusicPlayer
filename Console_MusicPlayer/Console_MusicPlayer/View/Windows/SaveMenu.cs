@@ -37,11 +37,11 @@ namespace Console_MusicPlayer.View.Windows
             cancelBtn = new Button(PostionX + 18, PostionY + 9, "Cancel", "cancelBtn", this);
             cancelBtn.Action = delegate () { ExitWindow(); };
 
-            Inputs.Add(fileSelect);
-            Inputs.Add(openLabel);
-            Inputs.Add(openTxtBox);
+           Inputs.Add(fileSelect);
+           Inputs.Add(openLabel);
+           Inputs.Add(openTxtBox);
             Inputs.Add(saveBtn);
-            Inputs.Add(cancelBtn);
+           Inputs.Add(cancelBtn);
 
             CurrentlySelected = saveBtn;
 
