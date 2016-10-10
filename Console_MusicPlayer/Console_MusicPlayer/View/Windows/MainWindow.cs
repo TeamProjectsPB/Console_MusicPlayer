@@ -13,7 +13,8 @@ namespace Console_MusicPlayer.View.Windows
 {
     class MainWindow : FullWindow
     {
-        WindowsMediaPlayer mPlayer = new WindowsMediaPlayer();
+        WindowsMediaPlayer mPlayer= new WindowsMediaPlayer();
+        
         private Menu fileMenu;
         private Menu settingMenu;
         private Menu helpMenu;
@@ -26,12 +27,15 @@ namespace Console_MusicPlayer.View.Windows
         private Button pouseBtn;
         private Button nextTrackBtn;
         private Button previousTrackBtn;
+        private Button volumeUpBtn;
+        private Button volumeDownBtn;
         private Label startLabel;
         private Label endLabel;
         private Label artistLabel;
         private Label nameLabel;
         private Label albumLabel;
         private Label rankLabel;
+        private Label volumeLabel;
 
 
 
@@ -40,12 +44,12 @@ namespace Console_MusicPlayer.View.Windows
             : base(0, 0, Console.WindowWidth, Console.WindowHeight, null)
         {
 
-
             fileMenu = BulidFileMenu();
             settingMenu = BuildSettingMenu();
             helpMenu = BulidHelpMenu();
 
             DrawUIContainers();
+            
 
             libraryTextBox = new Label("Biblioteka", 3, 10, "libraryTextBox", this);
             playlistTextBox = new Label("Playlisty", 19, 10, "playlistTextBox", this);
@@ -67,6 +71,12 @@ namespace Console_MusicPlayer.View.Windows
             pouseBtn = new Button(44, 65, "  ||  ", "pouseBtn", this) { Action = delegate () { Pouse(); } };
 
             nextTrackBtn = new Button(44, 85, "  >|  ", "nextTrackBtn", this);
+
+            volumeDownBtn = new Button(44, 110, " - ", "volumeDown", this) { Action = delegate () { VolumeDown(); } };
+            volumeUpBtn = new Button(44, 123, " + ", "volumeDown", this) { Action = delegate () { VolumeUp(); } };
+            volumeLabel = new Label(mPlayer.settings.volume.ToString() + "%", 44, 117, "volumeLabel",this);
+            volumeLabel.SetText(mPlayer.settings.volume.ToString());
+
             previousTrackBtn = new Button(44, 45, "  |<  ", "previousTrackBtn", this);
 
             startLabel = new Label("0:00", 42, 4, "startLabel", this);
@@ -81,6 +91,8 @@ namespace Console_MusicPlayer.View.Windows
             MainLoop();
         }
 
+        
+
         #region MediaPlayerControls
 
         public void Play()
@@ -90,7 +102,8 @@ namespace Console_MusicPlayer.View.Windows
                 mPlayer.URL = @"D:\Muzyka\Hip-Hop PL\KeKe - Trzecie Rzeczy (2016)\KęKę - Trzecie Rzeczy\KęKę - Nic Już Nie Muszę.mp3";
             }
             mPlayer.controls.play();
-            
+            mPlayer.settings.volume = 25;
+
 
         }
 
@@ -103,6 +116,7 @@ namespace Console_MusicPlayer.View.Windows
         public void Stop()
         {
             mPlayer.controls.stop();
+            
         }
         public string getCurrentPosition()
         {
@@ -111,6 +125,24 @@ namespace Console_MusicPlayer.View.Windows
             pos = mPlayer.controls.currentPositionString.ToString();
 
             return pos;
+        }
+
+        private void VolumeUp()
+        {
+            if (mPlayer.settings.volume < 100)
+            {
+                mPlayer.settings.volume = mPlayer.settings.volume + 10;
+                volumeLabel.SetText(mPlayer.settings.volume.ToString() + "%");
+            }
+        }
+
+        private void VolumeDown()
+        {
+            if (mPlayer.settings.volume > 0)
+            {
+                mPlayer.settings.volume = mPlayer.settings.volume - 10;
+                volumeLabel.SetText(mPlayer.settings.volume.ToString() + "%");
+            }
         }
         #endregion
 
@@ -149,6 +181,8 @@ namespace Console_MusicPlayer.View.Windows
             Inputs.Add(albumLabel);
             Inputs.Add(nameLabel);
             Inputs.Add(rankLabel);
+            Inputs.Add(volumeDownBtn);
+            Inputs.Add(volumeUpBtn);
         }
 
         private Menu BulidFileMenu()
