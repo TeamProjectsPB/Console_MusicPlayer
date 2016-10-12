@@ -17,6 +17,7 @@ namespace Console_MusicPlayer.Model
         private List<Library> libraries;
         private List<Playlist> playlists;
         #endregion
+
         #region Properties
 
         public List<Library> Libraries

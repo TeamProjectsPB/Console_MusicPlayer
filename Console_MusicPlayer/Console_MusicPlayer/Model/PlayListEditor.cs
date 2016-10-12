@@ -40,6 +40,7 @@ namespace Console_MusicPlayer.Model
                     foreach (Song song in playlist.Tracks)
                     {
                         xmlTextWriter.WriteWhitespace("\n\t");
+                        // TODO sony name chyba nie zawiera pelnej sciezki do pliku a o to nam chodzilo zeby bylo zapisywane
                         xmlTextWriter.WriteElementString("song", song.Name);
                     }
                 }

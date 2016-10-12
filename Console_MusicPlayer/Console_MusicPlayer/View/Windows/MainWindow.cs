@@ -14,7 +14,8 @@ namespace Console_MusicPlayer.View.Windows
     class MainWindow : FullWindow
     {
         WindowsMediaPlayer mPlayer= new WindowsMediaPlayer();
-        
+        List<Button> songs = new List<Button>();
+
         private Menu fileMenu;
         private Menu settingMenu;
         private Menu helpMenu;
@@ -43,6 +44,7 @@ namespace Console_MusicPlayer.View.Windows
         public MainWindow()
             : base(0, 0, Console.WindowWidth, Console.WindowHeight, null)
         {
+            
 
             fileMenu = BulidFileMenu();
             settingMenu = BuildSettingMenu();
@@ -82,7 +84,7 @@ namespace Console_MusicPlayer.View.Windows
             startLabel = new Label("0:00", 42, 4, "startLabel", this);
             endLabel = new Label("0:00", 42, 123, "endLabel", this);
 
-
+            //RefreshList();
 
             AddAllInputs();
 
@@ -293,6 +295,45 @@ namespace Console_MusicPlayer.View.Windows
             return saveMenu.FileWasSaved;
         }
 
+        #endregion
+
+        #region RefreshMainList
+
+        // Koncepcja odswiezania listy tzn usuwania i rysowanie lemantow w odpowiedniej pozycji
+        /*public void RefreshList()
+        {
+            for (int i = 0; i < 60; i++)
+            {
+                songs.Add(new Button(6 + i, 34, "<< Song " + i + " >>", "song" + i, this))  ;
+            }
+            for(int s=0;s<32; s++)
+            {
+                Inputs.Add(songs.ElementAt(s));
+            }
+        }
+
+        public void RefreshList2(int i)
+        {
+            
+
+            if (i==31)
+            {
+                if (Inputs.Contains(songs.ElementAt(i)))
+                {
+                    Inputs.Remove(songs.ElementAt(i));
+                }
+
+                for (int j = 0; j < 60; j++)
+                {
+                    songs.Add(new Button(6 +j, 34, "<< Song " + j + " >>", "song" + i+j, this) { Action = delegate () { RefreshList2(i+j); } });
+                }
+
+                for (int s = 0+i; s < 32+i; s++)
+                {
+                    Inputs.Add(songs.ElementAt(s));
+                }
+            }
+        }*/
         #endregion
 
     }
