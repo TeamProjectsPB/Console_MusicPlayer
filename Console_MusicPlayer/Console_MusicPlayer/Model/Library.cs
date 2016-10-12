@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using File = TagLib.File;
+using Song = TagLib.File;
 
 namespace Console_MusicPlayer.Model
 {
@@ -13,8 +13,7 @@ namespace Console_MusicPlayer.Model
     {
         #region Members
         private string url;
-        private List<TagLib.File> songsInLibrary;
-        private List<Playlist> playlistsInLibrary;      //zrobic to w klasie playetra
+        private List<Song> songsInLibrary;
         #endregion
         #region Properties
         public string Url
@@ -23,37 +22,28 @@ namespace Console_MusicPlayer.Model
             set { url = value; }
         }
 
-        public List<File> SongsInLibrary
+        public List<Song> SongsInLibrary
         {
             get { return songsInLibrary; }
             set { songsInLibrary = value; }
-        }
-
-        public List<Playlist> PlaylistsInLibrary
-        {
-            get { return playlistsInLibrary; }
-            set { playlistsInLibrary = value; }
         }
         #endregion
         #region Constructors
         public Library(string url)
         {
             this.url = url;
-            songsInLibrary = new List<File>();
-            playlistsInLibrary = new List<Playlist>();
+            songsInLibrary = new List<Song>();
+            GetSongs();
         }
         #endregion
 
+
         #region PrivateMethods
 
-        /*private void ReadPlaylist()
-        {
-            
-        }*/
         #endregion
         #region Methods
 
-        public void GetSongs()
+        private void GetSongs()
         {
             List<string> songsUrl = new List<string>(Directory.EnumerateFiles(url, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase) || s.EndsWith(".wav", StringComparison.OrdinalIgnoreCase)));
             for (int i = 0; i < songsUrl.Count; i++)
@@ -62,15 +52,6 @@ namespace Console_MusicPlayer.Model
                 songsInLibrary.Add(newSong);
             }
         }
-
-        /*public void GetPlaylists()
-        {
-            List<string> playlistsUrls = new List<string>(Directory.EnumerateFiles(url, "*.*").Where(s => s.EndsWith(".playlist", StringComparison.OrdinalIgnoreCase)));
-
-
-        }*/
-
-
         #endregion
     }
 }

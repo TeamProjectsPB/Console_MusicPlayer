@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using TagLib;
+using Song = TagLib.File;
 
 namespace Console_MusicPlayer.Model
 {
-    class Playlist
+    public class Playlist
     {
         #region Members
         private string name;
-        private List<TagLib.File> tracks;
+        private List<Song> tracks;
         #endregion
 
         #region Properties
@@ -21,7 +24,8 @@ namespace Console_MusicPlayer.Model
             set { name = value; }
         }
 
-        public List<File> Tracks
+
+        public List<Song> Tracks
         {
             get { return tracks; }
             set { tracks = value; }
@@ -30,18 +34,20 @@ namespace Console_MusicPlayer.Model
         #endregion
 
         #region Constructors
+
         public Playlist(string name)
         {
             this.name = name;
+            tracks = new List<File>();
         }
 
-        public Playlist(List<File> tracks)
+        public Playlist(List<Song> tracks)
         {
             name = string.Empty;
             this.tracks = tracks;
         }
 
-        public Playlist(string name, List<File> tracks)
+        public Playlist(string name, List<Song> tracks)
         {
             this.name = name;
             this.tracks = tracks;
@@ -50,22 +56,24 @@ namespace Console_MusicPlayer.Model
         #endregion
 
         #region Methods
-        public void AddSong(TagLib.File song)
+        public void AddSong(Song song)
         {
             tracks.Add(song);
         }
 
-        public void DeleteSong(TagLib.File song)
+        public void DeleteSong(Song song)
         {
             tracks.Remove(song);
         }
 
-        public void MoveSong(TagLib.File song, int move)
+        public void MoveSong(Song song, int move)
         {
             int songIndex = tracks.IndexOf(song);
             tracks.Remove(song);
             tracks.Insert(songIndex + move, song);
         }
+
+        
         #endregion
     }
 }

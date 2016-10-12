@@ -55,7 +55,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Library.cs" />
+    <Compile Include="Model\MediaPlayer.cs" />
     <Compile Include="Model\Playlist.cs" />
+    <Compile Include="Model\PlayListEditor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\FileInfo.cs" />
