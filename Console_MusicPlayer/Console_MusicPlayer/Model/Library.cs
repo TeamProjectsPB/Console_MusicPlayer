@@ -14,7 +14,7 @@ namespace Console_MusicPlayer.Model
         #region Members
         private string url;
         private List<TagLib.File> songsInLibrary;
-        private List<Playlist> playlistsInLibrary;
+        private List<Playlist> playlistsInLibrary;      //zrobic to w klasie playetra
         #endregion
         #region Properties
         public string Url
@@ -55,7 +55,7 @@ namespace Console_MusicPlayer.Model
 
         public void GetSongs()
         {
-            List<string> songsUrl = new List<string>(Directory.EnumerateFiles(url, "*.*").Where(s => s.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase) || s.ToLower().EndsWith(".wav", StringComparison.OrdinalIgnoreCase)));
+            List<string> songsUrl = new List<string>(Directory.EnumerateFiles(url, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase) || s.EndsWith(".wav", StringComparison.OrdinalIgnoreCase)));
             for (int i = 0; i < songsUrl.Count; i++)
             {
                 TagLib.File newSong = TagLib.File.Create(songsUrl.ElementAt(i));
