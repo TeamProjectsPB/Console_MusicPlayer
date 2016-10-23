@@ -3,22 +3,22 @@ using ConsoleDraw.Inputs;
 using ConsoleDraw.Windows;
 using ConsoleDraw.Windows.Base;
 using System;
+using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WMPLib;
+using System.Collections;
+using Console_MusicPlayer.Model;
 
 namespace Console_MusicPlayer.View.Windows
 {
+    
+
     class MainWindow : FullWindow
     {
-        WindowsMediaPlayer mPlayer= new WindowsMediaPlayer();
+        static public MediaPlayer p = new MediaPlayer(); 
         List<Button> songs = new List<Button>();
 
-        private Menu fileMenu;
-        private Menu settingMenu;
-        private Menu helpMenu;
+
         private Label libraryTextBox;
         private Label playlistTextBox;
         private Label musicTextBox;
@@ -37,6 +37,9 @@ namespace Console_MusicPlayer.View.Windows
         private Label albumLabel;
         private Label rankLabel;
         private Label volumeLabel;
+        private FileBrowser currentPlaylist;
+        private FileBrowser playlistsList;
+        private FileBrowser libraryList;
 
 
 
@@ -44,14 +47,42 @@ namespace Console_MusicPlayer.View.Windows
         public MainWindow()
             : base(0, 0, Console.WindowWidth, Console.WindowHeight, null)
         {
-            
 
-            fileMenu = BulidFileMenu();
-            settingMenu = BuildSettingMenu();
-            helpMenu = BulidHelpMenu();
 
-            DrawUIContainers();
-            
+            //fileMenu = BulidFileMenu();
+            //settingMenu = BuildSettingMenu();
+            // helpMenu = BulidHelpMenu();
+
+            #region Przykladowe playlisty 
+
+            List<string> lista = new List<string>();
+
+            lista.Add(@"D:\Muzyka\Hip-Hop PL\KeKe - Trzecie Rzeczy (2016)\KęKę - Trzecie Rzeczy\KęKę - Nie Chcę Umierać.mp3");
+            lista.Add(@"D:\Muzyka\Hip-Hop PL\KeKe - Trzecie Rzeczy (2016)\KęKę - Trzecie Rzeczy\KęKę - Smutek.mp3");
+            lista.Add(@"D:\Muzyka\Hip-Hop PL\KeKe - Trzecie Rzeczy (2016)\KęKę - Trzecie Rzeczy\KęKę - Arrivederci.mp3");
+            lista.Add(@"D:\Muzyka\Hip-Hop PL\KeKe - Trzecie Rzeczy (2016)\KęKę - Trzecie Rzeczy\KęKę - Nie Chcę Umierać.mp3");
+            lista.Add(@"D:\Muzyka\Hip-Hop PL\KeKe - Trzecie Rzeczy (2016)\KęKę - Trzecie Rzeczy\KęKę - Nie Chcę Umierać.mp3");
+
+
+            List <string> listaPlaylist = new List<string>();
+            for (int a = 0; a < 10; a++)
+            {
+                listaPlaylist.Add("playlista " + a);
+            }
+
+            List<string> listaBibliotek = new List<string>();
+            for (int a = 0; a < 7; a++)
+            {
+                listaBibliotek.Add("biblioteka " + a);
+            }
+
+            #endregion
+
+            #region Elementy Interfejsu Inicjalizacja
+
+            currentPlaylist = new FileBrowser(6, 33, 90, 32, lista, "folderSelect", this, true);
+           playlistsList = new FileBrowser(20,3,14,11,listaPlaylist,"playlistsList",this,true);
+           libraryList = new FileBrowser(5,3,14,12,listaBibliotek,"libraryList",this,true);
 
             libraryTextBox = new Label("Biblioteka", 3, 10, "libraryTextBox", this);
             playlistTextBox = new Label("Playlisty", 19, 10, "playlistTextBox", this);
@@ -68,23 +99,26 @@ namespace Console_MusicPlayer.View.Windows
 
             controlsLabel = new Label("Sterowanie", 40, 65, "controlLabel", this);
 
-            stopBtn = new Button(44, 55, "  ■  ", "stopBtn", this){ Action = delegate () { Stop(); } };
-            playBtn = new Button(44, 75, "  >  ", "playBtn", this){ Action = delegate() { Play(); } };
+            stopBtn = new Button(44, 55, "  ■  ", "stopBtn", this) { Action = delegate () { Stop(); } };
+            playBtn = new Button(44, 75, "  >  ", "playBtn", this) { Action = delegate () { Play(); } };
             pouseBtn = new Button(44, 65, "  ||  ", "pouseBtn", this) { Action = delegate () { Pouse(); } };
 
             nextTrackBtn = new Button(44, 85, "  >|  ", "nextTrackBtn", this);
 
             volumeDownBtn = new Button(44, 110, " - ", "volumeDown", this) { Action = delegate () { VolumeDown(); } };
             volumeUpBtn = new Button(44, 123, " + ", "volumeDown", this) { Action = delegate () { VolumeUp(); } };
-            volumeLabel = new Label(mPlayer.settings.volume.ToString() + "%", 44, 117, "volumeLabel",this);
-            volumeLabel.SetText(mPlayer.settings.volume.ToString());
+            volumeLabel = new Label(p.MPlayer.settings.volume.ToString() + "%", 44, 117, "volumeLabel", this);
+            volumeLabel.SetText(p.MPlayer.settings.volume.ToString());
 
             previousTrackBtn = new Button(44, 45, "  |<  ", "previousTrackBtn", this);
 
             startLabel = new Label("0:00", 42, 4, "startLabel", this);
             endLabel = new Label("0:00", 42, 123, "endLabel", this);
 
-            //RefreshList();
+            #endregion
+
+            DrawUIContainers();
+            
 
             AddAllInputs();
 
@@ -93,57 +127,57 @@ namespace Console_MusicPlayer.View.Windows
             MainLoop();
         }
 
-        
+
 
         #region MediaPlayerControls
 
         public void Play()
         {
-            if (mPlayer.URL == "")
+            if (p.MPlayer.URL == "")
             {
-                mPlayer.URL = @"D:\Muzyka\Hip-Hop PL\KeKe - Trzecie Rzeczy (2016)\KęKę - Trzecie Rzeczy\KęKę - Nic Już Nie Muszę.mp3";
+                p.MPlayer.URL = @"D:\Muzyka\Hip-Hop PL\KeKe - Trzecie Rzeczy (2016)\KęKę - Trzecie Rzeczy\KęKę - Nic Już Nie Muszę.mp3";
             }
-            mPlayer.controls.play();
-            mPlayer.settings.volume = 25;
+            p.MPlayer.controls.play();
+            p.MPlayer.settings.volume = 25;
 
 
         }
 
         public void Pouse()
         {
-            startLabel.SetText(mPlayer.controls.currentPositionString);
-            endLabel.SetText(mPlayer.controls.currentItem.durationString);
-            mPlayer.controls.pause();
+            startLabel.SetText(p.MPlayer.controls.currentPositionString);
+            endLabel.SetText(p.MPlayer.controls.currentItem.durationString);
+            p.MPlayer.controls.pause();
         }
         public void Stop()
         {
-            mPlayer.controls.stop();
-            
+            p.MPlayer.controls.stop();
+
         }
         public string getCurrentPosition()
         {
             string pos;
 
-            pos = mPlayer.controls.currentPositionString.ToString();
+            pos = p.MPlayer.controls.currentPositionString.ToString();
 
             return pos;
         }
 
         private void VolumeUp()
         {
-            if (mPlayer.settings.volume < 100)
+            if (p.MPlayer.settings.volume < 100)
             {
-                mPlayer.settings.volume = mPlayer.settings.volume + 10;
-                volumeLabel.SetText(mPlayer.settings.volume.ToString() + "%");
+                p.MPlayer.settings.volume = p.MPlayer.settings.volume + 10;
+                volumeLabel.SetText(p.MPlayer.settings.volume.ToString() + "%");
             }
         }
 
         private void VolumeDown()
         {
-            if (mPlayer.settings.volume > 0)
+            if (p.MPlayer.settings.volume > 0)
             {
-                mPlayer.settings.volume = mPlayer.settings.volume - 10;
-                volumeLabel.SetText(mPlayer.settings.volume.ToString() + "%");
+               p.MPlayer.settings.volume = p.MPlayer.settings.volume - 10;
+                volumeLabel.SetText(p.MPlayer.settings.volume.ToString() + "%");
             }
         }
         #endregion
@@ -154,6 +188,7 @@ namespace Console_MusicPlayer.View.Windows
         {
             //DrawUIContainers();
         }
+
         public void DrawUIContainers()
         {
             WindowManager.DrawColourBlock(ConsoleColor.DarkGray, 4, 2, 18, 30);
@@ -163,11 +198,10 @@ namespace Console_MusicPlayer.View.Windows
 
             WindowManager.DrawColourBlock(ConsoleColor.Gray, 42, 10, 43, 120);
         }
+
         public void AddAllInputs()
         {
-            Inputs.Add(fileMenu);
-            Inputs.Add(settingMenu);
-            Inputs.Add(helpMenu);
+
             Inputs.Add(libraryTextBox);
             Inputs.Add(musicTextBox);
             Inputs.Add(playlistTextBox);
@@ -185,62 +219,10 @@ namespace Console_MusicPlayer.View.Windows
             Inputs.Add(rankLabel);
             Inputs.Add(volumeDownBtn);
             Inputs.Add(volumeUpBtn);
-        }
 
-        private Menu BulidFileMenu()
-        {
-            List<MenuItem> menuItems = new List<MenuItem>();
-
-            Menu fileMenu = new Menu("Plik", 1, 2, "fileMenu", this);
-
-            var loadMenuItem = new MenuItem("Otwórz", "fileMenuMenuItemLoad", fileMenu.MenuDropdown);
-            loadMenuItem.Action = delegate () { LoadData(loadMenuItem.ParentWindow); };
-            menuItems.Add(loadMenuItem);
-
-            var saveMenuItem = new MenuItem("Zapisz", "fileMenuMenuItemSave", fileMenu.MenuDropdown);
-            saveMenuItem.Action = delegate () { SaveData(saveMenuItem.ParentWindow); };
-            menuItems.Add(saveMenuItem);
-
-            var exitMenuItem = new MenuItem("Zakończ", "fileMenuMenuItemExit", fileMenu.MenuDropdown);
-            exitMenuItem.Action = delegate () { ExitApp(saveMenuItem.ParentWindow); };
-            menuItems.Add(exitMenuItem);
-
-            fileMenu.MenuItems.AddRange(menuItems);
-
-            return fileMenu;
-        }
-
-        private Menu BuildSettingMenu()
-        {
-            List<MenuItem> menuItems = new List<MenuItem>();
-
-            Menu settingMenu = new Menu("Ustawienia", 1, 8, "settingMenu", this);
-
-            var resolutionMenuItem = new MenuItem("Rozdzielczosc", "settingMenuMenuItemResolution", fileMenu.MenuDropdown);
-            menuItems.Add(resolutionMenuItem);
-
-            settingMenu.MenuItems.AddRange(menuItems);
-
-            return settingMenu;
-        }
-
-        private Menu BulidHelpMenu()
-        {
-            List<MenuItem> menuItems = new List<MenuItem>();
-
-            Menu helpMenu = new Menu("Pomoc", 1, 20, "helpMenu", this);
-
-            var viewHelpMenuItem = new MenuItem("Pomoc", "fileMenuMenuItemViewHelp", fileMenu.MenuDropdown);
-            viewHelpMenuItem.Action = delegate () { new Alert("Coming Soon!", viewHelpMenuItem.ParentWindow); };
-            menuItems.Add(viewHelpMenuItem);
-
-            var aboutMenuItem = new MenuItem("Kontakt", "fileMenuMenuItemAbout", fileMenu.MenuDropdown);
-            aboutMenuItem.Action = delegate () { new Alert("Marcin Kozikowski\tmarcinkozikowski@wp.pl      Marcin Januszewski\tmarcinjanuszewski@wp.pl", viewHelpMenuItem.ParentWindow); };
-            menuItems.Add(aboutMenuItem);
-
-            helpMenu.MenuItems.AddRange(menuItems);
-
-            return helpMenu;
+            Inputs.Add(currentPlaylist);
+            Inputs.Add(playlistsList);
+            Inputs.Add(libraryList);
         }
 
         private void ExitApp(Window parent)
@@ -254,86 +236,8 @@ namespace Console_MusicPlayer.View.Windows
             ProgramInfo.ExitProgram = true;
         }
 
-        public void LoadData(Window parent)
-        {
-            var fileTypes = new Dictionary<String, String>() { { "txt", "Text Document" }, { "*", "All Files" } };
+        
 
-            var loadMenu = new OpenMenu(fileTypes, parent);
-
-            if (loadMenu.DataLoaded) //Data Load was successful
-            {
-                parent.ExitWindow();
-
-
-                Draw();
-
-                FileInfo.Filename = loadMenu.FileNameLoaded;
-                FileInfo.Path = loadMenu.PathOfLoaded;
-                FileInfo.HasChanged = false;
-
-                SelectItemByID("textArea");
-            }
-        }
-
-        public Boolean SaveData(Window parent)
-        {
-            var saveMenu = new SaveMenu("Dane do zapisania", parent);
-
-            if (saveMenu.FileWasSaved) //Data Save was successful
-            {
-                parent.ExitWindow();
-
-                Draw();
-
-                FileInfo.Filename = saveMenu.FileSavedAs;
-                FileInfo.Path = saveMenu.PathToFile;
-                FileInfo.HasChanged = false;
-
-                SelectItemByID("textArea");
-            }
-
-            return saveMenu.FileWasSaved;
-        }
-
-        #endregion
-
-        #region RefreshMainList
-
-        // Koncepcja odswiezania listy tzn usuwania i rysowanie lemantow w odpowiedniej pozycji
-        /*public void RefreshList()
-        {
-            for (int i = 0; i < 60; i++)
-            {
-                songs.Add(new Button(6 + i, 34, "<< Song " + i + " >>", "song" + i, this))  ;
-            }
-            for(int s=0;s<32; s++)
-            {
-                Inputs.Add(songs.ElementAt(s));
-            }
-        }
-
-        public void RefreshList2(int i)
-        {
-            
-
-            if (i==31)
-            {
-                if (Inputs.Contains(songs.ElementAt(i)))
-                {
-                    Inputs.Remove(songs.ElementAt(i));
-                }
-
-                for (int j = 0; j < 60; j++)
-                {
-                    songs.Add(new Button(6 +j, 34, "<< Song " + j + " >>", "song" + i+j, this) { Action = delegate () { RefreshList2(i+j); } });
-                }
-
-                for (int s = 0+i; s < 32+i; s++)
-                {
-                    Inputs.Add(songs.ElementAt(s));
-                }
-            }
-        }*/
         #endregion
 
     }

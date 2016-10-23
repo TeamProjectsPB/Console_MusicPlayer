@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WMPLib;
 using Song = TagLib.File;
 
 namespace Console_MusicPlayer.Model
@@ -11,7 +12,7 @@ namespace Console_MusicPlayer.Model
     class MediaPlayer
     {
         #region Members
-
+        private WindowsMediaPlayer mPlayer;
         private Song currentSong;
         private Playlist currentplaylist;
         private List<Library> libraries;
@@ -19,6 +20,11 @@ namespace Console_MusicPlayer.Model
         #endregion
 
         #region Properties
+
+        public WindowsMediaPlayer MPlayer
+            {
+                get { if (mPlayer == null) { return mPlayer = new WindowsMediaPlayer(); } else return mPlayer; }
+            }
 
         public List<Library> Libraries
         {
@@ -36,8 +42,8 @@ namespace Console_MusicPlayer.Model
 
         public MediaPlayer()
         {
-            libraries = new List<Library>();
-            playlists = new List<Playlist>();
+                libraries = new List<Library>();
+                playlists = new List<Playlist>();    
         }
 
         private void GetPlaylists()
