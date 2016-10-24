@@ -79,9 +79,50 @@ namespace Console_MusicPlayer.Model
         public List<string> GetPlayListAsString()
         {
             List<string> playlist = new List<string>();
-            tracks.ForEach(x => playlist.Add(x.Name));
+            tracks.ForEach(x => playlist.Add(FormatedViewSong(x)));
             return playlist;
         } 
+
+        public string FormatedViewSong(Song s)
+        {
+            int spaces = 12;
+            string formated = "";
+            string artist="";
+            string title="";
+            string album="";
+            string value="";
+            string white_spaces="";
+
+            if (s.Tag.Artists.Length<spaces)
+            {
+                for(int i=0;i<spaces-s.Tag.Artists.Length;i++)
+                {
+                    white_spaces = white_spaces + " ";
+                }
+                artist = s.Tag.Artists + white_spaces;
+            }
+
+            if (s.Tag.Title.Length < spaces)
+            {
+                for (int i = 0; i < spaces - s.Tag.Title.Length;i++)
+                {
+                    white_spaces = white_spaces + " ";
+                }
+                title = s.Tag.Title + white_spaces;
+            }
+
+            if (s.Tag.Album.Length < spaces)
+            {
+                for (int i = 0; i < spaces - s.Tag.Album.Length;i++)
+                {
+                    white_spaces = white_spaces + " ";
+                }
+                album = s.Tag.Album + white_spaces;
+            }
+            formated = artist + album + title;
+
+            return formated;
+        }
         #endregion
     }
 }

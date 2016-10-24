@@ -161,6 +161,7 @@ namespace Console_MusicPlayer.View.Windows
             playlistsBrowser.Draw();
         }
         #endregion
+
         #region MediaPlayerControls
 
         public void Play()
@@ -205,6 +206,7 @@ namespace Console_MusicPlayer.View.Windows
             //currentPlaylistBrowser.CursorXAdder(-1);
         }
         #endregion
+
 
         #region UI_Draw
 
