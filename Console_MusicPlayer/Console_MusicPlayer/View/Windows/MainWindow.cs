@@ -119,8 +119,6 @@ namespace Console_MusicPlayer.View.Windows
         {
             startLabel.SetText(player.GetCurrentPosition());
             endLabel.SetText(player.GetDuration());
-
-            Draw();
         }
         public void StartTimer()
         {
@@ -202,7 +200,7 @@ namespace Console_MusicPlayer.View.Windows
 
         public override void ReDraw()
         {
-            //DrawUIContainers();
+           DrawUIContainers();
         }
 
         public void DrawUIContainers()
