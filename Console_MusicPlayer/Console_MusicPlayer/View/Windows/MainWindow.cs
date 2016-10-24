@@ -248,7 +248,6 @@ namespace Console_MusicPlayer.View.Windows
         public void ReloadCurrentPlaylistBrowser()
         {
             currentPlaylistBrowser.CurrentList = controller.GetCurrentSongs();
-                //player.CurrentPlaylist.GetPlayListAsString();
             currentPlaylistBrowser.GetFileNames();
             currentPlaylistBrowser.Draw();
         }
