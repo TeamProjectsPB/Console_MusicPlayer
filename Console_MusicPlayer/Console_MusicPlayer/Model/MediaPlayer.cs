@@ -212,11 +212,18 @@ namespace Console_MusicPlayer.Model
         }
         public double GetCurrentPositionDouble()
         {
-            if (mPlayer.controls.currentItem != null)
+            try
             {
-                return (MPlayer.controls.currentPosition);
+                if (mPlayer.controls.currentItem != null)
+                {
+                    return (MPlayer.controls.currentPosition);
+                }
+                else return 0;
             }
-            else return 0;
+            catch
+            {
+                return 0;
+            }
         }
 
         public string GetDuration()

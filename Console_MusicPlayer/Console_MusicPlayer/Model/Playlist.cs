@@ -85,13 +85,14 @@ namespace Console_MusicPlayer.Model
 
         public string FormatedViewSong(Song s)
         {
-            int spaces = 12;
+            int spaces = 21;
             string formated = "";
             string artist = "";
             string title = "";
             string album = "";
             string value = "";
             string white_spaces = "";
+
             try
             {
                 if (s.Tag.AlbumArtists[0].Length < spaces)
@@ -101,31 +102,86 @@ namespace Console_MusicPlayer.Model
                         white_spaces = white_spaces + " ";
                     }
                     artist = s.Tag.AlbumArtists[0] + white_spaces;
+                    white_spaces = "";
                 }
-
-                if (s.Tag.Title.Length < spaces)
+                else if(s.Tag.AlbumArtists[0].Length<=2)
                 {
-                    for (int i = 0; i < spaces - s.Tag.Title.Length; i++)
+                    for (int i = 0; i < spaces; i++)
+                    {
+                        white_spaces = white_spaces + " ";
+                    }
+                    artist = white_spaces;
+                    white_spaces = "";
+                }
+                else
+                {
+                    artist = s.Tag.AlbumArtists[0].Substring(0, spaces);
+                }
+            }
+            catch
+            {
+                artist = "";
+            }
+            try
+            {
+                if (s.Tag.Title.Length < 40)
+                {
+                    for (int i = 0; i < 40 - s.Tag.Title.Length; i++)
                     {
                         white_spaces = white_spaces + " ";
                     }
                     title = s.Tag.Title + white_spaces;
+                    white_spaces = "";
                 }
-
-                if (s.Tag.Album.Length < spaces)
+                else if (s.Tag.Title.Length <= 1)
                 {
-                    for (int i = 0; i < spaces - s.Tag.Album.Length; i++)
+                    for (int i = 0; i <40; i++)
+                    {
+                        white_spaces = white_spaces + " ";
+                    }
+                    title = white_spaces;
+                    white_spaces = "";
+                }
+                else
+                {
+                    title = s.Tag.Title.Substring(0, 40);
+                }
+            }
+            catch
+            {
+                title = "";
+            }
+            try
+            {
+                if (s.Tag.Album.Length < spaces+5)
+                {
+                    for (int i = 0; i < spaces+5 - s.Tag.Album.Length; i++)
                     {
                         white_spaces = white_spaces + " ";
                     }
                     album = s.Tag.Album + white_spaces;
+                    white_spaces = "";
                 }
-                formated = artist + album + title;
+                else if (s.Tag.Album.Length <= 2)
+                {
+                    for (int i = 0; i < spaces; i++)
+                    {
+                        white_spaces = white_spaces + " ";
+                    }
+                    album = white_spaces;
+                    white_spaces = "";
+                }
+                else
+                {
+                    album = s.Tag.Album.Substring(0, spaces);
+                }
             }
             catch
             {
-                formated = System.IO.Path.GetFileName(s.Name);
+                album = "";
             }
+                formated = artist + title + album;
+            
 
             return formated;
         }

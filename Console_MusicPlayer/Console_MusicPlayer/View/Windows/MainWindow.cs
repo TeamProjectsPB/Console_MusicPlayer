@@ -88,7 +88,7 @@ namespace Console_MusicPlayer.View.Windows
 
             artistLabelBtn = new Button(4, 37, "Artysta", "artistBtn", this) {Action = delegate() { SortByArtist(); }};
             nameLabelBtn = new Button(4, 55, "Nazwa utowru", "titleBtn", this) { Action = delegate () { SortByTitle(); } };
-            albumLabelBtn = new Button(4, 85, "Album", "albumBtn", this) { Action = delegate () { SortByAlbum(); } };
+            albumLabelBtn = new Button(4, 95, "Album", "albumBtn", this) { Action = delegate () { SortByAlbum(); } };
             //rankBtn = new Button(4, 105, "Ocena", "rankBtn", this);
 
             //artistLabel.BackgroundColour = ConsoleColor.DarkGray;
