@@ -225,11 +225,5 @@ namespace Console_MusicPlayer.View
                 Draw();
             }
         }
-
-        public void CursorXAdder(int adder)
-        {
-            CursorX = (CursorX + adder)%CurrentList.Count;
-            Draw();
-        }
     }
 }
