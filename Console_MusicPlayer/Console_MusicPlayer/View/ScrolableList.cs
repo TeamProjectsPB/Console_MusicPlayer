@@ -201,7 +201,7 @@ namespace Console_MusicPlayer.View
             if (!Selected)
             {
                 Selected = true;
-                //Draw();
+                Draw();
             }
         }
 
@@ -222,7 +222,7 @@ namespace Console_MusicPlayer.View
             if (Selected)
             {
                 Selected = false;
-                //Draw();
+                Draw();
             }
         }
     }
