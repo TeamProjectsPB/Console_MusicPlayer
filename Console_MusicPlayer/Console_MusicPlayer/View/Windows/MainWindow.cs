@@ -18,6 +18,9 @@ namespace Console_MusicPlayer.View.Windows
     class MainWindow : FullWindow
     {
         #region Members
+
+        static public bool canScroolList = true;
+
         static public MediaPlayer player = new MediaPlayer(); 
         List<Button> songs = new List<Button>();
         Timer timer;
@@ -52,11 +55,11 @@ namespace Console_MusicPlayer.View.Windows
         {
             timer = new Timer();
             timer.Elapsed += new ElapsedEventHandler(UpdateCurrentPosition);
-            timer.Interval = 1000;
+            timer.Interval = 600;
 
             player.Libraries.Add(new Library("D:\\Muzyka"));
             //player.Libraries.Add(new Library("H:\\Marcin\\Music"));
-            player.LoadPlaylists();
+            //player.LoadPlaylists();
             player.SetCurrentLibrary(0);
             //player.CurrentPlaylist = player.Playlists.FirstOrDefault();
 
@@ -117,13 +120,19 @@ namespace Console_MusicPlayer.View.Windows
         #region Timer
         private void UpdateCurrentPosition(object sender, ElapsedEventArgs elapsedEventArgs)
         {
+            canScroolList = false;
             startLabel.SetText(player.GetCurrentPosition());
             endLabel.SetText(player.GetDuration());
+            double start = player.GetCurrentPositionDouble();
+            double end = player.GetDurationDouble();
+            UpdateSeekBar(start, end);
+            canScroolList = true;
         }
         public void StartTimer()
         {
             if (!timer.Enabled)
             {
+                canScroolList = false;
                 timer.Start();
             }
         }
@@ -133,6 +142,7 @@ namespace Console_MusicPlayer.View.Windows
             if (timer.Enabled)
             {
                 timer.Stop();
+                canScroolList = true;
             }
         }
         #endregion
@@ -200,7 +210,7 @@ namespace Console_MusicPlayer.View.Windows
 
         public override void ReDraw()
         {
-           DrawUIContainers();
+           //DrawUIContainers();
         }
 
         public void DrawUIContainers()
@@ -209,7 +219,22 @@ namespace Console_MusicPlayer.View.Windows
             WindowManager.DrawColourBlock(ConsoleColor.DarkGray, 20, 2, 39, 30); //Playlisty
             WindowManager.DrawColourBlock(ConsoleColor.DarkGray, 4, 32, 39, 128);//Utwory srodek
             WindowManager.DrawColourBlock(ConsoleColor.DarkGray, 41, 2, 46, 128);//Sterowanie
-            WindowManager.DrawColourBlock(ConsoleColor.Gray, 42, 10, 43, 120);//Seekbar
+            WindowManager.DrawColourBlock(ConsoleColor.Gray, 42, 10, 43, 120);//Seekbar domyslny szary
+        }
+
+        public void UpdateSeekBar(double start, double end)
+        {
+            int durationView=0;
+            try
+            {
+                durationView = (Int32)((start / end) * 110);
+            }
+            catch(Exception e)
+            {
+                e.ToString();
+            }
+            WindowManager.DrawColourBlock(ConsoleColor.Black, 42, 10, 43, 11+durationView);//Seekbar
+            //Draw();
         }
 
         public void AddAllInputs()

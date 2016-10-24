@@ -67,33 +67,38 @@ namespace Console_MusicPlayer.View
 
         public override void CursorMoveDown()
         {
+            (ParentWindow as MainWindow).StopTimer();
+            //System.Threading.Thread.Sleep(200);
             if (CursorX == CurrentList.Count - 1 ? false : !ShowingDrive)
-            {
-                CursorX = CursorX + 1;
-                Draw();
-            }
-            else if (CursorX == CurrentList.Count - 1 ? true : !ShowingDrive)
-            {
-                ParentWindow.MovetoNextItemDown(Xpostion, Ypostion, Width);
-            }
-            else
-            {
-                CursorX = CursorX + 1;
-                Draw();
-            }
+                {
+                    CursorX = CursorX + 1;
+                    Draw();
+                }
+                else if (CursorX == CurrentList.Count - 1 ? true : !ShowingDrive)
+                {
+                    ParentWindow.MovetoNextItemDown(Xpostion, Ypostion, Width);
+                }
+                else
+                {
+                    CursorX = CursorX + 1;
+                    //Draw();
+                }
+            (ParentWindow as MainWindow).StartTimer();
         }
 
         public override void CursorMoveUp()
         {
+            (ParentWindow as MainWindow).StopTimer();
             if (CursorX == 0)
-            {
-                ParentWindow.MovetoNextItemUp(Xpostion, Ypostion, Width);
-            }
-            else
-            {
-                CursorX = CursorX - 1;
-                Draw();
-            }
+                {
+                    ParentWindow.MovetoNextItemUp(Xpostion, Ypostion, Width);
+                }
+                else
+                {
+                    CursorX = CursorX - 1;
+                    Draw();
+                }
+            (ParentWindow as MainWindow).StartTimer();
         }
 
         public override void Draw()
@@ -125,11 +130,13 @@ namespace Console_MusicPlayer.View
 
         public override void Enter()
         {
+            
             if (CursorX < 0 || CursorX >= CurrentList.Count ? false : !ShowingDrive)
             {
                 MediaPlayer mediaPlayer = MainWindow.player;
                 if (iD.Equals("currentPlaylistBrowser"))
                 {
+                    WindowManager.DrawColourBlock(ConsoleColor.Gray, 42, 10, 43, 120);//Seekbar domyslny szary
                     mediaPlayer.SetCurrentSong(CurrentList.ElementAt(cursorX));
                     WindowManager.WirteText(CurrentlySelectedFile, 0, 0, this.TextColour, this.BackgroundColour);
                     mediaPlayer.Play();
@@ -201,7 +208,7 @@ namespace Console_MusicPlayer.View
             if (!Selected)
             {
                 Selected = true;
-                Draw();
+                //Draw();
             }
         }
 
@@ -222,7 +229,7 @@ namespace Console_MusicPlayer.View
             if (Selected)
             {
                 Selected = false;
-                Draw();
+                //Draw();
             }
         }
     }

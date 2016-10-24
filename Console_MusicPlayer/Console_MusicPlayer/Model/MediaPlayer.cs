@@ -191,10 +191,18 @@ namespace Console_MusicPlayer.Model
         {
             return MPlayer.controls.currentPositionString;
         }
+        public double GetCurrentPositionDouble()
+        {
+            return (MPlayer.controls.currentPosition);
+        }
 
         public string GetDuration()
         {
             return mPlayer.controls.currentItem.durationString;
+        }
+        public double GetDurationDouble()
+        {
+            return (mPlayer.controls.currentItem.duration);
         }
         #endregion
         public void SetCurrentPlaylist(string newCurrentPlaylist)
