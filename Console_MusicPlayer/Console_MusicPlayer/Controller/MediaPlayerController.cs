@@ -13,7 +13,7 @@ namespace Console_MusicPlayer.Controller
 
         public MediaPlayerController()
         {
-            player.AddLibrary("D:\\Muzyka");
+            player.AddLibrary("D:\\Muzyka\\Mix");
             player.LoadPlaylists();
             player.SetCurrentLibrary(0);
         }

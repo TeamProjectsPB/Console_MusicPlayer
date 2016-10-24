@@ -35,12 +35,24 @@ namespace Console_MusicPlayer.View.Windows
         private Button previousTrackBtn;
         private Button volumeUpBtn;
         private Button volumeDownBtn;
+        private Button addNewLibraryBtn;
+        private Button addNewPlaylistBtn;
         private Label startLabel;
         private Label endLabel;
-        private Label artistLabel;
-        private Label nameLabel;
-        private Label albumLabel;
-        private Label rankLabel;
+
+        //private Label artistLabel;
+        //private Label nameLabel;
+        //private Label albumLabel;
+        //private Label rankLabel;
+
+        private Button artistLabelBtn;
+        private Button nameLabelBtn;
+        private Button albumLabelBtn;
+        private Button rankBtn;
+
+        private Button repeatAllBtn;
+        private Button shufflePlayBtn;
+
         private Label volumeLabel;
         private FileBrowser currentPlaylistBrowser;
         private FileBrowser playlistsBrowser;
@@ -58,23 +70,41 @@ namespace Console_MusicPlayer.View.Windows
             #region Elementy Interfejsu Inicjalizacja
 
             currentPlaylistBrowser = new FileBrowser(5, 33, 90, 32, controller.GetCurrentSongs(), "currentPlaylistBrowser", this, true);
-            playlistsBrowser = new FileBrowser(20, 3, 26, 11, controller.GetPlaylists(), "playlistsBrowser", this, true);
-            libraryBrowser = new FileBrowser(5, 3, 26, 12, controller.GetLibraries(), "libraryBrowser", this, true);
+            playlistsBrowser = new FileBrowser(22, 3, 26, 11, controller.GetPlaylists(), "playlistsBrowser", this, true);
+            libraryBrowser = new FileBrowser(6, 3, 26, 12, controller.GetLibraries(), "libraryBrowser", this, true);
 
             libraryTextBox = new Label("Biblioteka", 3, 10, "libraryTextBox", this);
             playlistTextBox = new Label("Playlisty", 19, 10, "playlistTextBox", this);
             musicTextBox = new Label("Utwory", 3, 77, "musicTextBox", this);
-            artistLabel = new Label("Artysta", 4, 37, "artistLabel", this);
-            nameLabel = new Label("Nazwa utworu", 4, 55, "nameLabel", this);
-            albumLabel = new Label("Album", 4, 85, "albumLabel", this);
-            rankLabel = new Label("Ocena", 4, 105, "rankLabel", this);
 
-            artistLabel.BackgroundColour = ConsoleColor.DarkGray;
-            albumLabel.BackgroundColour = ConsoleColor.DarkGray;
-            nameLabel.BackgroundColour = ConsoleColor.DarkGray;
-            rankLabel.BackgroundColour = ConsoleColor.DarkGray;
+            addNewLibraryBtn = new Button(5, 3, "Dodaj biblioteke","addNewLibraryBtn", this);
+            addNewPlaylistBtn = new Button(21, 3, "Dodaj playliste", "addNewPlaylistBtn", this);
+
+
+            //artistLabel = new Label("Artysta", 4, 37, "artistLabel", this);
+            //nameLabel = new Label("Nazwa utworu", 4, 55, "nameLabel", this);
+            //albumLabel = new Label("Album", 4, 85, "albumLabel", this);
+            //rankLabel = new Label("Ocena", 4, 105, "rankLabel", this);
+
+            artistLabelBtn = new Button(4, 37, "Artysta", "artistBtn", this);
+            nameLabelBtn = new Button(4, 55, "Nazwa utowru", "titleBtn", this);
+            albumLabelBtn = new Button(4, 85, "Album", "albumBtn", this);
+            rankBtn = new Button(4, 105, "Ocena", "rankBtn", this);
+
+            //artistLabel.BackgroundColour = ConsoleColor.DarkGray;
+            //albumLabel.BackgroundColour = ConsoleColor.DarkGray;
+            //nameLabel.BackgroundColour = ConsoleColor.DarkGray;
+            //rankLabel.BackgroundColour = ConsoleColor.DarkGray;
+
+            artistLabelBtn.BackgroundColour = ConsoleColor.DarkGray;
+            albumLabelBtn.BackgroundColour = ConsoleColor.DarkGray;
+            nameLabelBtn.BackgroundColour = ConsoleColor.DarkGray;
+            rankBtn.BackgroundColour = ConsoleColor.DarkGray;
 
             controlsLabel = new Label("Sterowanie", 40, 65, "controlLabel", this);
+
+            repeatAllBtn = new Button(44, 13, "Repeat All", "stopBtn", this);
+            shufflePlayBtn = new Button(44, 3, "Random", "stopBtn", this);
 
             stopBtn = new Button(44, 55, "  ■  ", "stopBtn", this) { Action = delegate () { Stop(); } };
             playBtn = new Button(44, 75, "  >  ", "playBtn", this) { Action = delegate () { Play(); } };
@@ -218,16 +248,26 @@ namespace Console_MusicPlayer.View.Windows
             Inputs.Add(startLabel);
             Inputs.Add(endLabel);
             Inputs.Add(pouseBtn);
-            Inputs.Add(artistLabel);
-            Inputs.Add(albumLabel);
-            Inputs.Add(nameLabel);
-            Inputs.Add(rankLabel);
+            //Inputs.Add(artistLabel);
+            //Inputs.Add(albumLabel);
+            //Inputs.Add(nameLabel);
+            //Inputs.Add(rankLabel);
             Inputs.Add(volumeDownBtn);
             Inputs.Add(volumeUpBtn);
+            Inputs.Add(addNewLibraryBtn);
+            Inputs.Add(addNewPlaylistBtn);
 
             Inputs.Add(currentPlaylistBrowser);
             Inputs.Add(playlistsBrowser);
             Inputs.Add(libraryBrowser);
+
+            Inputs.Add(artistLabelBtn);
+            Inputs.Add(albumLabelBtn);
+            Inputs.Add(nameLabelBtn);
+            Inputs.Add(rankBtn);
+
+            Inputs.Add(shufflePlayBtn);
+            Inputs.Add(repeatAllBtn);
         }
 
         private void ExitApp(Window parent)
