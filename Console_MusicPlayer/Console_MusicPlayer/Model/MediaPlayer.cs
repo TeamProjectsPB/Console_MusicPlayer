@@ -189,20 +189,40 @@ namespace Console_MusicPlayer.Model
         #region CurrentSongMethods
         public string GetCurrentPosition()
         {
-            return MPlayer.controls.currentPositionString;
+            if (mPlayer.controls.currentItem != null)
+            {
+                return MPlayer.controls.currentPositionString;
+            }
+            else
+                return "00:00";
         }
         public double GetCurrentPositionDouble()
         {
-            return (MPlayer.controls.currentPosition);
+            if (mPlayer.controls.currentItem != null)
+            {
+                return (MPlayer.controls.currentPosition);
+            }
+            else
+                return 0;
         }
 
         public string GetDuration()
         {
-            return mPlayer.controls.currentItem.durationString;
+            if (mPlayer.controls.currentItem != null)
+            {
+                return mPlayer.controls.currentItem.durationString;
+            }
+            else
+                return "00:00";
         }
         public double GetDurationDouble()
         {
-            return (mPlayer.controls.currentItem.duration);
+            if (mPlayer.controls.currentItem != null)
+            {
+                return (mPlayer.controls.currentItem.duration);
+            }
+            else
+                return 0;
         }
         #endregion
         public void SetCurrentPlaylist(string newCurrentPlaylist)

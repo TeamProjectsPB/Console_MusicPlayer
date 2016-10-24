@@ -68,7 +68,6 @@ namespace Console_MusicPlayer.View
         public override void CursorMoveDown()
         {
             (ParentWindow as MainWindow).StopTimer();
-            //System.Threading.Thread.Sleep(200);
             if (CursorX == CurrentList.Count - 1 ? false : !ShowingDrive)
                 {
                     CursorX = CursorX + 1;

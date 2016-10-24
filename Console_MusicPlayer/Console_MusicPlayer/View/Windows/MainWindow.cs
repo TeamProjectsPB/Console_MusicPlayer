@@ -58,7 +58,7 @@ namespace Console_MusicPlayer.View.Windows
             timer.Interval = 600;
 
             player.AddLibrary("D:\\Muzyka");
-            player.LoadPlaylists();
+            //player.LoadPlaylists();
             player.SetCurrentLibrary(0);
 
             //fileMenu = BulidFileMenu();
@@ -74,6 +74,8 @@ namespace Console_MusicPlayer.View.Windows
             libraryTextBox = new Label("Biblioteka", 3, 10, "libraryTextBox", this);
             playlistTextBox = new Label("Playlisty", 19, 10, "playlistTextBox", this);
             musicTextBox = new Label("Utwory", 3, 77, "musicTextBox", this);
+
+
             artistLabel = new Label("Artysta", 4, 37, "artistLabel", this);
             nameLabel = new Label("Nazwa utworu", 4, 55, "nameLabel", this);
             albumLabel = new Label("Album", 4, 85, "albumLabel", this);
@@ -222,17 +224,17 @@ namespace Console_MusicPlayer.View.Windows
 
         public void UpdateSeekBar(double start, double end)
         {
-            int durationView=0;
-            try
-            {
-                durationView = (Int32)((start / end) * 110);
-            }
-            catch(Exception e)
-            {
-                e.ToString();
-            }
-            WindowManager.DrawColourBlock(ConsoleColor.Black, 42, 10, 43, 11+durationView);//Seekbar
-            //Draw();
+
+                int durationView;
+                try
+                {
+                    durationView = (Int32)((start / end) * 110);
+                    WindowManager.DrawColourBlock(ConsoleColor.Black, 42, 10, 43, 11 + durationView);//Seekbar 
+                }
+                catch (Exception e)
+                {
+                    e.ToString();
+                }
         }
 
         public void AddAllInputs()
