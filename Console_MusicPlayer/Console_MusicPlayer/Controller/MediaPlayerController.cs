@@ -14,7 +14,7 @@ namespace Console_MusicPlayer.Controller
 
         public MediaPlayerController()
         {
-            player.AddLibrary("D:\\Muzyka\\Regea");
+            player.AddLibrary("D:\\Muzyka\\Mix");
             player.LoadPlaylists();
             player.SetCurrentLibrary(0);
             sortDesc = false;

@@ -95,16 +95,16 @@ namespace Console_MusicPlayer.Model
 
             try
             {
-                if (s.Tag.AlbumArtists[0].Length < spaces)
+                if (s.Tag.FirstPerformer.Length < spaces-1)
                 {
-                    for (int i = 0; i < spaces - s.Tag.AlbumArtists[0].Length; i++)
+                    for (int i = 0; i < spaces - s.Tag.FirstPerformer.Length; i++)
                     {
                         white_spaces = white_spaces + " ";
                     }
-                    artist = s.Tag.AlbumArtists[0] + white_spaces;
+                    artist = s.Tag.FirstPerformer + white_spaces;
                     white_spaces = "";
                 }
-                else if(s.Tag.AlbumArtists[0].Length<=2)
+                else if(s.Tag.FirstPerformer.Length<=2)
                 {
                     for (int i = 0; i < spaces; i++)
                     {
@@ -115,7 +115,7 @@ namespace Console_MusicPlayer.Model
                 }
                 else
                 {
-                    artist = s.Tag.AlbumArtists[0].Substring(0, spaces);
+                    artist = s.Tag.FirstPerformer.Substring(0, spaces);
                 }
             }
             catch
