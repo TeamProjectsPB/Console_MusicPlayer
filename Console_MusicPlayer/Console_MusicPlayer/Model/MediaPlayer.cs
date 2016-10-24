@@ -248,6 +248,10 @@ namespace Console_MusicPlayer.Model
             currentSong = currentPlaylist.Tracks.Find(x => x.Name.Equals(newCurrentSong));
         }
 
+        public void SetCurrentSong(int index)
+        {
+            currentSong = currentPlaylist.Tracks.ElementAt(index);
+        }
         public void SetFirstOrDefaultSong()
         {
             currentSong = currentPlaylist.Tracks.FirstOrDefault();

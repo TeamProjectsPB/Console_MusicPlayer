@@ -139,7 +139,8 @@ namespace Console_MusicPlayer.View
                 if (iD.Equals("currentPlaylistBrowser"))
                 {
                     WindowManager.DrawColourBlock(ConsoleColor.Gray, 42, 10, 43, 120);//Seekbar domyslny szary
-                    controller.SetCurrentSong(CurrentList.ElementAt(cursorX));
+                    //controller.SetCurrentSong(CurrentList.ElementAt(cursorX));
+                    controller.SetCurrentSong(cursorX);
                     WindowManager.WirteText(CurrentlySelectedFile, 0, 0, this.TextColour, this.BackgroundColour);
                     controller.Play();
                     (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
