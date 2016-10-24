@@ -54,10 +54,11 @@ namespace Console_MusicPlayer.View.Windows
             //timer.Elapsed += new ElapsedEventHandler(UpdateCurrentPosition);
             //timer.Interval = 1000;
 
-            player.AddLibrary("D:\\Muzyka");
-            player.AddLibrary("H:\\Marcin\\Music");
+            player.Libraries.Add(new Library("D:\\Muzyka"));
+            //player.Libraries.Add(new Library("H:\\Marcin\\Music"));
             player.LoadPlaylists();
             player.SetCurrentLibrary(0);
+            //player.CurrentPlaylist = player.Playlists.FirstOrDefault();
 
             //fileMenu = BulidFileMenu();
             //settingMenu = BuildSettingMenu();
@@ -65,9 +66,9 @@ namespace Console_MusicPlayer.View.Windows
 
             #region Elementy Interfejsu Inicjalizacja
 
-            currentPlaylistBrowser = new FileBrowser(6, 33, 90, 32, player.CurrentPlaylist.GetPlayListAsString(), "currentPlaylistBrowser", this, true);
-            playlistsBrowser = new FileBrowser(20,3,14,11,player.PlayListsAsString(),"playlistsBrowser",this,true);
-            libraryBrowser = new FileBrowser(5,3,14,12,player.LibrariesAsString(),"libraryBrowser",this,true);
+            currentPlaylistBrowser = new FileBrowser(5, 33, 90, 32, player.CurrentPlaylist.GetPlayListAsString(), "currentPlaylistBrowser", this, true);
+            playlistsBrowser = new FileBrowser(20,3,26,11,player.PlayListsAsString(),"playlistsBrowser",this,true);
+            libraryBrowser = new FileBrowser(5,3,26,12,player.LibrariesAsString(),"libraryBrowser",this,true);
 
             libraryTextBox = new Label("Biblioteka", 3, 10, "libraryTextBox", this);
             playlistTextBox = new Label("Playlisty", 19, 10, "playlistTextBox", this);
@@ -194,11 +195,13 @@ namespace Console_MusicPlayer.View.Windows
         private void NextTrack()
         {
             player.NextTrack();
+            //currentPlaylistBrowser. CursorXAdder(1);
         }
 
         private void PreviousTrack()
         {
             player.PreviousTrack();
+            //currentPlaylistBrowser.CursorXAdder(-1);
         }
         #endregion
 
@@ -206,16 +209,16 @@ namespace Console_MusicPlayer.View.Windows
 
         public override void ReDraw()
         {
-           //DrawUIContainers();
+           DrawUIContainers();
         }
 
         public void DrawUIContainers()
         {
-            WindowManager.DrawColourBlock(ConsoleColor.DarkGray, 4, 2, 18, 30);
-            WindowManager.DrawColourBlock(ConsoleColor.DarkGray, 20, 2, 40, 30);
-            WindowManager.DrawColourBlock(ConsoleColor.DarkGray, 4, 32, 40, 128);
-            WindowManager.DrawColourBlock(ConsoleColor.DarkGray, 41, 2, 45, 128);
-            WindowManager.DrawColourBlock(ConsoleColor.Gray, 42, 10, 43, 120);
+            WindowManager.DrawColourBlock(ConsoleColor.DarkGray, 4, 2, 18, 30); //Biblioteki
+            WindowManager.DrawColourBlock(ConsoleColor.DarkGray, 20, 2, 39, 30); //Playlisty
+            WindowManager.DrawColourBlock(ConsoleColor.DarkGray, 4, 32, 39, 128);//Utwory srodek
+            WindowManager.DrawColourBlock(ConsoleColor.DarkGray, 41, 2, 46, 128);//Sterowanie
+            WindowManager.DrawColourBlock(ConsoleColor.Gray, 42, 10, 43, 120);//Seekbar
         }
 
         public void AddAllInputs()

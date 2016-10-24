@@ -19,7 +19,7 @@ namespace Console_MusicPlayer
             //Console.ReadKey();
             
             //Setup
-            WindowManager.UpdateWindow(130, 45);
+            WindowManager.UpdateWindow(130, 48);
             //WindowManager.UpdateWindow(100, 40);
 
             WindowManager.SetWindowTitle("Console Music Player");
