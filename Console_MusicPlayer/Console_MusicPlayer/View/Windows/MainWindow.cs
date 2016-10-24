@@ -7,6 +7,8 @@ using System.IO;
 using System.Collections.Generic;
 using WMPLib;
 using System.Collections;
+using System.Linq;
+using System.Timers;
 using Console_MusicPlayer.Model;
 
 namespace Console_MusicPlayer.View.Windows
@@ -15,8 +17,10 @@ namespace Console_MusicPlayer.View.Windows
 
     class MainWindow : FullWindow
     {
-        static public MediaPlayer p = new MediaPlayer(); 
+        #region Members
+        static public MediaPlayer player = new MediaPlayer(); 
         List<Button> songs = new List<Button>();
+        Timer timer;
 
 
         private Label libraryTextBox;
@@ -37,52 +41,32 @@ namespace Console_MusicPlayer.View.Windows
         private Label albumLabel;
         private Label rankLabel;
         private Label volumeLabel;
-        private FileBrowser currentPlaylist;
-        private FileBrowser playlistsList;
-        private FileBrowser libraryList;
+        private FileBrowser currentPlaylistBrowser;
+        private FileBrowser playlistsBrowser;
+        private FileBrowser libraryBrowser;
 
-
-
+        #endregion
 
         public MainWindow()
             : base(0, 0, Console.WindowWidth, Console.WindowHeight, null)
         {
+            timer = new Timer();
+            timer.Elapsed += new ElapsedEventHandler(UpdateCurrentPosition);
+            timer.Interval = 1000;
 
+            player.Libraries.Add(new Library("D:\\Muzyka"));
+            player.LoadPlaylists();
+            //player.CurrentPlaylist = player.Playlists.FirstOrDefault();
 
             //fileMenu = BulidFileMenu();
             //settingMenu = BuildSettingMenu();
             // helpMenu = BulidHelpMenu();
 
-            #region Przykladowe playlisty 
-
-            List<string> lista = new List<string>();
-
-            lista.Add(@"D:\Muzyka\Hip-Hop PL\KeKe - Trzecie Rzeczy (2016)\KęKę - Trzecie Rzeczy\KęKę - Nie Chcę Umierać.mp3");
-            lista.Add(@"D:\Muzyka\Hip-Hop PL\KeKe - Trzecie Rzeczy (2016)\KęKę - Trzecie Rzeczy\KęKę - Smutek.mp3");
-            lista.Add(@"D:\Muzyka\Hip-Hop PL\KeKe - Trzecie Rzeczy (2016)\KęKę - Trzecie Rzeczy\KęKę - Arrivederci.mp3");
-            lista.Add(@"D:\Muzyka\Hip-Hop PL\KeKe - Trzecie Rzeczy (2016)\KęKę - Trzecie Rzeczy\KęKę - Nie Chcę Umierać.mp3");
-            lista.Add(@"D:\Muzyka\Hip-Hop PL\KeKe - Trzecie Rzeczy (2016)\KęKę - Trzecie Rzeczy\KęKę - Nie Chcę Umierać.mp3");
-
-
-            List <string> listaPlaylist = new List<string>();
-            for (int a = 0; a < 10; a++)
-            {
-                listaPlaylist.Add("playlista " + a);
-            }
-
-            List<string> listaBibliotek = new List<string>();
-            for (int a = 0; a < 7; a++)
-            {
-                listaBibliotek.Add("biblioteka " + a);
-            }
-
-            #endregion
-
             #region Elementy Interfejsu Inicjalizacja
 
-            currentPlaylist = new FileBrowser(6, 33, 90, 32, lista, "folderSelect", this, true);
-           playlistsList = new FileBrowser(20,3,14,11,listaPlaylist,"playlistsList",this,true);
-           libraryList = new FileBrowser(5,3,14,12,listaBibliotek,"libraryList",this,true);
+            currentPlaylistBrowser = new FileBrowser(6, 33, 90, 32, player.CurrentPlaylist.GetPlayListAsString(), "currentPlaylistBrowser", this, true);
+            playlistsBrowser = new FileBrowser(20,3,14,11,player.PlayListsAsString(),"playlistsBrowser",this,true);
+            libraryBrowser = new FileBrowser(5,3,14,12,player.LibrariesAsString(),"libraryBrowser",this,true);
 
             libraryTextBox = new Label("Biblioteka", 3, 10, "libraryTextBox", this);
             playlistTextBox = new Label("Playlisty", 19, 10, "playlistTextBox", this);
@@ -101,16 +85,16 @@ namespace Console_MusicPlayer.View.Windows
 
             stopBtn = new Button(44, 55, "  ■  ", "stopBtn", this) { Action = delegate () { Stop(); } };
             playBtn = new Button(44, 75, "  >  ", "playBtn", this) { Action = delegate () { Play(); } };
-            pouseBtn = new Button(44, 65, "  ||  ", "pouseBtn", this) { Action = delegate () { Pouse(); } };
+            pouseBtn = new Button(44, 65, "  ||  ", "pouseBtn", this) { Action = delegate () { Pause(); } };
 
-            nextTrackBtn = new Button(44, 85, "  >|  ", "nextTrackBtn", this);
+            nextTrackBtn = new Button(44, 85, "  >|  ", "nextTrackBtn", this) {Action = delegate() { NextTrack(); }};
 
             volumeDownBtn = new Button(44, 110, " - ", "volumeDown", this) { Action = delegate () { VolumeDown(); } };
             volumeUpBtn = new Button(44, 123, " + ", "volumeDown", this) { Action = delegate () { VolumeUp(); } };
-            volumeLabel = new Label(p.MPlayer.settings.volume.ToString() + "%", 44, 117, "volumeLabel", this);
-            volumeLabel.SetText(p.MPlayer.settings.volume.ToString());
+            volumeLabel = new Label(player.MPlayer.settings.volume.ToString() + "%", 44, 117, "volumeLabel", this);
+            volumeLabel.SetText(player.MPlayer.settings.volume.ToString());
 
-            previousTrackBtn = new Button(44, 45, "  |<  ", "previousTrackBtn", this);
+            previousTrackBtn = new Button(44, 45, "  |<  ", "previousTrackBtn", this) { Action = delegate () { PreviousTrack(); } };
 
             startLabel = new Label("0:00", 42, 4, "startLabel", this);
             endLabel = new Label("0:00", 42, 123, "endLabel", this);
@@ -128,57 +112,87 @@ namespace Console_MusicPlayer.View.Windows
         }
 
 
+        #region Timer
+        private void UpdateCurrentPosition(object sender, ElapsedEventArgs elapsedEventArgs)
+        {
+            startLabel.SetText(player.GetCurrentPosition());
+            endLabel.SetText(player.GetDuration());
 
+            Draw();
+        }
+        public void StartTimer()
+        {
+            if (!timer.Enabled)
+            {
+                timer.Start();
+            }
+        }
+
+        public void StopTimer()
+        {
+            if (timer.Enabled)
+            {
+                timer.Stop();
+            }
+        }
+        #endregion
+        #region FileBrowserReloaders
+        public void ReloadCurrentPlaylistBrowser()
+        {
+            currentPlaylistBrowser.CurrentList = player.CurrentPlaylist.GetPlayListAsString();
+            currentPlaylistBrowser.GetFileNames();
+            currentPlaylistBrowser.Draw();
+        }
+
+        public void ReloadPlaylistsBrowser()
+        {
+            playlistsBrowser.CurrentList = player.PlayListsAsString();
+            playlistsBrowser.GetFileNames();
+            playlistsBrowser.Draw();
+        }
+        #endregion
         #region MediaPlayerControls
 
         public void Play()
         {
-            if (p.MPlayer.URL == "")
-            {
-                p.MPlayer.URL = @"D:\Muzyka\Hip-Hop PL\KeKe - Trzecie Rzeczy (2016)\KęKę - Trzecie Rzeczy\KęKę - Nic Już Nie Muszę.mp3";
-            }
-            p.MPlayer.controls.play();
-            p.MPlayer.settings.volume = 25;
-
-
+            player.Play();
+            StartTimer();
         }
 
-        public void Pouse()
+        public void Pause()
         {
-            startLabel.SetText(p.MPlayer.controls.currentPositionString);
-            endLabel.SetText(p.MPlayer.controls.currentItem.durationString);
-            p.MPlayer.controls.pause();
+            startLabel.SetText(player.GetCurrentPosition());
+            endLabel.SetText(player.GetDuration());
+            player.Pause();
+            StopTimer();
         }
         public void Stop()
         {
-            p.MPlayer.controls.stop();
-
-        }
-        public string getCurrentPosition()
-        {
-            string pos;
-
-            pos = p.MPlayer.controls.currentPositionString.ToString();
-
-            return pos;
+            player.Stop();
+            StopTimer();
         }
 
         private void VolumeUp()
         {
-            if (p.MPlayer.settings.volume < 100)
-            {
-                p.MPlayer.settings.volume = p.MPlayer.settings.volume + 10;
-                volumeLabel.SetText(p.MPlayer.settings.volume.ToString() + "%");
-            }
+            volumeLabel.SetText(player.VolumeUp());
+
         }
 
         private void VolumeDown()
         {
-            if (p.MPlayer.settings.volume > 0)
-            {
-               p.MPlayer.settings.volume = p.MPlayer.settings.volume - 10;
-                volumeLabel.SetText(p.MPlayer.settings.volume.ToString() + "%");
-            }
+            volumeLabel.SetText(player.VolumeDown());
+        }
+
+        private void NextTrack()
+        {
+            player.NextTrack();
+            currentPlaylistBrowser.CursorXAdder(1);
+        }
+
+        private void PreviousTrack()
+        {
+            player.PreviousTrack();
+            currentPlaylistBrowser.CursorXAdder(-1);
         }
         #endregion
 
@@ -195,7 +209,6 @@ namespace Console_MusicPlayer.View.Windows
             WindowManager.DrawColourBlock(ConsoleColor.DarkGray, 20, 2, 40, 30);
             WindowManager.DrawColourBlock(ConsoleColor.DarkGray, 4, 32, 40, 128);
             WindowManager.DrawColourBlock(ConsoleColor.DarkGray, 41, 2, 45, 128);
-
             WindowManager.DrawColourBlock(ConsoleColor.Gray, 42, 10, 43, 120);
         }
 
@@ -220,9 +233,9 @@ namespace Console_MusicPlayer.View.Windows
             Inputs.Add(volumeDownBtn);
             Inputs.Add(volumeUpBtn);
 
-            Inputs.Add(currentPlaylist);
-            Inputs.Add(playlistsList);
-            Inputs.Add(libraryList);
+            Inputs.Add(currentPlaylistBrowser);
+            Inputs.Add(playlistsBrowser);
+            Inputs.Add(libraryBrowser);
         }
 
         private void ExitApp(Window parent)

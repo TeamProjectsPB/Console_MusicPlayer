@@ -69,11 +69,19 @@ namespace Console_MusicPlayer.Model
         public void MoveSong(Song song, int move)
         {
             int songIndex = tracks.IndexOf(song);
-            tracks.Remove(song);
-            tracks.Insert(songIndex + move, song);
+            if ((songIndex + move >= 0) && (songIndex + move < tracks.Count))
+            {
+                tracks.Remove(song);
+                tracks.Insert(songIndex + move, song);
+            }
         }
 
-        
+        public List<string> GetPlayListAsString()
+        {
+            List<string> playlist = new List<string>();
+            tracks.ForEach(x => playlist.Add(x.Name));
+            return playlist;
+        } 
         #endregion
     }
 }
