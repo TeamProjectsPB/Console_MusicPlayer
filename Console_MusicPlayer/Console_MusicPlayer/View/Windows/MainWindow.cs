@@ -50,9 +50,9 @@ namespace Console_MusicPlayer.View.Windows
         public MainWindow()
             : base(0, 0, Console.WindowWidth, Console.WindowHeight, null)
         {
-            timer = new Timer();
-            timer.Elapsed += new ElapsedEventHandler(UpdateCurrentPosition);
-            timer.Interval = 1000;
+            //timer = new Timer();
+            //timer.Elapsed += new ElapsedEventHandler(UpdateCurrentPosition);
+            //timer.Interval = 1000;
 
             player.AddLibrary("D:\\Muzyka");
             player.AddLibrary("H:\\Marcin\\Music");
@@ -113,31 +113,38 @@ namespace Console_MusicPlayer.View.Windows
         }
 
 
-        #region Timer
-        private void UpdateCurrentPosition(object sender, ElapsedEventArgs elapsedEventArgs)
-        {
-            startLabel.SetText(player.GetCurrentPosition());
-            endLabel.SetText(player.GetDuration());
-        }
-        public void StartTimer()
-        {
-            if (!timer.Enabled)
-            {
-                timer.Start();
-            }
-        }
+        //#region Timer
+        //private void UpdateCurrentPosition(object sender, ElapsedEventArgs elapsedEventArgs)
+        //{
+        //    //startLabel.SetText(player.GetCurrentPosition());
+        //    //endLabel.SetText(player.GetDuration());
+        //}
 
-        public void StopTimer()
-        {
-            if (timer.Enabled)
-            {
-                timer.Stop();
-            }
-        }
-        #endregion
+        //public void RestartTimer()
+        //{
+        //    /*timer.Stop();
+        //    timer.Start();*/
+        //}
+        //public void StartTimer()
+        //{
+        //    if (!timer.Enabled)
+        //    {
+        //        timer.Start();
+        //    }
+        //}
+
+        //public void StopTimer()
+        //{
+        //    if (timer.Enabled)
+        //    {
+        //        timer.Stop();
+        //    }
+        //}
+        //#endregion
         #region FileBrowserReloaders
         public void ReloadCurrentPlaylistBrowser()
         {
+            currentPlaylistBrowser.ResetCursorX();
             currentPlaylistBrowser.CurrentList = player.CurrentPlaylist.GetPlayListAsString();
             currentPlaylistBrowser.GetFileNames();
             currentPlaylistBrowser.Draw();
@@ -145,6 +152,7 @@ namespace Console_MusicPlayer.View.Windows
 
         public void ReloadPlaylistsBrowser()
         {
+            currentPlaylistBrowser.ResetCursorX();
             playlistsBrowser.CurrentList = player.PlayListsAsString();
             playlistsBrowser.GetFileNames();
             playlistsBrowser.Draw();
@@ -155,7 +163,8 @@ namespace Console_MusicPlayer.View.Windows
         public void Play()
         {
             player.Play();
-            StartTimer();
+            //StartTimer()
+            RestartTimer();
         }
 
         public void Pause()
