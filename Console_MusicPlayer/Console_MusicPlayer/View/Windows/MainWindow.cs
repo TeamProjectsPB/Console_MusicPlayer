@@ -54,11 +54,10 @@ namespace Console_MusicPlayer.View.Windows
             timer.Elapsed += new ElapsedEventHandler(UpdateCurrentPosition);
             timer.Interval = 1000;
 
-            player.Libraries.Add(new Library("D:\\Muzyka"));
-            player.Libraries.Add(new Library("H:\\Marcin\\Music"));
+            player.AddLibrary("D:\\Muzyka");
+            player.AddLibrary("H:\\Marcin\\Music");
             player.LoadPlaylists();
             player.SetCurrentLibrary(0);
-            //player.CurrentPlaylist = player.Playlists.FirstOrDefault();
 
             //fileMenu = BulidFileMenu();
             //settingMenu = BuildSettingMenu();

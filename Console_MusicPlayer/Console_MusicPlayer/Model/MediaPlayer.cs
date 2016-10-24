@@ -80,6 +80,13 @@ namespace Console_MusicPlayer.Model
             //else if((WMPPlayState)newState == WMPPlayState.wmppsPaused)*/
         }
 
+        public void AddLibrary(string url)
+        {
+            if (Directory.Exists(url))
+            {
+                libraries.Add(new Library(url));
+            }
+        }
 
         public void LoadPlaylists()
         {
