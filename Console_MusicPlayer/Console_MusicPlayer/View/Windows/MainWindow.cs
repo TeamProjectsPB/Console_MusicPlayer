@@ -77,8 +77,8 @@ namespace Console_MusicPlayer.View.Windows
             playlistTextBox = new Label("Playlisty", 19, 10, "playlistTextBox", this);
             musicTextBox = new Label("Utwory", 3, 77, "musicTextBox", this);
 
-            addNewLibraryBtn = new Button(5, 3, "Dodaj biblioteke","addNewLibraryBtn", this);
-            addNewPlaylistBtn = new Button(21, 3, "Dodaj playliste", "addNewPlaylistBtn", this);
+            addNewLibraryBtn = new Button(5, 3, "Dodaj biblioteke", "addNewLibraryBtn", this) { Action = delegate () { new AddNewLibraryWindow(addNewLibraryBtn.ParentWindow); } };
+            addNewPlaylistBtn = new Button(21, 3, "Dodaj playliste", "addNewPlaylistBtn", this) { Action = delegate () { new AddNewPlaylistWindow(addNewPlaylistBtn.ParentWindow); } };
 
 
             //artistLabel = new Label("Artysta", 4, 37, "artistLabel", this);
