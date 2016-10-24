@@ -55,7 +55,9 @@ namespace Console_MusicPlayer.View.Windows
             timer.Interval = 1000;
 
             player.Libraries.Add(new Library("D:\\Muzyka"));
+            player.Libraries.Add(new Library("D:\\Video"));
             player.LoadPlaylists();
+            player.SetCurrentLibrary(0);
             //player.CurrentPlaylist = player.Playlists.FirstOrDefault();
 
             //fileMenu = BulidFileMenu();

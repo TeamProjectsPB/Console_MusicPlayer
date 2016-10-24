@@ -144,6 +144,12 @@ namespace Console_MusicPlayer.View
                     (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
                     (ParentWindow as MainWindow).ReloadPlaylistsBrowser();                   
                 }
+                else if (iD.Equals("libraryBrowser"))
+                {
+                    mediaPlayer.SetCurrentLibrary(CursorX);
+                    (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
+                    (ParentWindow as MainWindow).ReloadPlaylistsBrowser();
+                }
             }
             else if (SelectFile == null ? false : !ShowingDrive)
             {

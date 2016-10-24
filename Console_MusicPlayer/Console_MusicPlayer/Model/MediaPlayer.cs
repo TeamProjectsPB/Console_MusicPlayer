@@ -104,11 +104,14 @@ namespace Console_MusicPlayer.Model
                     playlists.Add(playlist);
                 }
             }
-            currentPlaylist = playlists.FirstOrDefault();
-            if (currentPlaylist != null)
+            /*if (playlists.Count > 0)
             {
-                currentSong = currentPlaylist.Tracks.FirstOrDefault();
-            }
+                currentPlaylist = playlists.FirstOrDefault();
+                if (currentPlaylist != null)
+                {
+                    currentSong = currentPlaylist.Tracks.FirstOrDefault();
+                }
+            }*/
         }
 
         public List<string> PlayListsAsString()
@@ -192,6 +195,11 @@ namespace Console_MusicPlayer.Model
         public void SetCurrentPlaylist(string newCurrentPlaylist)
         {
             currentPlaylist = Playlists.Find(x => x.Name.Equals(newCurrentPlaylist));
+        }
+
+        public void SetCurrentLibrary(int index)
+        {
+            currentPlaylist = new Playlist(libraries.ElementAt(index).SongsInLibrary);
         }
 
         public void SetCurrentSong(string newCurrentSong)
