@@ -213,6 +213,7 @@ namespace Console_MusicPlayer.Model
         public void SetCurrentLibrary(int index)
         {
             currentPlaylist = new Playlist(libraries.ElementAt(index).SongsInLibrary);
+            currentSong = currentPlaylist.Tracks.FirstOrDefault();
         }
 
         public void SetCurrentSong(string newCurrentSong)
