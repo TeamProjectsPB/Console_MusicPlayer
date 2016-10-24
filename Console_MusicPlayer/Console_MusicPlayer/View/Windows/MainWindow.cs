@@ -165,7 +165,7 @@ namespace Console_MusicPlayer.View.Windows
         {
             player.Play();
             //StartTimer()
-            RestartTimer();
+            //RestartTimer();
         }
 
         public void Pause()
@@ -173,12 +173,12 @@ namespace Console_MusicPlayer.View.Windows
             startLabel.SetText(player.GetCurrentPosition());
             endLabel.SetText(player.GetDuration());
             player.Pause();
-            StopTimer();
+            //StopTimer();
         }
         public void Stop()
         {
             player.Stop();
-            StopTimer();
+            //StopTimer();
         }
 
         private void VolumeUp()
