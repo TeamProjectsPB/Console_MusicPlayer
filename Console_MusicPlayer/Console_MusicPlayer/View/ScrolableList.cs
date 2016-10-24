@@ -141,7 +141,6 @@ namespace Console_MusicPlayer.View
                     WindowManager.WirteText(CurrentlySelectedFile, 0, 0, this.TextColour, this.BackgroundColour);
                     mediaPlayer.Play();
                     (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
-                    (ParentWindow as MainWindow).StartTimer();
 
                 }
                 else if (iD.Equals("playlistsBrowser"))
@@ -166,7 +165,7 @@ namespace Console_MusicPlayer.View
 
         private void GetCurrentlySelectedFileName()
         {
-            if (cursorX >= CurrentList.Count())
+            if (CurrentList.Count > 0 && cursorX >= CurrentList.Count())
             {
                 CurrentlySelectedFile = FileNames[cursorX - CurrentList.Count];
                 if (ChangeItem != null)
@@ -231,6 +230,11 @@ namespace Console_MusicPlayer.View
                 Selected = false;
                 //Draw();
             }
+        }
+
+        public void ResetCursorX()
+        {
+            CursorX = 0;
         }
     }
 }
