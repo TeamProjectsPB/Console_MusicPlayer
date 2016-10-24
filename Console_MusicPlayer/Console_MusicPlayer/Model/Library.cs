@@ -48,8 +48,12 @@ namespace Console_MusicPlayer.Model
             List<string> songsUrl = new List<string>(Directory.EnumerateFiles(url, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase) || s.EndsWith(".wav", StringComparison.OrdinalIgnoreCase)));
             for (int i = 0; i < songsUrl.Count; i++)
             {
-                TagLib.File newSong = TagLib.File.Create(songsUrl.ElementAt(i));
-                songsInLibrary.Add(newSong);
+                try
+                {
+                    TagLib.File newSong = TagLib.File.Create(songsUrl.ElementAt(i));
+                    songsInLibrary.Add(newSong);
+                }
+                catch (TagLib.CorruptFileException) { }
             }
         }
         #endregion

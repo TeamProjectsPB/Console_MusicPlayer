@@ -55,7 +55,7 @@ namespace Console_MusicPlayer.View.Windows
             timer.Interval = 1000;
 
             player.Libraries.Add(new Library("D:\\Muzyka"));
-            player.Libraries.Add(new Library("D:\\Video"));
+            player.Libraries.Add(new Library("H:\\Marcin\\Music"));
             player.LoadPlaylists();
             player.SetCurrentLibrary(0);
             //player.CurrentPlaylist = player.Playlists.FirstOrDefault();
@@ -188,13 +188,13 @@ namespace Console_MusicPlayer.View.Windows
         private void NextTrack()
         {
             player.NextTrack();
-            currentPlaylistBrowser.CursorXAdder(1);
+            //currentPlaylistBrowser. CursorXAdder(1);
         }
 
         private void PreviousTrack()
         {
             player.PreviousTrack();
-            currentPlaylistBrowser.CursorXAdder(-1);
+            //currentPlaylistBrowser.CursorXAdder(-1);
         }
         #endregion
 
