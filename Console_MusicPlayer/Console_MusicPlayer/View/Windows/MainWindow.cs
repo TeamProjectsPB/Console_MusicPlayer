@@ -19,8 +19,8 @@ namespace Console_MusicPlayer.View.Windows
     class MainWindow : FullWindow
     {
         #region Members
-        public static MediaPlayerController controller = new MediaPlayerController();
 
+        public static MediaPlayerController controller;
         static public bool canScroolList = true;
         Timer timer;
 
@@ -50,6 +50,7 @@ namespace Console_MusicPlayer.View.Windows
         public MainWindow()
             : base(0, 0, Console.WindowWidth, Console.WindowHeight, null)
         {
+            controller = new MediaPlayerController();
             timer = new Timer();
             timer.Elapsed += new ElapsedEventHandler(UpdateCurrentPosition);
             timer.Interval = 1000;
