@@ -10,12 +10,14 @@ namespace Console_MusicPlayer.Controller
     class MediaPlayerController
     {
         static public MediaPlayer player = new MediaPlayer();
+        private bool sortDesc;
 
         public MediaPlayerController()
         {
-            player.AddLibrary("D:\\Muzyka\\Mix");
+            player.AddLibrary("D:\\Muzyka\\New folder");
             player.LoadPlaylists();
             player.SetCurrentLibrary(0);
+            sortDesc = false;
         }
 
         #region Getters
@@ -123,7 +125,27 @@ namespace Console_MusicPlayer.Controller
         public List<string> GetLibraries()
         {
             return player.GetLibraries();
-        } 
+        }
+
+        #endregion
+        #region SortPlaylist
+        public void SortByArtist()
+        {
+            player.SortByArtist(sortDesc);
+            sortDesc = !sortDesc;
+        }
+
+        public void SortByTitle()
+        {
+            player.SortByTitle(sortDesc);
+            sortDesc = !sortDesc;
+        }
+
+        public void SortByAlbum()
+        {
+            player.SortByAlbum(sortDesc);
+            sortDesc = !sortDesc;
+        }
 
         #endregion
 
