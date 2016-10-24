@@ -33,7 +33,7 @@ namespace Console_MusicPlayer.Model
         {
             this.url = url;
             songsInLibrary = new List<Song>();
-            GetSongs();
+            LoadSongs();
         }
         #endregion
 
@@ -43,7 +43,7 @@ namespace Console_MusicPlayer.Model
         #endregion
         #region Methods
 
-        private void GetSongs()
+        private void LoadSongs()
         {
             if (Directory.Exists(url))
             {

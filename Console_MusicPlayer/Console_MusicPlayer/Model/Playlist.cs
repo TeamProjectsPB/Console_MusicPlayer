@@ -76,7 +76,7 @@ namespace Console_MusicPlayer.Model
             }
         }
 
-        public List<string> GetPlayListAsString()
+        public List<string> GetSongs()
         {
             List<string> playlist = new List<string>();
             tracks.ForEach(x => playlist.Add(x.Name));

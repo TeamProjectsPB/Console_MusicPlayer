@@ -119,18 +119,27 @@ namespace Console_MusicPlayer.Model
             }*/
         }
 
-        public List<string> PlayListsAsString()
+        public List<string> GetCurrentSongs()
+        {
+            return currentPlaylist.GetSongs();
+        } 
+        public List<string> GetPlaylists()
         {
             List<string> playlists = new List<string>();
             Playlists.ForEach(x => playlists.Add(x.Name));
             return playlists;
         }
 
-        public List<string> LibrariesAsString()
+        public List<string> GetLibraries()
         {
             List<string> libraries = new List<string>();
             Libraries.ForEach(x => libraries.Add(x.Url));
             return libraries;
+        }
+
+        public string GetCurrentVolume()
+        {
+            return mPlayer.settings.volume.ToString() + "%";
         }
 
         #region PlayerControls
@@ -189,22 +198,40 @@ namespace Console_MusicPlayer.Model
         #region CurrentSongMethods
         public string GetCurrentPosition()
         {
-            return MPlayer.controls.currentPositionString;
+            if (mPlayer.controls.currentItem != null)
+            {
+                return MPlayer.controls.currentPositionString;
+            }
+            else return "00:00";
         }
         public double GetCurrentPositionDouble()
         {
-            return (MPlayer.controls.currentPosition);
+            if (mPlayer.controls.currentItem != null)
+            {
+                return (MPlayer.controls.currentPosition);
+            }
+            else return 0;
         }
 
         public string GetDuration()
         {
-            return mPlayer.controls.currentItem.durationString;
+            if (mPlayer.controls.currentItem != null)
+            {
+                return mPlayer.controls.currentItem.durationString;
+            }
+            else return "00:00";
+
         }
         public double GetDurationDouble()
         {
-            return (mPlayer.controls.currentItem.duration);
+            if (mPlayer.controls.currentItem != null)
+            {
+                return (mPlayer.controls.currentItem.duration);
+            }
+            else return 0;
         }
         #endregion
+
         public void SetCurrentPlaylist(string newCurrentPlaylist)
         {
             currentPlaylist = Playlists.Find(x => x.Name.Equals(newCurrentPlaylist));
@@ -218,6 +245,12 @@ namespace Console_MusicPlayer.Model
 
         public void SetCurrentSong(string newCurrentSong)
         {
-            currentSong = currentPlaylist.Tracks.Find(x => x.Name.Equals(newCurrentSong));}
+            currentSong = currentPlaylist.Tracks.Find(x => x.Name.Equals(newCurrentSong));
+        }
+
+        public void SetFirstOrDefaultSong()
+        {
+            currentSong = currentPlaylist.Tracks.FirstOrDefault();
+        }
     }
 }

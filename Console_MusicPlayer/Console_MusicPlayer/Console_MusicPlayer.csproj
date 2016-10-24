@@ -54,6 +54,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\MediaPlayerController.cs" />
     <Compile Include="Model\Library.cs" />
     <Compile Include="Model\MediaPlayer.cs" />
     <Compile Include="Model\Playlist.cs" />
@@ -68,7 +69,9 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="backup\" />
+  </ItemGroup>
   <ItemGroup>
     <COMReference Include="WMPLib">
       <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>

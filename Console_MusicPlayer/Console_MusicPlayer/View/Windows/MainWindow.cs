@@ -9,22 +9,20 @@ using WMPLib;
 using System.Collections;
 using System.Linq;
 using System.Timers;
+using Console_MusicPlayer.Controller;
 using Console_MusicPlayer.Model;
 
 namespace Console_MusicPlayer.View.Windows
 {
-    
+
 
     class MainWindow : FullWindow
     {
         #region Members
+        public static MediaPlayerController controller = new MediaPlayerController();
 
         static public bool canScroolList = true;
-
-        static public MediaPlayer player = new MediaPlayer(); 
-        List<Button> songs = new List<Button>();
         Timer timer;
-
 
         private Label libraryTextBox;
         private Label playlistTextBox;
@@ -47,7 +45,6 @@ namespace Console_MusicPlayer.View.Windows
         private FileBrowser currentPlaylistBrowser;
         private FileBrowser playlistsBrowser;
         private FileBrowser libraryBrowser;
-
         #endregion
 
         public MainWindow()
@@ -55,21 +52,13 @@ namespace Console_MusicPlayer.View.Windows
         {
             timer = new Timer();
             timer.Elapsed += new ElapsedEventHandler(UpdateCurrentPosition);
-            timer.Interval = 600;
-
-            player.AddLibrary("D:\\Muzyka");
-            player.LoadPlaylists();
-            player.SetCurrentLibrary(0);
-
-            //fileMenu = BulidFileMenu();
-            //settingMenu = BuildSettingMenu();
-            // helpMenu = BulidHelpMenu();
+            timer.Interval = 1000;
 
             #region Elementy Interfejsu Inicjalizacja
 
-            currentPlaylistBrowser = new FileBrowser(5, 33, 90, 32, player.CurrentPlaylist.GetPlayListAsString(), "currentPlaylistBrowser", this, true);
-            playlistsBrowser = new FileBrowser(20,3,26,11,player.PlayListsAsString(),"playlistsBrowser",this,true);
-            libraryBrowser = new FileBrowser(5,3,26,12,player.LibrariesAsString(),"libraryBrowser",this,true);
+            currentPlaylistBrowser = new FileBrowser(5, 33, 90, 32, controller.GetCurrentSongs(), "currentPlaylistBrowser", this, true);
+            playlistsBrowser = new FileBrowser(20, 3, 26, 11, controller.GetPlaylists(), "playlistsBrowser", this, true);
+            libraryBrowser = new FileBrowser(5, 3, 26, 12, controller.GetLibraries(), "libraryBrowser", this, true);
 
             libraryTextBox = new Label("Biblioteka", 3, 10, "libraryTextBox", this);
             playlistTextBox = new Label("Playlisty", 19, 10, "playlistTextBox", this);
@@ -90,12 +79,12 @@ namespace Console_MusicPlayer.View.Windows
             playBtn = new Button(44, 75, "  >  ", "playBtn", this) { Action = delegate () { Play(); } };
             pouseBtn = new Button(44, 65, "  ||  ", "pouseBtn", this) { Action = delegate () { Pause(); } };
 
-            nextTrackBtn = new Button(44, 85, "  >|  ", "nextTrackBtn", this) {Action = delegate() { NextTrack(); }};
+            nextTrackBtn = new Button(44, 85, "  >|  ", "nextTrackBtn", this) { Action = delegate () { NextTrack(); } };
 
             volumeDownBtn = new Button(44, 110, " - ", "volumeDown", this) { Action = delegate () { VolumeDown(); } };
             volumeUpBtn = new Button(44, 123, " + ", "volumeDown", this) { Action = delegate () { VolumeUp(); } };
-            volumeLabel = new Label(player.MPlayer.settings.volume.ToString() + "%", 44, 117, "volumeLabel", this);
-            volumeLabel.SetText(player.MPlayer.settings.volume.ToString());
+            volumeLabel = new Label(controller.GetCurrentVolume(), 44, 117, "volumeLabel", this);
+            volumeLabel.SetText(controller.GetCurrentVolume());
 
             previousTrackBtn = new Button(44, 45, "  |<  ", "previousTrackBtn", this) { Action = delegate () { PreviousTrack(); } };
 
@@ -105,7 +94,7 @@ namespace Console_MusicPlayer.View.Windows
             #endregion
 
             DrawUIContainers();
-            
+
 
             AddAllInputs();
 
@@ -114,15 +103,54 @@ namespace Console_MusicPlayer.View.Windows
             MainLoop();
         }
 
+        #region MediaPlayerControls
 
+        private void Play()
+        {
+            controller.Play();
+            StartTimer();
+        }
+
+        private void Pause()
+        {
+            controller.Pause();
+            StopTimer();
+        }
+
+        private void Stop()
+        {
+            controller.Stop();
+            StopTimer();
+        }
+
+        private void VolumeUp()
+        {
+            volumeLabel.SetText(controller.VolumeUp());
+        }
+
+        private void VolumeDown()
+        {
+            volumeLabel.SetText(controller.VolumeDown());
+        }
+
+        private void NextTrack()
+        {
+            controller.NextTrack();
+        }
+
+        private void PreviousTrack()
+        {
+            controller.PreviousTrack();
+        }
+        #endregion
         #region Timer
         private void UpdateCurrentPosition(object sender, ElapsedEventArgs elapsedEventArgs)
         {
             canScroolList = false;
-            startLabel.SetText(player.GetCurrentPosition());
-            endLabel.SetText(player.GetDuration());
-            double start = player.GetCurrentPositionDouble();
-            double end = player.GetDurationDouble();
+            startLabel.SetText(controller.GetCurrentPosition());
+            endLabel.SetText(controller.GetDuration());
+            double start = controller.GetCurrentPositionDouble();
+            double end = controller.GetDurationDouble();
             UpdateSeekBar(start, end);
             canScroolList = true;
         }
@@ -144,71 +172,11 @@ namespace Console_MusicPlayer.View.Windows
             }
         }
         #endregion
-        #region FileBrowserReloaders
-        public void ReloadCurrentPlaylistBrowser()
-        {
-            currentPlaylistBrowser.CurrentList = player.CurrentPlaylist.GetPlayListAsString();
-            currentPlaylistBrowser.GetFileNames();
-            currentPlaylistBrowser.Draw();
-        }
-
-        public void ReloadPlaylistsBrowser()
-        {
-            playlistsBrowser.CurrentList = player.PlayListsAsString();
-            playlistsBrowser.GetFileNames();
-            playlistsBrowser.Draw();
-        }
-        #endregion
-        #region MediaPlayerControls
-
-        public void Play()
-        {
-            player.Play();
-            StartTimer();
-        }
-
-        public void Pause()
-        {
-            startLabel.SetText(player.GetCurrentPosition());
-            endLabel.SetText(player.GetDuration());
-            player.Pause();
-            StopTimer();
-        }
-        public void Stop()
-        {
-            player.Stop();
-            StopTimer();
-        }
-
-        private void VolumeUp()
-        {
-            volumeLabel.SetText(player.VolumeUp());
-
-        }
-
-        private void VolumeDown()
-        {
-            volumeLabel.SetText(player.VolumeDown());
-        }
-
-        private void NextTrack()
-        {
-            player.NextTrack();
-            //currentPlaylistBrowser. CursorXAdder(1);
-        }
-
-        private void PreviousTrack()
-        {
-            player.PreviousTrack();
-            //currentPlaylistBrowser.CursorXAdder(-1);
-        }
-        #endregion
-
         #region UI_Draw
 
         public override void ReDraw()
         {
-           //DrawUIContainers();
+            //DrawUIContainers();
         }
 
         public void DrawUIContainers()
@@ -222,16 +190,16 @@ namespace Console_MusicPlayer.View.Windows
 
         public void UpdateSeekBar(double start, double end)
         {
-            int durationView=0;
+            int durationView = 0;
             try
             {
                 durationView = (Int32)((start / end) * 110);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 e.ToString();
             }
-            WindowManager.DrawColourBlock(ConsoleColor.Black, 42, 10, 43, 11+durationView);//Seekbar
+            WindowManager.DrawColourBlock(ConsoleColor.Black, 42, 10, 43, 11 + durationView);//Seekbar
             //Draw();
         }
 
@@ -263,18 +231,36 @@ namespace Console_MusicPlayer.View.Windows
 
         private void ExitApp(Window parent)
         {
-            
+
             var exitCheck = new Confirm(parent, "Are you sure you wish to Exit?", "Exit");
 
             //if (!exitCheck.Result)
-                return;
+            return;
 
             ProgramInfo.ExitProgram = true;
         }
 
-        
+
 
         #endregion
+
+        #region FileBrowserReloaders
+        public void ReloadCurrentPlaylistBrowser()
+        {
+            currentPlaylistBrowser.CurrentList = controller.GetCurrentSongs();
+                //player.CurrentPlaylist.GetPlayListAsString();
+            currentPlaylistBrowser.GetFileNames();
+            currentPlaylistBrowser.Draw();
+        }
+
+        public void ReloadPlaylistsBrowser()
+        {
+            playlistsBrowser.CurrentList = controller.GetPlaylists();
+            playlistsBrowser.GetFileNames();
+            playlistsBrowser.Draw();
+        }
+        #endregion
+
 
     }
 
