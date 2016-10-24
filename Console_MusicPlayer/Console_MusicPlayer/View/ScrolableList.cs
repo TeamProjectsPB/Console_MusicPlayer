@@ -104,6 +104,7 @@ namespace Console_MusicPlayer.View
 
         public override void Draw()
         {
+            (ParentWindow as MainWindow).StopTimer();
             var j = 0;
             WindowManager.DrawColourBlock(BackgroundColour, Xpostion, Ypostion, Xpostion + Height, Ypostion + Width);
 
@@ -125,6 +126,7 @@ namespace Console_MusicPlayer.View
                         SelectedBackgroundColour);
                 }
             }
+            (ParentWindow as MainWindow).StartTimer();
         }
 
         

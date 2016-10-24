@@ -195,6 +195,7 @@ namespace Console_MusicPlayer.View.Windows
             controller.PreviousTrack();
         }
         #endregion
+
         #region Timer
         private void UpdateCurrentPosition(object sender, ElapsedEventArgs elapsedEventArgs)
         {
