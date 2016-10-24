@@ -241,6 +241,9 @@ namespace Console_MusicPlayer.View.Windows
             Inputs.Add(musicTextBox);
             Inputs.Add(playlistTextBox);
             Inputs.Add(controlsLabel);
+
+            Inputs.Add(shufflePlayBtn);
+            Inputs.Add(repeatAllBtn);
             Inputs.Add(stopBtn);
             Inputs.Add(playBtn);
             Inputs.Add(nextTrackBtn);
@@ -257,17 +260,16 @@ namespace Console_MusicPlayer.View.Windows
             Inputs.Add(addNewLibraryBtn);
             Inputs.Add(addNewPlaylistBtn);
 
+            Inputs.Add(artistLabelBtn);
+            Inputs.Add(nameLabelBtn);
+            Inputs.Add(albumLabelBtn);
+            Inputs.Add(rankBtn);
+
             Inputs.Add(currentPlaylistBrowser);
             Inputs.Add(playlistsBrowser);
             Inputs.Add(libraryBrowser);
 
-            Inputs.Add(artistLabelBtn);
-            Inputs.Add(albumLabelBtn);
-            Inputs.Add(nameLabelBtn);
-            Inputs.Add(rankBtn);
-
-            Inputs.Add(shufflePlayBtn);
-            Inputs.Add(repeatAllBtn);
+            
         }
 
         private void ExitApp(Window parent)
