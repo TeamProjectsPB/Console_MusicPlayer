@@ -194,13 +194,13 @@ namespace Console_MusicPlayer.View.Windows
             try
             {
                 durationView = (Int32)((start / end) * 110);
+                WindowManager.DrawColourBlock(ConsoleColor.Black, 42, 10, 43, 11 + durationView);//Seekbar                                                                              //Draw();
             }
             catch (Exception e)
             {
                 e.ToString();
             }
-            WindowManager.DrawColourBlock(ConsoleColor.Black, 42, 10, 43, 11 + durationView);//Seekbar
-            //Draw();
+           
         }
 
         public void AddAllInputs()
