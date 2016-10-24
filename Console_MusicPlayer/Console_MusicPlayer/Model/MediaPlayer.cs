@@ -83,26 +83,24 @@ namespace Console_MusicPlayer.Model
 
         public void LoadPlaylists()
         {
-            foreach (string libUrl in LibrariesAsString())
+            List<string> playlistsUrl =
+                new List<string>(Directory.EnumerateFiles(Directory.GetCurrentDirectory() + "\\playlists", "*.playlist"));
+            foreach (string url in playlistsUrl)
             {
-                List<string> playlistsUrls = new List<string>(Directory.EnumerateFiles(libUrl, "*.playlist", SearchOption.AllDirectories));
-                foreach (string plUrl in playlistsUrls)
+                List<string> songs = PlayListEditor.ReadPlayListFile(url);
+                Playlist playlist = new Playlist(Path.GetFileNameWithoutExtension(url));
+                foreach (string songUrl in songs)
                 {
-                    List<string> songs = PlayListEditor.ReadPlayListFile(plUrl);
-                    Playlist playlist = new Playlist(Path.GetFileNameWithoutExtension(plUrl));
-                    foreach (string songUrl in songs)
+                    foreach (Library lib in libraries)
                     {
-                        foreach (Library lib in libraries)
+                        if (songUrl.Contains(lib.Url))
                         {
-                            if (songUrl.Contains(lib.Url))
-                            {
-                                Song song = lib.SongsInLibrary.Find(x => x.Name.Equals(songUrl));
-                                playlist.AddSong(song);
-                            }
+                            Song song = lib.SongsInLibrary.Find(x => x.Name.Equals(songUrl));
+                            playlist.AddSong(song);
                         }
                     }
-                    playlists.Add(playlist);
                 }
+                playlists.Add(playlist);
             }
             /*if (playlists.Count > 0)
             {

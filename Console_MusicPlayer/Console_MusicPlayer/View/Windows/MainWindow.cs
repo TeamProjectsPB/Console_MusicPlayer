@@ -186,13 +186,11 @@ namespace Console_MusicPlayer.View.Windows
         private void NextTrack()
         {
             player.NextTrack();
-            //currentPlaylistBrowser. CursorXAdder(1);
         }
 
         private void PreviousTrack()
         {
             player.PreviousTrack();
-            //currentPlaylistBrowser.CursorXAdder(-1);
         }
         #endregion
 
@@ -200,7 +198,7 @@ namespace Console_MusicPlayer.View.Windows
 
         public override void ReDraw()
         {
-           DrawUIContainers();
+           //DrawUIContainers();
         }
 
         public void DrawUIContainers()
