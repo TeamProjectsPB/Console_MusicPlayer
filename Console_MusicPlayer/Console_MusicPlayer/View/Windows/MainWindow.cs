@@ -145,7 +145,6 @@ namespace Console_MusicPlayer.View.Windows
         #region FileBrowserReloaders
         public void ReloadCurrentPlaylistBrowser()
         {
-            currentPlaylistBrowser.ResetCursorX();
             currentPlaylistBrowser.CurrentList = player.CurrentPlaylist.GetPlayListAsString();
             currentPlaylistBrowser.GetFileNames();
             currentPlaylistBrowser.Draw();
