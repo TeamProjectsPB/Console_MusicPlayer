@@ -86,10 +86,10 @@ namespace Console_MusicPlayer.View.Windows
             //albumLabel = new Label("Album", 4, 85, "albumLabel", this);
             //rankLabel = new Label("Ocena", 4, 105, "rankLabel", this);
 
-            artistLabelBtn = new Button(4, 37, "Artysta", "artistBtn", this);
-            nameLabelBtn = new Button(4, 55, "Nazwa utowru", "titleBtn", this);
-            albumLabelBtn = new Button(4, 85, "Album", "albumBtn", this);
-            rankBtn = new Button(4, 105, "Ocena", "rankBtn", this);
+            artistLabelBtn = new Button(4, 37, "Artysta", "artistBtn", this) {Action = delegate() { SortByArtist(); }};
+            nameLabelBtn = new Button(4, 55, "Nazwa utowru", "titleBtn", this) { Action = delegate () { SortByTitle(); } };
+            albumLabelBtn = new Button(4, 85, "Album", "albumBtn", this) { Action = delegate () { SortByAlbum(); } };
+            //rankBtn = new Button(4, 105, "Ocena", "rankBtn", this);
 
             //artistLabel.BackgroundColour = ConsoleColor.DarkGray;
             //albumLabel.BackgroundColour = ConsoleColor.DarkGray;
@@ -99,7 +99,7 @@ namespace Console_MusicPlayer.View.Windows
             artistLabelBtn.BackgroundColour = ConsoleColor.DarkGray;
             albumLabelBtn.BackgroundColour = ConsoleColor.DarkGray;
             nameLabelBtn.BackgroundColour = ConsoleColor.DarkGray;
-            rankBtn.BackgroundColour = ConsoleColor.DarkGray;
+            //rankBtn.BackgroundColour = ConsoleColor.DarkGray;
 
             controlsLabel = new Label("Sterowanie", 40, 65, "controlLabel", this);
 
@@ -133,6 +133,27 @@ namespace Console_MusicPlayer.View.Windows
             Draw();
             MainLoop();
         }
+        private void SortByArtist()
+        {
+            controller.SortByArtist();
+            ReloadCurrentPlaylistBrowser();
+
+        }
+        
+        private void SortByTitle()
+        {
+            controller.SortByTitle();
+            ReloadCurrentPlaylistBrowser();
+
+        }
+
+        private void SortByAlbum()
+        {
+            controller.SortByAlbum();
+            ReloadCurrentPlaylistBrowser();
+        }
+
+
 
         #region MediaPlayerControls
 
@@ -263,7 +284,7 @@ namespace Console_MusicPlayer.View.Windows
             Inputs.Add(artistLabelBtn);
             Inputs.Add(nameLabelBtn);
             Inputs.Add(albumLabelBtn);
-            Inputs.Add(rankBtn);
+            //Inputs.Add(rankBtn);
 
             Inputs.Add(currentPlaylistBrowser);
             Inputs.Add(playlistsBrowser);

@@ -118,10 +118,17 @@ namespace Console_MusicPlayer.Model
                 }
             }*/
         }
-
+        #region Getters
         public List<string> GetCurrentSongs()
         {
-            return currentPlaylist.GetSongs();
+            if (currentPlaylist != null)
+            {
+                return currentPlaylist.GetSongs();
+            }
+            else
+            {
+                return new List<string>();
+            }
         } 
         public List<string> GetPlaylists()
         {
@@ -141,7 +148,7 @@ namespace Console_MusicPlayer.Model
         {
             return mPlayer.settings.volume.ToString() + "%";
         }
-
+        #endregion
         #region PlayerControls
         public void Play()
         {
@@ -194,7 +201,6 @@ namespace Console_MusicPlayer.Model
         }
 
         #endregion
-
         #region CurrentSongMethods
         public string GetCurrentPosition()
         {
@@ -231,7 +237,7 @@ namespace Console_MusicPlayer.Model
             else return 0;
         }
         #endregion
-
+        #region Setters
         public void SetCurrentPlaylist(string newCurrentPlaylist)
         {
             currentPlaylist = Playlists.Find(x => x.Name.Equals(newCurrentPlaylist));
@@ -239,8 +245,11 @@ namespace Console_MusicPlayer.Model
 
         public void SetCurrentLibrary(int index)
         {
-            currentPlaylist = new Playlist(libraries.ElementAt(index).SongsInLibrary);
-            currentSong = currentPlaylist.Tracks.FirstOrDefault();
+            if (libraries.Count > index)
+            {
+                currentPlaylist = new Playlist(libraries.ElementAt(index).SongsInLibrary);
+                currentSong = currentPlaylist.Tracks.FirstOrDefault();
+            }
         }
 
         public void SetCurrentSong(string newCurrentSong)
@@ -256,5 +265,35 @@ namespace Console_MusicPlayer.Model
         {
             currentSong = currentPlaylist.Tracks.FirstOrDefault();
         }
+        #endregion
+        #region SortPlaylist
+        public void SortByArtist(bool sortDesc)
+        {
+            currentPlaylist.Tracks.Sort((x, y) => string.Compare(x.Tag.FirstPerformer, y.Tag.FirstPerformer));
+            if (sortDesc)
+            {
+                currentPlaylist.Tracks.Reverse();
+            }
+        }
+
+        public void SortByTitle(bool sortDesc)
+        {
+            currentPlaylist.Tracks.Sort((x, y) => string.Compare(x.Tag.Title, y.Tag.Title));
+            if (sortDesc)
+            {
+                currentPlaylist.Tracks.Reverse();
+            }
+        }
+
+        public void SortByAlbum(bool sortDesc)
+        {
+            currentPlaylist.Tracks.Sort((x, y) => string.Compare(x.Tag.Album, y.Tag.Album));
+            if (sortDesc)
+            {
+                currentPlaylist.Tracks.Reverse();
+            }
+        }
+
+        #endregion
     }
 }
