@@ -97,11 +97,11 @@ namespace Console_MusicPlayer.Model
             {
                 if (s.Tag.FirstPerformer.Length < spaces-1)
                 {
-                    for (int i = 0; i < spaces - s.Tag.FirstPerformer.Length; i++)
+                    for (int i = 0; i < spaces-1 - s.Tag.FirstPerformer.Length; i++)
                     {
                         white_spaces = white_spaces + " ";
                     }
-                    artist = s.Tag.FirstPerformer + white_spaces;
+                    artist = s.Tag.FirstPerformer + white_spaces+" ";
                     white_spaces = "";
                 }
                 else if(s.Tag.FirstPerformer.Length<=2)
@@ -115,7 +115,7 @@ namespace Console_MusicPlayer.Model
                 }
                 else
                 {
-                    artist = s.Tag.FirstPerformer.Substring(0, spaces);
+                    artist = s.Tag.FirstPerformer.Substring(0, spaces-1)+" ";
                 }
             }
             catch
@@ -124,13 +124,13 @@ namespace Console_MusicPlayer.Model
             }
             try
             {
-                if (s.Tag.Title.Length < 40)
+                if (s.Tag.Title.Length < 39)
                 {
-                    for (int i = 0; i < 40 - s.Tag.Title.Length; i++)
+                    for (int i = 0; i < 39 - s.Tag.Title.Length; i++)
                     {
                         white_spaces = white_spaces + " ";
                     }
-                    title = s.Tag.Title + white_spaces;
+                    title = s.Tag.Title + white_spaces+" ";
                     white_spaces = "";
                 }
                 else if (s.Tag.Title.Length <= 1)
@@ -144,7 +144,7 @@ namespace Console_MusicPlayer.Model
                 }
                 else
                 {
-                    title = s.Tag.Title.Substring(0, 40);
+                    title = s.Tag.Title.Substring(0, 39)+" ";
                 }
             }
             catch
@@ -153,13 +153,13 @@ namespace Console_MusicPlayer.Model
             }
             try
             {
-                if (s.Tag.Album.Length < spaces+5)
+                if (s.Tag.Album.Length < spaces+4)
                 {
-                    for (int i = 0; i < spaces+5 - s.Tag.Album.Length; i++)
+                    for (int i = 0; i < spaces+4 - s.Tag.Album.Length; i++)
                     {
                         white_spaces = white_spaces + " ";
                     }
-                    album = s.Tag.Album + white_spaces;
+                    album = s.Tag.Album + white_spaces+" ";
                     white_spaces = "";
                 }
                 else if (s.Tag.Album.Length <= 2)
@@ -173,7 +173,7 @@ namespace Console_MusicPlayer.Model
                 }
                 else
                 {
-                    album = s.Tag.Album.Substring(0, spaces);
+                    album = s.Tag.Album.Substring(0, spaces-1)+" ";
                 }
             }
             catch
