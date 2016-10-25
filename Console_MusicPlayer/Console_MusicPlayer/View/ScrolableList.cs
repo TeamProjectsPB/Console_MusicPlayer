@@ -145,6 +145,8 @@ namespace Console_MusicPlayer.View
                     controller.SetCurrentSong(cursorX);
                     WindowManager.WirteText(CurrentlySelectedFile, 0, 0, this.TextColour, this.BackgroundColour);
                     controller.Play();
+                    (ParentWindow as MainWindow).currentSongLabel.SetText("                                                                              ");
+                    (ParentWindow as MainWindow).currentSongLabel.SetText(controller.GetCurrentSongLabel(cursorX));
                     (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
 
                 }

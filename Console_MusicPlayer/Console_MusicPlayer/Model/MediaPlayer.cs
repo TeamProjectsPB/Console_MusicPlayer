@@ -268,6 +268,11 @@ namespace Console_MusicPlayer.Model
         {
             currentSong = currentPlaylist.Tracks.ElementAt(index);
         }
+
+        public string GetCurrentSongLabel(int index)
+        {
+            return System.IO.Path.GetFileNameWithoutExtension(currentPlaylist.Tracks.ElementAt(index).Name);
+        }
         public void SetFirstOrDefaultSong()
         {
             currentSong = currentPlaylist.Tracks.FirstOrDefault();

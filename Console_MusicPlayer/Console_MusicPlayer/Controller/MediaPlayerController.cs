@@ -104,6 +104,11 @@ namespace Console_MusicPlayer.Controller
             player.SetCurrentSong(index);
         }
 
+        public string GetCurrentSongLabel(int index)
+        {
+            return player.GetCurrentSongLabel(index);
+        }
+
         public void SetFirstOrDefaultSong()
         {
             player.SetFirstOrDefaultSong();

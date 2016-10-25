@@ -39,6 +39,7 @@ namespace Console_MusicPlayer.View.Windows
         private Button addNewPlaylistBtn;
         private Label startLabel;
         private Label endLabel;
+        public Label currentSongLabel;
 
         //private Label artistLabel;
         //private Label nameLabel;
@@ -76,6 +77,8 @@ namespace Console_MusicPlayer.View.Windows
             libraryTextBox = new Label("Biblioteka", 3, 10, "libraryTextBox", this);
             playlistTextBox = new Label("Playlisty", 19, 10, "playlistTextBox", this);
             musicTextBox = new Label("Utwory", 3, 77, "musicTextBox", this);
+            currentSongLabel = new Label("Aktualna Piosenka", 41, 55, "currentSong", this);
+            currentSongLabel.BackgroundColour = ConsoleColor.DarkGray;
 
             addNewLibraryBtn = new Button(5, 3, "Dodaj biblioteke", "addNewLibraryBtn", this) { Action = delegate () { new AddNewLibraryWindow(addNewLibraryBtn.ParentWindow); } };
             addNewPlaylistBtn = new Button(21, 3, "Dodaj playliste", "addNewPlaylistBtn", this) { Action = delegate () { new AddNewPlaylistWindow(addNewPlaylistBtn.ParentWindow); } };
@@ -285,7 +288,7 @@ namespace Console_MusicPlayer.View.Windows
             Inputs.Add(artistLabelBtn);
             Inputs.Add(nameLabelBtn);
             Inputs.Add(albumLabelBtn);
-            //Inputs.Add(rankBtn);
+            Inputs.Add(currentSongLabel);
 
             Inputs.Add(currentPlaylistBrowser);
             Inputs.Add(playlistsBrowser);
