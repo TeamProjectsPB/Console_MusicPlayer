@@ -11,10 +11,12 @@ namespace Console_MusicPlayer.Controller
     {
         static public MediaPlayer player = new MediaPlayer();
         private bool sortDesc;
+        static public bool RepeatAll;
+        static public bool RandomPlay;
 
         public MediaPlayerController()
         {
-            player.AddLibrary("D:\\Muzyka\\Mix");
+            player.AddLibrary("D:\\Muzyka\\Ringtones");
             player.LoadPlaylists();
             player.SetCurrentLibrary(0);
             sortDesc = false;
@@ -104,9 +106,9 @@ namespace Console_MusicPlayer.Controller
             player.SetCurrentSong(index);
         }
 
-        public string GetCurrentSongLabel(int index)
+        public string GetCurrentSongLabel()
         {
-            return player.GetCurrentSongLabel(index);
+            return player.GetCurrentSongLabel();
         }
 
         public void SetFirstOrDefaultSong()

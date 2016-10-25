@@ -106,8 +106,8 @@ namespace Console_MusicPlayer.View.Windows
 
             controlsLabel = new Label("Sterowanie", 40, 65, "controlLabel", this);
 
-            repeatAllBtn = new Button(44, 13, "Repeat All", "stopBtn", this);
-            shufflePlayBtn = new Button(44, 3, "Random", "stopBtn", this);
+            repeatAllBtn = new Button(44, 13, "Repeat All", "stopBtn", this) {Action = delegate () { ChangeRepeatAllStatement(); } };
+            shufflePlayBtn = new Button(44, 3, "Random", "stopBtn", this) { Action = delegate () { ChangeRandomPlayStatement(); } };
 
             stopBtn = new Button(44, 55, "  ■  ", "stopBtn", this) { Action = delegate () { Stop(); } };
             playBtn = new Button(44, 75, "  >  ", "playBtn", this) { Action = delegate () { Play(); } };
@@ -136,6 +136,7 @@ namespace Console_MusicPlayer.View.Windows
             Draw();
             MainLoop();
         }
+        #region Sort
         private void SortByArtist()
         {
             controller.SortByArtist();
@@ -155,9 +156,7 @@ namespace Console_MusicPlayer.View.Windows
             controller.SortByAlbum();
             ReloadCurrentPlaylistBrowser();
         }
-
-
-
+        #endregion
         #region MediaPlayerControls
 
         private void Play()
@@ -197,12 +196,37 @@ namespace Console_MusicPlayer.View.Windows
         {
             controller.PreviousTrack();
         }
+        private void ChangeRandomPlayStatement()
+        {
+            MediaPlayerController.RandomPlay = !MediaPlayerController.RandomPlay;
+            if (MediaPlayerController.RandomPlay)
+            {
+                shufflePlayBtn.BackgroundColour = ConsoleColor.DarkYellow;
+            }
+            else
+            {
+                shufflePlayBtn.BackgroundColour = ConsoleColor.Gray;
+            }
+        }
+        private void ChangeRepeatAllStatement()
+        {
+            MediaPlayerController.RepeatAll = !MediaPlayerController.RepeatAll;
+            if (MediaPlayerController.RepeatAll)
+            {
+                repeatAllBtn.BackgroundColour = ConsoleColor.DarkYellow;
+            }
+            else
+            {
+                repeatAllBtn.BackgroundColour = ConsoleColor.Gray;
+            }
+        }
         #endregion
-
         #region Timer
         private void UpdateCurrentPosition(object sender, ElapsedEventArgs elapsedEventArgs)
         {
             canScroolList = false;
+            currentSongLabel.SetText("                                                                              ");
+            currentSongLabel.SetText(controller.GetCurrentSongLabel());
             startLabel.SetText(controller.GetCurrentPosition());
             endLabel.SetText(controller.GetDuration());
             double start = controller.GetCurrentPositionDouble();
@@ -311,7 +335,6 @@ namespace Console_MusicPlayer.View.Windows
 
 
         #endregion
-
         #region FileBrowserReloaders
         public void ReloadCurrentPlaylistBrowser()
         {

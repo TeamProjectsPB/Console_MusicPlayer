@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using Console_MusicPlayer.Controller;
 using Console_MusicPlayer.View.Windows;
 using WMPLib;
 using Song = TagLib.File;
@@ -14,7 +15,7 @@ namespace Console_MusicPlayer.Model
     class MediaPlayer
     {
         #region Members
-        private WindowsMediaPlayer mPlayer;
+        private static WindowsMediaPlayer mPlayer;
         private Song currentSong;
         private Playlist currentPlaylist;
         private List<Library> libraries;
@@ -25,7 +26,8 @@ namespace Console_MusicPlayer.Model
 
         public WindowsMediaPlayer MPlayer
         {
-            get { if (mPlayer == null) { return mPlayer = new WindowsMediaPlayer(); } else return mPlayer; }
+            //get { if (mPlayer == null) { return mPlayer = new WindowsMediaPlayer(); } else return mPlayer; }
+            get { return mPlayer; }
         }
 
         public Song CurrentSong
@@ -60,7 +62,6 @@ namespace Console_MusicPlayer.Model
         {
             mPlayer = new WindowsMediaPlayer();
             mPlayer.PlayStateChange += Player_PlayStateChange;
-            
             libraries = new List<Library>();
             playlists = new List<Playlist>();
         }
@@ -71,13 +72,19 @@ namespace Console_MusicPlayer.Model
         {
             if ((WMPPlayState) newState == WMPPlayState.wmppsMediaEnded)
             {
-                NextTrack();
+                if (MediaPlayerController.RandomPlay)
+                {
+                    NextRandomTrack();
+                }
+                else
+                {
+                    NextTrack();
+                }
             }
-            /*if ((WMPLib.WMPPlayState)newState == WMPLib.WMPPlayState.wmppsStopped)
+            else if ((WMPPlayState) newState == WMPPlayState.wmppsReady)
             {
-                //Actions on stop
+                mPlayer.controls.play();
             }
-            //else if((WMPPlayState)newState == WMPPlayState.wmppsPaused)*/
         }
 
         public void AddLibrary(string url)
@@ -156,7 +163,7 @@ namespace Console_MusicPlayer.Model
             {
                 mPlayer.URL = currentSong.Name;
             }
-            MPlayer.controls.play();
+            mPlayer.controls.play();
         }
 
         public void Pause()
@@ -167,11 +174,25 @@ namespace Console_MusicPlayer.Model
         {
             mPlayer.controls.stop();
         }
-
         public void NextTrack()
         {
-            int currentIndex = currentPlaylist.Tracks.IndexOf(currentSong);
-            currentSong = currentPlaylist.Tracks.ElementAt(++currentIndex%currentPlaylist.Tracks.Count);
+            int nextIndex = currentPlaylist.Tracks.IndexOf(currentSong) + 1;
+            if (nextIndex < currentPlaylist.Tracks.Count)
+            {
+                currentSong = currentPlaylist.Tracks.ElementAt(nextIndex);
+                Play();
+            }
+            else if (MediaPlayerController.RepeatAll)
+            {
+                currentSong = currentPlaylist.Tracks.ElementAt(nextIndex % currentPlaylist.Tracks.Count);
+                Play();
+            }
+        }
+
+        public void NextRandomTrack()
+        {
+            Random random = new Random();
+            currentSong = currentPlaylist.Tracks.ElementAt(random.Next(0, currentPlaylist.Tracks.Count - 1));
             Play();
         }
 
@@ -269,9 +290,9 @@ namespace Console_MusicPlayer.Model
             currentSong = currentPlaylist.Tracks.ElementAt(index);
         }
 
-        public string GetCurrentSongLabel(int index)
+        public string GetCurrentSongLabel()
         {
-            return System.IO.Path.GetFileNameWithoutExtension(currentPlaylist.Tracks.ElementAt(index).Name);
+            return System.IO.Path.GetFileNameWithoutExtension(currentSong.Name);
         }
         public void SetFirstOrDefaultSong()
         {
