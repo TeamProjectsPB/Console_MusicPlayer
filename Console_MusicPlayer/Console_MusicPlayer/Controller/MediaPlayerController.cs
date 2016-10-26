@@ -16,9 +16,15 @@ namespace Console_MusicPlayer.Controller
 
         public MediaPlayerController()
         {
-            player.AddLibrary("D:\\Muzyka\\Mix");
+            player.AddLibrary("D:\\Muzyka\\Mix","Mix");
             player.LoadPlaylists();
             player.SetCurrentLibrary(0);
+            sortDesc = false;
+        }
+
+        public void AddNewLibrary(string url, string name)
+        {
+            player.AddLibrary(url, name);
             sortDesc = false;
         }
 

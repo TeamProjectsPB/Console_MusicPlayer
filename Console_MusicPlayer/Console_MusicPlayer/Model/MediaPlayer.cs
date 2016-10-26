@@ -83,15 +83,25 @@ namespace Console_MusicPlayer.Model
             }
             else if ((WMPPlayState) newState == WMPPlayState.wmppsReady)
             {
-                mPlayer.controls.play();
+                //mPlayer.controls.stop();
+                //mPlayer.controls.play();
             }
         }
 
-        public void AddLibrary(string url)
+        //public void AddLibrary(string url)
+        //{
+        //    if (Directory.Exists(url))
+        //    {
+        //        libraries.Add(new Library(url));
+        //    }
+        //}
+
+        public void AddLibrary(string url, string _name)
         {
             if (Directory.Exists(url))
             {
-                libraries.Add(new Library(url));
+                //libraries.Add(new Library(url));
+                libraries.Add(new Library(url, _name));
             }
         }
 
@@ -147,7 +157,7 @@ namespace Console_MusicPlayer.Model
         public List<string> GetLibraries()
         {
             List<string> libraries = new List<string>();
-            Libraries.ForEach(x => libraries.Add(x.Url));
+            Libraries.ForEach(x => libraries.Add(x.Name));
             return libraries;
         }
 

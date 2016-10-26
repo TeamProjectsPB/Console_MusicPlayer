@@ -13,9 +13,16 @@ namespace Console_MusicPlayer.Model
     {
         #region Members
         private string url;
+        private string name;
         private List<Song> songsInLibrary;
         #endregion
         #region Properties
+
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
         public string Url
         {
             get { return url; }
@@ -31,6 +38,14 @@ namespace Console_MusicPlayer.Model
         #region Constructors
         public Library(string url)
         {
+            this.url = url;
+            songsInLibrary = new List<Song>();
+            LoadSongs();
+        }
+
+        public Library(string url,string _name)
+        {
+            this.name = _name;
             this.url = url;
             songsInLibrary = new List<Song>();
             LoadSongs();

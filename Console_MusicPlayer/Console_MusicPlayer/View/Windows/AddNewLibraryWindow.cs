@@ -7,6 +7,7 @@ using ConsoleDraw.Windows.Base;
 using ConsoleDraw.Inputs;
 using ConsoleDraw.Windows;
 using ConsoleDraw;
+using Console_MusicPlayer.Controller;
 
 namespace Console_MusicPlayer.View.Windows
 {
@@ -16,6 +17,7 @@ namespace Console_MusicPlayer.View.Windows
         private Button exitBtn;
         private TextBox nameTxtBox;
         private TextBox urlTxtBox;
+        MediaPlayerController controller;
 
         public AddNewLibraryWindow(Window parentWindow)
             : base("Dodaj bibliotekę", (Console.WindowHeight/2)-10, (Console.WindowWidth/2)-5, 45, 9, parentWindow)
@@ -47,11 +49,17 @@ namespace Console_MusicPlayer.View.Windows
 
         public void Apply()
         {
-      
-
-
-
+            string name;
+            string url;
+            name = nameTxtBox.GetText();
+            url = urlTxtBox.GetText();
+            controller = MainWindow.controller;
+            if (!urlTxtBox.GetText().Equals("") && !nameTxtBox.GetText().Equals(""))
+            {
+                controller.AddNewLibrary(url, name);
+            }
             ExitWindow();
+            (ParentWindow as MainWindow).ReloadLibraryBrowser();
         }
     }
 }

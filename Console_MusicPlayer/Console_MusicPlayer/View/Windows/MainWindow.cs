@@ -352,6 +352,12 @@ namespace Console_MusicPlayer.View.Windows
             playlistsBrowser.GetFileNames();
             playlistsBrowser.Draw();
         }
+        public void ReloadLibraryBrowser()
+        {
+            libraryBrowser.CurrentList = controller.GetLibraries();
+            libraryBrowser.GetFileNames();
+            libraryBrowser.Draw();
+        }
         #endregion
 
 

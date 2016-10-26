@@ -162,6 +162,7 @@ namespace Console_MusicPlayer.View
                 {
                     controller.SetCurrentLibrary(CursorX);
                     (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
+                    (ParentWindow as MainWindow).ReloadLibraryBrowser();
                     (ParentWindow as MainWindow).ReloadPlaylistsBrowser();
                 }
             }
