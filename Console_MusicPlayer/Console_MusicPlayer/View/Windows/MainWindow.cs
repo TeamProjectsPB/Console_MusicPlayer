@@ -117,8 +117,8 @@ namespace Console_MusicPlayer.View.Windows
 
             volumeDownBtn = new Button(44, 110, " - ", "volumeDown", this) { Action = delegate () { VolumeDown(); } };
             volumeUpBtn = new Button(44, 123, " + ", "volumeDown", this) { Action = delegate () { VolumeUp(); } };
-            volumeLabel = new Label(controller.GetCurrentVolume(), 44, 117, "volumeLabel", this);
-            volumeLabel.SetText(controller.GetCurrentVolume());
+            volumeLabel = new Label("50%", 44, 117, "volumeLabel", this);
+            //volumeLabel.SetText(controller.GetCurrentVolume());
 
             previousTrackBtn = new Button(44, 45, "  |<  ", "previousTrackBtn", this) { Action = delegate () { PreviousTrack(); } };
 
@@ -179,11 +179,13 @@ namespace Console_MusicPlayer.View.Windows
 
         private void VolumeUp()
         {
+            volumeLabel.SetText("    ");
             volumeLabel.SetText(controller.VolumeUp());
         }
 
         private void VolumeDown()
         {
+            volumeLabel.SetText("    ");
             volumeLabel.SetText(controller.VolumeDown());
         }
 
@@ -305,6 +307,7 @@ namespace Console_MusicPlayer.View.Windows
             //Inputs.Add(nameLabel);
             //Inputs.Add(rankLabel);
             Inputs.Add(volumeDownBtn);
+            Inputs.Add(volumeLabel);
             Inputs.Add(volumeUpBtn);
             Inputs.Add(addNewLibraryBtn);
             Inputs.Add(addNewPlaylistBtn);

@@ -292,7 +292,14 @@ namespace Console_MusicPlayer.Model
 
         public string GetCurrentSongLabel()
         {
-            return System.IO.Path.GetFileNameWithoutExtension(currentSong.Name);
+            try
+            {
+                return System.IO.Path.GetFileNameWithoutExtension(currentSong.Name);
+            }
+            catch
+            {
+                return "Aktualna Piosenka";
+            }
         }
         public void SetFirstOrDefaultSong()
         {
