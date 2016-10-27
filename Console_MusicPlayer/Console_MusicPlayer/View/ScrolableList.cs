@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ConsoleDraw;
 using ConsoleDraw.Inputs.Base;
+using ConsoleDraw.Windows;
 using ConsoleDraw.Windows.Base;
 using Console_MusicPlayer.Controller;
 using Console_MusicPlayer.Model;
@@ -165,6 +166,36 @@ namespace Console_MusicPlayer.View
                     (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
                     (ParentWindow as MainWindow).ReloadLibraryBrowser();
                     (ParentWindow as MainWindow).ReloadPlaylistsBrowser();
+                }
+            }
+            else if (SelectFile == null ? false : !ShowingDrive)
+            {
+                SelectFile();
+            }
+        }
+
+        public override void BackSpace()
+        {
+            if (CursorX < 0 || CursorX >= CurrentList.Count ? false : !ShowingDrive)
+            {
+                MediaPlayerController controller = MainWindow.controller;
+
+                if (iD.Equals("currentPlaylistBrowser"))
+                {
+                    Confirm confirm = new Confirm("Czy na pewno chcesz usunąć piosenkę?", ParentWindow, ConsoleColor.Gray);
+                    if (confirm.ShowDialog() == DialogResult.OK)
+                    {
+                        controller.RemoveTrack(cursorX);
+                    }
+                    (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
+                }
+                else if (iD.Equals("playlistsBrowser"))
+                {
+ 
+                }
+                else if (iD.Equals("libraryBrowser"))
+                {
+                    
                 }
             }
             else if (SelectFile == null ? false : !ShowingDrive)

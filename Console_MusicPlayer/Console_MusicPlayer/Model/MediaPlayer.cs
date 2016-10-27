@@ -407,6 +407,16 @@ namespace Console_MusicPlayer.Model
             mPlayer.controls.playItem(mPlayer.currentPlaylist.Item[index]);
         }
         #endregion
+        #region Remove
+        public void RemoveTrack(int index)
+        {
+            var media = mPlayer.currentPlaylist.Item[index];
+            var count = CurrentPlaylist.count;
+            CurrentPlaylist.removeItem(media);
+            var countafter = CurrentPlaylist.count;
+            SetCurrentPlaylistSongUrl(CurrentPlaylist);
+        }
+        #endregion
         #region Library
         public void AddLibrary(string name, string url)
         {

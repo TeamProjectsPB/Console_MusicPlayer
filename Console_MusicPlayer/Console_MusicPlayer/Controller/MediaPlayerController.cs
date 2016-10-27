@@ -157,6 +157,13 @@ namespace Console_MusicPlayer.Controller
             player.Sort(attribute, sortAsc);
         }
         #endregion
+        #region Remove
+
+        public void RemoveTrack(int index)
+        {
+            player.RemoveTrack(index);
+        }
+        #endregion
 
 
     }
