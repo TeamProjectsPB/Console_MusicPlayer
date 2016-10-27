@@ -12,6 +12,7 @@ namespace Console_MusicPlayer.View.Windows
 {
     class AddNewPlaylistWindow : PopupWindow
     {
+        Window parentWindow;
         private Button applyBtn;
         private Button exitBtn;
         private TextBox nameTxtBox;
@@ -19,6 +20,7 @@ namespace Console_MusicPlayer.View.Windows
         public AddNewPlaylistWindow(Window parentWindow)
             : base("Utwórz nową playliste", (Console.WindowHeight/2)-10, (Console.WindowWidth/2)-5, 45, 6, parentWindow)
         {
+            this.parentWindow = parentWindow;
             var nameLabel = new Label("Nazwa: ", PostionX + 2, PostionY + 2, "nameLabel", parentWindow) { BackgroundColour = ConsoleColor.Gray };
             nameTxtBox = new TextBox(PostionX + 2, PostionY + 10, "", "nameTxtBox", this, 30);
 
@@ -42,6 +44,8 @@ namespace Console_MusicPlayer.View.Windows
 
         public void Apply()
         {
+            var name = nameTxtBox.GetText();
+            (parentWindow as MainWindow).CreatePlaylist(name);
             ExitWindow();
         }
     }

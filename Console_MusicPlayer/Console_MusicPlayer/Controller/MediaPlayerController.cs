@@ -10,22 +10,29 @@ namespace Console_MusicPlayer.Controller
     class MediaPlayerController
     {
         static public MediaPlayer player = new MediaPlayer();
-        private bool sortDesc;
-        static public bool RepeatAll;
-        static public bool RandomPlay;
+        private bool sortAsc;
 
         public MediaPlayerController()
         {
-            player.AddLibrary("D:\\Muzyka\\Mix","Mix");
-            player.LoadPlaylists();
-            player.SetCurrentLibrary(0);
-            sortDesc = false;
+            sortAsc = false;
+            player.MPlayer.settings.volume = 5;
+            player.AddLibrary("Mix", "D:\\Muzyka\\Mix");
+            player.AddPlaylist("dziendobry");
+            player.AddPlaylist("ff");
+            player.AddPlaylist("superplaylista");
+            //player.SetCurrentLibrary("Mix");
+            
         }
 
-        public void AddNewLibrary(string url, string name)
+        public void CreatePlaylist(string name)
+        {
+            player.CreatePlaylist(name);
+            sortAsc = false;
+        }
+        public void AddLibrary(string url, string name)
         {
             player.AddLibrary(url, name);
-            sortDesc = false;
+            sortAsc = false;
         }
 
         #region Getters
@@ -90,6 +97,16 @@ namespace Console_MusicPlayer.Controller
         {
             player.PreviousTrack();
         }
+
+        public bool ChangeRandomPlayStatement()
+        {
+            return player.ChangeRandomPlayStatement();
+        }
+
+        public bool ChangeRepeatAllStatement()
+        {
+            return player.ChangeRepeatAllStatement();
+        }
         #endregion
         #region BrowserSetters
         public void SetCurrentPlaylist(string newCurrentPlaylist)
@@ -97,14 +114,9 @@ namespace Console_MusicPlayer.Controller
             player.SetCurrentPlaylist(newCurrentPlaylist);
         }
 
-        public void SetCurrentLibrary(int index)
+        public void SetCurrentLibrary(string newCurrentLibrary)
         {
-            player.SetCurrentLibrary(index);
-        }
-
-        public void SetCurrentSong(string newCurrentSong)
-        {
-            player.SetCurrentSong(newCurrentSong);
+            player.SetCurrentLibrary(newCurrentLibrary);
         }
 
         public void SetCurrentSong(int index)
@@ -117,10 +129,6 @@ namespace Console_MusicPlayer.Controller
             return player.GetCurrentSongLabel();
         }
 
-        public void SetFirstOrDefaultSong()
-        {
-            player.SetFirstOrDefaultSong();
-        }
         #endregion
 
         #region ReturnLists
@@ -142,24 +150,12 @@ namespace Console_MusicPlayer.Controller
 
         #endregion
         #region SortPlaylist
-        public void SortByArtist()
-        {
-            player.SortByArtist(sortDesc);
-            sortDesc = !sortDesc;
-        }
 
-        public void SortByTitle()
+        public void Sort(string attribute)
         {
-            player.SortByTitle(sortDesc);
-            sortDesc = !sortDesc;
+            sortAsc = !sortAsc;
+            player.Sort(attribute, sortAsc);
         }
-
-        public void SortByAlbum()
-        {
-            player.SortByAlbum(sortDesc);
-            sortDesc = !sortDesc;
-        }
-
         #endregion
 
 

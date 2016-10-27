@@ -20,7 +20,7 @@ namespace Console_MusicPlayer.View.Windows
     {
         #region Members
 
-        public static MediaPlayerController controller;
+        public static MediaPlayerController controller = new MediaPlayerController();
         static public bool canScroolList = true;
         Timer timer;
 
@@ -63,7 +63,6 @@ namespace Console_MusicPlayer.View.Windows
         public MainWindow()
             : base(0, 0, Console.WindowWidth, Console.WindowHeight, null)
         {
-            controller = new MediaPlayerController();
             timer = new Timer();
             timer.Elapsed += new ElapsedEventHandler(UpdateCurrentPosition);
             timer.Interval = 1000;
@@ -89,9 +88,9 @@ namespace Console_MusicPlayer.View.Windows
             //albumLabel = new Label("Album", 4, 85, "albumLabel", this);
             //rankLabel = new Label("Ocena", 4, 105, "rankLabel", this);
 
-            artistLabelBtn = new Button(4, 37, "Artysta", "artistBtn", this) {Action = delegate() { SortByArtist(); }};
-            nameLabelBtn = new Button(4, 55, "Nazwa utowru", "titleBtn", this) { Action = delegate () { SortByTitle(); } };
-            albumLabelBtn = new Button(4, 95, "Album", "albumBtn", this) { Action = delegate () { SortByAlbum(); } };
+            artistLabelBtn = new Button(4, 37, "Artysta", "artistBtn", this) {Action = delegate() { Sort("Author"); }};
+            nameLabelBtn = new Button(4, 55, "Nazwa utworu", "titleBtn", this) { Action = delegate () { Sort("Title"); } };
+            albumLabelBtn = new Button(4, 95, "Album", "albumBtn", this) { Action = delegate () { Sort("Album"); } };
             //rankBtn = new Button(4, 105, "Ocena", "rankBtn", this);
 
             //artistLabel.BackgroundColour = ConsoleColor.DarkGray;
@@ -117,7 +116,7 @@ namespace Console_MusicPlayer.View.Windows
 
             volumeDownBtn = new Button(44, 110, " - ", "volumeDown", this) { Action = delegate () { VolumeDown(); } };
             volumeUpBtn = new Button(44, 123, " + ", "volumeDown", this) { Action = delegate () { VolumeUp(); } };
-            volumeLabel = new Label("50%", 44, 117, "volumeLabel", this);
+            volumeLabel = new Label(controller.GetCurrentVolume(), 44, 117, "volumeLabel", this);
             //volumeLabel.SetText(controller.GetCurrentVolume());
 
             previousTrackBtn = new Button(44, 45, "  |<  ", "previousTrackBtn", this) { Action = delegate () { PreviousTrack(); } };
@@ -135,26 +134,22 @@ namespace Console_MusicPlayer.View.Windows
             CurrentlySelected = playBtn;
             Draw();
             MainLoop();
+            
         }
+        #region Adders
+
+        public void CreatePlaylist(string name)
+        {
+            controller.CreatePlaylist(name);
+            ReloadPlaylistsBrowser();
+        }
+        #endregion
         #region Sort
-        private void SortByArtist()
-        {
-            controller.SortByArtist();
-            ReloadCurrentPlaylistBrowser();
 
-        }
-        
-        private void SortByTitle()
+        public void Sort(string attribute)
         {
-            controller.SortByTitle();
-            ReloadCurrentPlaylistBrowser();
-
-        }
-
-        private void SortByAlbum()
-        {
-            controller.SortByAlbum();
-            ReloadCurrentPlaylistBrowser();
+            controller.Sort(attribute);
+            ReloadCurrentPlaylistBrowser();   
         }
         #endregion
         #region MediaPlayerControls
@@ -200,8 +195,7 @@ namespace Console_MusicPlayer.View.Windows
         }
         private void ChangeRandomPlayStatement()
         {
-            MediaPlayerController.RandomPlay = !MediaPlayerController.RandomPlay;
-            if (MediaPlayerController.RandomPlay)
+            if (controller.ChangeRandomPlayStatement())
             {
                 shufflePlayBtn.BackgroundColour = ConsoleColor.DarkYellow;
             }
@@ -212,8 +206,7 @@ namespace Console_MusicPlayer.View.Windows
         }
         private void ChangeRepeatAllStatement()
         {
-            MediaPlayerController.RepeatAll = !MediaPlayerController.RepeatAll;
-            if (MediaPlayerController.RepeatAll)
+            if (controller.ChangeRepeatAllStatement())
             {
                 repeatAllBtn.BackgroundColour = ConsoleColor.DarkYellow;
             }
@@ -270,13 +263,18 @@ namespace Console_MusicPlayer.View.Windows
             WindowManager.DrawColourBlock(ConsoleColor.Gray, 42, 10, 43, 120);//Seekbar domyslny szary
         }
 
+        public void ResetSeekBar()
+        {
+            WindowManager.DrawColourBlock(ConsoleColor.Gray, 42, 10, 43, 120);//Seekbar domyslny szary
+        }
         public void UpdateSeekBar(double start, double end)
         {
             int durationView = 0;
             try
             {
                 durationView = (Int32)((start / end) * 110);
-                WindowManager.DrawColourBlock(ConsoleColor.Black, 42, 10, 43, 11 + durationView);//Seekbar                                                                              //Draw();
+                ResetSeekBar();
+                WindowManager.DrawColourBlock(ConsoleColor.Black, 42, 10, 43, 11 + durationView);//Seekbar
             }
             catch (Exception e)
             {
@@ -333,6 +331,7 @@ namespace Console_MusicPlayer.View.Windows
             return;
 
             ProgramInfo.ExitProgram = true;
+            Environment.Exit(Environment.ExitCode);
         }
 
 

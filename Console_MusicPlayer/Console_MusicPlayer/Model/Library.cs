@@ -12,10 +12,10 @@ namespace Console_MusicPlayer.Model
     class Library
     {
         #region Members
-        private string url;
         private string name;
-        private List<Song> songsInLibrary;
+        private string url;
         #endregion
+
         #region Properties
 
         public string Name
@@ -23,57 +23,26 @@ namespace Console_MusicPlayer.Model
             get { return name; }
             set { name = value; }
         }
+
         public string Url
         {
             get { return url; }
             set { url = value; }
         }
 
-        public List<Song> SongsInLibrary
-        {
-            get { return songsInLibrary; }
-            set { songsInLibrary = value; }
-        }
+       
+
         #endregion
-        #region Constructors
-        public Library(string url)
+        #region Constructor
+
+        public Library(string name, string url)
         {
+            this.name = name;
             this.url = url;
-            songsInLibrary = new List<Song>();
-            LoadSongs();
         }
 
-        public Library(string url,string _name)
-        {
-            this.name = _name;
-            this.url = url;
-            songsInLibrary = new List<Song>();
-            LoadSongs();
-        }
         #endregion
 
 
-        #region PrivateMethods
-
-        #endregion
-        #region Methods
-
-        private void LoadSongs()
-        {
-            if (Directory.Exists(url))
-            {
-                List<string> songsUrl = new List<string>(Directory.EnumerateFiles(url, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase) || s.EndsWith(".wav", StringComparison.OrdinalIgnoreCase)));
-                for (int i = 0; i < songsUrl.Count; i++)
-                {
-                    try
-                    {
-                        TagLib.File newSong = TagLib.File.Create(songsUrl.ElementAt(i));
-                        songsInLibrary.Add(newSong);
-                    }
-                    catch (TagLib.CorruptFileException) { }
-                }
-            }
-        }
-        #endregion
     }
 }

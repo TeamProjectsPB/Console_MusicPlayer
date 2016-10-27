@@ -130,7 +130,6 @@ namespace Console_MusicPlayer.View
         }
 
         
-
         public override void Enter()
         {
             
@@ -142,25 +141,27 @@ namespace Console_MusicPlayer.View
                 {
                     WindowManager.DrawColourBlock(ConsoleColor.Gray, 42, 10, 43, 120);//Seekbar domyslny szary
                     //controller.SetCurrentSong(CurrentList.ElementAt(cursorX));
+                    controller.Stop();
                     controller.SetCurrentSong(cursorX);
                     WindowManager.WirteText(CurrentlySelectedFile, 0, 0, this.TextColour, this.BackgroundColour);
-                    controller.Play();
                     //(ParentWindow as MainWindow).currentSongLabel.SetText("                                                                              ");
                     //(ParentWindow as MainWindow).currentSongLabel.SetText(controller.GetCurrentSongLabel(cursorX));
-                    (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
+                    //(ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
 
                 }
                 else if (iD.Equals("playlistsBrowser"))
                 {
+                    controller.Stop();
                     controller.SetCurrentPlaylist(CurrentList.ElementAt(cursorX));
                     //controller.CurrentSong = mediaPlayer.CurrentPlaylist.Tracks.FirstOrDefault();
-                    controller.SetFirstOrDefaultSong();
+                    //controller.SetFirstOrDefaultSong();
                     (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
                     (ParentWindow as MainWindow).ReloadPlaylistsBrowser();                   
                 }
                 else if (iD.Equals("libraryBrowser"))
                 {
-                    controller.SetCurrentLibrary(CursorX);
+                    controller.Stop();
+                    controller.SetCurrentLibrary(CurrentList.ElementAt(CursorX));
                     (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
                     (ParentWindow as MainWindow).ReloadLibraryBrowser();
                     (ParentWindow as MainWindow).ReloadPlaylistsBrowser();
