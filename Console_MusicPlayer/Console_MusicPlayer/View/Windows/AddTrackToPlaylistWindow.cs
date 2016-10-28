@@ -18,13 +18,13 @@ namespace Console_MusicPlayer.View.Windows
         public String SelectedPlaylist { get; set; }
         public AddTrackToPlaylistWindow(Window parentWindow)
             : base(
-                "Dodaj piosenkę do playlisty", (Console.WindowHeight/2) - 10, (Console.WindowWidth/2) - 5, 45, 45,
+                "Dodaj piosenkę do playlisty", (Console.WindowHeight/2) - 10, (Console.WindowWidth/2) - 5, 33, 20,
                 parentWindow)
         {
             DialogResult = false;
-            playlistBrowser = new FileBrowser(5, 5, Height - 10, Width - 10,
+            playlistBrowser = new FileBrowser(PostionX + 2, PostionY + 2, 29, 16,
                 MainWindow.controller.GetPlaylists(), "addTrackToPlaylist", parentWindow, true);
-            cancelButton = new Button(Height - 5, Width - 5, "Anuluj", "cancelButton", parentWindow)
+            cancelButton = new Button(PostionX + 19, PostionY + 12, "Anuluj", "cancelButton", parentWindow)
             {
                 Action = delegate() { ExitWindow(); }
             };
