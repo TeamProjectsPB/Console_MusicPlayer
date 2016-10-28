@@ -18,7 +18,7 @@ namespace Console_MusicPlayer.Controller
             player.MPlayer.settings.volume = 5;
             player.AddLibrary("Mix", "D:\\Muzyka\\Mix");
             player.AddPlaylist("dziendobry");
-            player.AddPlaylist("ff");
+            player.AddPlaylist("elo5");
             player.AddPlaylist("superplaylista");
             //player.SetCurrentLibrary("Mix");
             
@@ -162,6 +162,11 @@ namespace Console_MusicPlayer.Controller
         public void RemoveTrack(int index)
         {
             player.RemoveTrack(index);
+        }
+
+        public bool RemovePlaylist(string name)
+        {
+            return player.RemovePlaylist(name);
         }
         #endregion
 

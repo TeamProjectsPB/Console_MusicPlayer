@@ -416,6 +416,40 @@ namespace Console_MusicPlayer.Model
             var countafter = CurrentPlaylist.count;
             SetCurrentPlaylistSongUrl(CurrentPlaylist);
         }
+        //return: true - current playlist was removed;
+        public bool RemovePlaylist(string name)
+        {
+            bool removedCurrentPlaylist = CurrentPlaylist.name.Equals(name);
+            if (removedCurrentPlaylist)
+            {
+                SetAllMediaPlaylist();
+            }
+            //var media = new List<IWMPMedia>();
+            //for (int i = 0; i < mPlayer.mediaCollection.getByName(name).count; i++)
+            //{
+            //    media.Add(mPlayer.mediaCollection.getByName(name).Item[i]);
+            //}
+            //media.ForEach(x => mPlayer.mediaCollection.remove(x, true));
+            var playlists = new List<IWMPPlaylist>();
+            for (int i = 0; i < mPlayer.playlistCollection.getByName(name).count; i++)
+            {
+                playlists.Add(mPlayer.playlistCollection.getByName(name).Item(i));
+            }
+            playlists.ForEach(x => mPlayer.playlistCollection.remove(x));
+            Playlists.Remove(Playlists.Find(x => x.name.Equals(name)));
+            return removedCurrentPlaylist;
+            /*bool removedCurrentPlaylist = false;
+            var playlist = Playlists.Find(x => x.name.Equals(name));
+            if (playlist.isIdentical[CurrentPlaylist])
+            {
+                SetAllMediaPlaylist();
+                removedCurrentPlaylist = true;
+            }
+            Playlists.Remove(playlist);
+            //mPlayer.playlistCollection.remove(playlist);
+            mPlayer.playlistCollection.setDeleted(playlist, true);
+            return removedCurrentPlaylist;*/
+        }
         #endregion
         #region Library
         public void AddLibrary(string name, string url)

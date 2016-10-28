@@ -186,12 +186,25 @@ namespace Console_MusicPlayer.View
                     if (confirm.ShowDialog() == DialogResult.OK)
                     {
                         controller.RemoveTrack(cursorX);
+                        (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
+                        ResetCursorX();
                     }
-                    (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
+                    
                 }
                 else if (iD.Equals("playlistsBrowser"))
                 {
- 
+                    Confirm confirm = new Confirm("Czy na pewno chcesz usunąć playlistę?", ParentWindow, ConsoleColor.Gray);
+                    if (confirm.ShowDialog() == DialogResult.OK)
+                    {
+                        //controller.RemoveTrack(cursorX);
+                        if (controller.RemovePlaylist(CurrentList.ElementAt(CursorX)))
+                        {
+                            (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
+                        }
+                        (ParentWindow as MainWindow).ReloadPlaylistsBrowser();
+                        ResetCursorX();
+
+                    }
                 }
                 else if (iD.Equals("libraryBrowser"))
                 {
