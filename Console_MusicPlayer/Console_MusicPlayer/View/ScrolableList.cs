@@ -167,6 +167,10 @@ namespace Console_MusicPlayer.View
                     (ParentWindow as MainWindow).ReloadLibraryBrowser();
                     (ParentWindow as MainWindow).ReloadPlaylistsBrowser();
                 }
+                else if (iD.Equals("addTrackToPlaylist"))
+                {
+                    (ParentWindow as AddTrackToPlaylistWindow).Apply();
+                }
             }
             else if (SelectFile == null ? false : !ShowingDrive)
             {
@@ -196,7 +200,6 @@ namespace Console_MusicPlayer.View
                     Confirm confirm = new Confirm("Czy na pewno chcesz usunąć playlistę?", ParentWindow, ConsoleColor.Gray);
                     if (confirm.ShowDialog() == DialogResult.OK)
                     {
-                        //controller.RemoveTrack(cursorX);
                         if (controller.RemovePlaylist(CurrentList.ElementAt(CursorX)))
                         {
                             (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
@@ -208,12 +211,34 @@ namespace Console_MusicPlayer.View
                 }
                 else if (iD.Equals("libraryBrowser"))
                 {
-                    
+                    Confirm confirm = new Confirm("Czy na pewno chcesz usunąć bibliotekę?", ParentWindow, ConsoleColor.Gray);
+                    if (confirm.ShowDialog() == DialogResult.OK)
+                    {
+
+                    }
                 }
             }
             else if (SelectFile == null ? false : !ShowingDrive)
             {
                 SelectFile();
+            }
+        }
+
+        public override void CursorMoveLeft()
+        {
+            //base.CursorMoveLeft();
+            if (CursorX < 0 || CursorX >= CurrentList.Count ? false : !ShowingDrive)
+            {
+                MediaPlayerController controller = MainWindow.controller;
+                if (iD.Equals("currentPlaylistBrowser"))
+                {
+                    AddTrackToPlaylistWindow addTrackToPlaylistWindow = new AddTrackToPlaylistWindow(ParentWindow);
+                    if (addTrackToPlaylistWindow.DialogResult)
+                    {
+                        var playlistName = addTrackToPlaylistWindow.SelectedPlaylist;
+                        controller.AddTrackToPlaylist(cursorX, playlistName);
+                    }
+                }
             }
         }
 

@@ -63,6 +63,7 @@
     <Compile Include="View\ScrolableList.cs" />
     <Compile Include="View\Windows\AddNewLibraryWindow.cs" />
     <Compile Include="View\Windows\AddNewPlaylistWindow.cs" />
+    <Compile Include="View\Windows\AddTrackToPlaylistWindow.cs" />
     <Compile Include="View\Windows\MainWindow.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -424,12 +424,6 @@ namespace Console_MusicPlayer.Model
             {
                 SetAllMediaPlaylist();
             }
-            //var media = new List<IWMPMedia>();
-            //for (int i = 0; i < mPlayer.mediaCollection.getByName(name).count; i++)
-            //{
-            //    media.Add(mPlayer.mediaCollection.getByName(name).Item[i]);
-            //}
-            //media.ForEach(x => mPlayer.mediaCollection.remove(x, true));
             var playlists = new List<IWMPPlaylist>();
             for (int i = 0; i < mPlayer.playlistCollection.getByName(name).count; i++)
             {
@@ -438,17 +432,6 @@ namespace Console_MusicPlayer.Model
             playlists.ForEach(x => mPlayer.playlistCollection.remove(x));
             Playlists.Remove(Playlists.Find(x => x.name.Equals(name)));
             return removedCurrentPlaylist;
-            /*bool removedCurrentPlaylist = false;
-            var playlist = Playlists.Find(x => x.name.Equals(name));
-            if (playlist.isIdentical[CurrentPlaylist])
-            {
-                SetAllMediaPlaylist();
-                removedCurrentPlaylist = true;
-            }
-            Playlists.Remove(playlist);
-            //mPlayer.playlistCollection.remove(playlist);
-            mPlayer.playlistCollection.setDeleted(playlist, true);
-            return removedCurrentPlaylist;*/
         }
         #endregion
         #region Library
@@ -471,6 +454,16 @@ namespace Console_MusicPlayer.Model
                         SongInfo.Add(x, song);
                     }
                 });
+            }
+        }
+
+        public void AddTrackToPlaylist(int trackIndex, string playlistName)
+        {
+            var song = mPlayer.currentPlaylist.Item[trackIndex];
+            var playlists = mPlayer.playlistCollection.getByName(playlistName);
+            for (int i = 0; i < playlists.count; i++)
+            {
+                mPlayer.playlistCollection.getByName(playlistName).Item(i).appendItem(song);
             }
         }
         public void CreatePlaylist(string name)

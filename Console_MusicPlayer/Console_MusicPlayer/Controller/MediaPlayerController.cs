@@ -159,6 +159,10 @@ namespace Console_MusicPlayer.Controller
         #endregion
         #region Remove
 
+        public void AddTrackToPlaylist(int trackIndex, string playlistName)
+        {
+            player.AddTrackToPlaylist(trackIndex, playlistName);
+        }
         public void RemoveTrack(int index)
         {
             player.RemoveTrack(index);
