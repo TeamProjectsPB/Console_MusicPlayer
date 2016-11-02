@@ -56,6 +56,10 @@ namespace Console_MusicPlayer.Model
                 libraryCurrentlyPlaying = value;
             }
         }
+        public int CurrentVolume
+        {
+            get { return mPlayer.settings.volume; }
+        }
         #endregion
         #region  Constructors
         public MediaPlayer()
@@ -65,7 +69,7 @@ namespace Console_MusicPlayer.Model
             currentPlaylistSongUrl = new List<string>();
             Playlists = new List<IWMPPlaylist>();
             Libraries = new List<Library>();
-            //SetAllMediaPlaylist();
+            //SetLibraryMediaPlaylist();
         }
         ~MediaPlayer()
         {
@@ -104,22 +108,22 @@ namespace Console_MusicPlayer.Model
             mPlayer.controls.previous();
         }
 
-        public string VolumeUp()
+        public int VolumeUp()
         {
             if (MPlayer.settings.volume < 100)
             {
                 MPlayer.settings.volume = MPlayer.settings.volume + 10;
             }
-            return mPlayer.settings.volume + "%";
+            return mPlayer.settings.volume;
         }
 
-        public string VolumeDown()
+        public int VolumeDown()
         {
             if (MPlayer.settings.volume > 0)
             {
                 MPlayer.settings.volume = MPlayer.settings.volume - 10;
             }
-            return mPlayer.settings.volume + "%";
+            return mPlayer.settings.volume;
         }
 
         public bool ChangeRandomPlayStatement()
@@ -330,10 +334,7 @@ namespace Console_MusicPlayer.Model
             Libraries.ForEach(x => libraryName.Add(x.Name));
             return libraryName;
         }
-        public string GetCurrentVolume()
-        {
-            return mPlayer.settings.volume + "%";
-        }
+        
         public string GetCurrentSongLabel()
         {
             try
@@ -362,7 +363,7 @@ namespace Console_MusicPlayer.Model
                 currentPlaylistSongUrl.Add(playlist.Item[i].sourceURL);
             }
         }
-        public void SetAllMediaPlaylist()
+        public void SetLibraryMediaPlaylist()
         {
             var audio = mPlayer.mediaCollection.getByAttribute("MediaType", "audio");
             IWMPPlaylist playlist;
@@ -407,6 +408,10 @@ namespace Console_MusicPlayer.Model
         {
             mPlayer.controls.playItem(mPlayer.currentPlaylist.Item[index]);
         }
+        public void SetCurrentVolume(int volume)
+        {
+            mPlayer.settings.volume = volume;
+        }
         #endregion
         #region Remove
         public void RemoveTrack(int index)
@@ -423,7 +428,7 @@ namespace Console_MusicPlayer.Model
             bool removedCurrentPlaylist = CurrentPlaylist.name.Equals(name);
             if (removedCurrentPlaylist)
             {
-                SetAllMediaPlaylist();
+                SetLibraryMediaPlaylist();
             }
             var playlists = new List<IWMPPlaylist>();
             for (int i = 0; i < mPlayer.playlistCollection.getByName(name).count; i++)

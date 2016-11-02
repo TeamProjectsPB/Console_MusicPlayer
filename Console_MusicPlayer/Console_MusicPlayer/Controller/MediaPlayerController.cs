@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,35 +12,62 @@ namespace Console_MusicPlayer.Controller
     {
         static public MediaPlayer player = new MediaPlayer();
         private bool sortAsc;
-
+        string url = Directory.GetCurrentDirectory() + "\\config.dat";
         public MediaPlayerController()
         {
             sortAsc = false;
-            player.MPlayer.settings.volume = 5;
-            player.AddLibrary("Mix", "D:\\Muzyka\\Mix");
-            player.AddPlaylist("dziendobry");
-            player.AddPlaylist("elo5");
-            player.AddPlaylist("superplaylista");
-            player.SetAllMediaPlaylist();
-            //player.SetCurrentLibrary("Mix");
-            
+            if (File.Exists(url))
+            {
+                SetCurrentVolume(url);
+                LoadLibraries(url);
+                LoadPlaylists(url);
+                SetLibraryMediaPlaylist();
+            }
         }
 
+        private static void SetLibraryMediaPlaylist()
+        {
+            player.SetLibraryMediaPlaylist();
+        }
+
+        private void LoadPlaylists(string url)
+        {
+            var playlists = ConfigFile.GetPlaylists(url);
+            playlists.ForEach(x => AddPlaylist(x));
+        }
+
+        private void LoadLibraries(string url)
+        {
+            var libraries = ConfigFile.GetLibraries(url);
+            libraries.ForEach(x => AddLibrary(x.Item1, x.Item2));
+        }
+
+        public void SetCurrentVolume(string url)
+        {
+            player.SetCurrentVolume(ConfigFile.GetVolume(url));
+
+        }
         public void CreatePlaylist(string name)
         {
             player.CreatePlaylist(name);
             sortAsc = false;
         }
-        public void AddLibrary(string url, string name)
+        public void AddLibrary(string name, string url)
         {
-            player.AddLibrary(url, name);
+            player.AddLibrary(name, url);
+            sortAsc = false;
+        }
+
+        public void AddPlaylist(string name)
+        {
+            player.AddPlaylist(name);
             sortAsc = false;
         }
 
         #region Getters
         public string GetCurrentVolume()
         {
-            return player.GetCurrentVolume();
+            return player.CurrentVolume + "%";
         }
 
         public string GetCurrentPosition()
@@ -81,12 +109,16 @@ namespace Console_MusicPlayer.Controller
 
         public string VolumeUp()
         {
-            return player.VolumeUp();
+            int volume = player.VolumeUp();
+            ConfigFile.SaveVolume(url, volume);
+            return volume + "%";
         }
 
         public string VolumeDown()
         {
-            return player.VolumeDown();
+            int volume = player.VolumeDown();
+            ConfigFile.SaveVolume(url, volume);
+            return volume + "%";
         }
 
         public void NextTrack()
