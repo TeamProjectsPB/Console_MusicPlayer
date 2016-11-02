@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Console_MusicPlayer.Model;
+using System.Timers;
+using Console_MusicPlayer.View.Windows;
 
 namespace Console_MusicPlayer.Controller
 {
@@ -11,6 +13,8 @@ namespace Console_MusicPlayer.Controller
     {
         static public MediaPlayer player = new MediaPlayer();
         private bool sortAsc;
+        private int songId;
+        
 
         public MediaPlayerController()
         {
@@ -109,6 +113,7 @@ namespace Console_MusicPlayer.Controller
             return player.ChangeRepeatAllStatement();
         }
         #endregion
+
         #region BrowserSetters
         public void SetCurrentPlaylist(string newCurrentPlaylist)
         {
@@ -150,6 +155,7 @@ namespace Console_MusicPlayer.Controller
         }
 
         #endregion
+
         #region SortPlaylist
 
         public void Sort(string attribute)
@@ -158,6 +164,7 @@ namespace Console_MusicPlayer.Controller
             player.Sort(attribute, sortAsc);
         }
         #endregion
+
         #region Remove
 
         public void AddTrackToPlaylist(int trackIndex, string playlistName)
@@ -169,12 +176,22 @@ namespace Console_MusicPlayer.Controller
             player.RemoveTrack(index);
         }
 
+
+
         public bool RemovePlaylist(string name)
         {
             return player.RemovePlaylist(name);
         }
         #endregion
 
+        public int GetSongId()
+        {
+            return songId;
+        }
+        public void SetSongId(int id)
+        {
+            songId = id;
+        }
 
     }
 }
