@@ -39,6 +39,8 @@ namespace Console_MusicPlayer.View
 
         private readonly bool ShowingDrive = false;
 
+        private static int rememberSongId;
+
         private readonly ConsoleColor TextColour = ConsoleColor.Black;
 
         public FileBrowser(int x, int y, int width, int height, List<string> playlist, string iD, Window parentWindow,
@@ -69,9 +71,10 @@ namespace Console_MusicPlayer.View
 
         public override void CursorMoveDown()
         {
-            (ParentWindow as MainWindow).StopTimer();
-            //System.Threading.Thread.Sleep(200);
-            if (CursorX == CurrentList.Count - 1 ? false : !ShowingDrive)
+
+                MainWindow.StopTimer();
+                //System.Threading.Thread.Sleep(200);
+                if (CursorX == CurrentList.Count - 1 ? false : !ShowingDrive)
                 {
                     CursorX = CursorX + 1;
                     Draw();
@@ -85,13 +88,14 @@ namespace Console_MusicPlayer.View
                     CursorX = CursorX + 1;
                     //Draw();
                 }
-            (ParentWindow as MainWindow).StartTimer();
+            MainWindow.StartTimer();
         }
 
         public override void CursorMoveUp()
         {
-            (ParentWindow as MainWindow).StopTimer();
-            if (CursorX == 0)
+
+                MainWindow.StopTimer();
+                if (CursorX == 0)
                 {
                     ParentWindow.MovetoNextItemUp(Xpostion, Ypostion, Width);
                 }
@@ -100,40 +104,43 @@ namespace Console_MusicPlayer.View
                     CursorX = CursorX - 1;
                     Draw();
                 }
-            (ParentWindow as MainWindow).StartTimer();
+            MainWindow.StartTimer();
+            
         }
 
         public override void Draw()
         {
-            (ParentWindow as MainWindow).StopTimer();
-            var j = 0;
-            WindowManager.DrawColourBlock(BackgroundColour, Xpostion, Ypostion, Xpostion + Height, Ypostion + Width);
 
-            for (j = Offset; j < Math.Min(FileNames.Count, Height + Offset - 1); j++)
-            {
-                var str1 = FileNames[j].PadRight(Width - 2, ' ').Substring(0, Width - 2);
-                if (j != CursorX)
+                MainWindow.StopTimer();
+                var j = 0;
+                WindowManager.DrawColourBlock(BackgroundColour, Xpostion, Ypostion, Xpostion + Height, Ypostion + Width);
+
+                for (j = Offset; j < Math.Min(FileNames.Count, Height + Offset - 1); j++)
                 {
-                    WindowManager.WirteText(str1, Xpostion + j - Offset + 1, Ypostion + 1, TextColour, BackgroundColour);
+                    var str1 = FileNames[j].PadRight(Width - 2, ' ').Substring(0, Width - 2);
+                    if (j != CursorX)
+                    {
+                        WindowManager.WirteText(str1, Xpostion + j - Offset + 1, Ypostion + 1, TextColour, BackgroundColour);
+                    }
+                    else if (!Selected)
+                    {
+                        WindowManager.WirteText(str1, Xpostion + j - Offset + 1, Ypostion + 1, SelectedTextColour,
+                            BackgroundColour);
+                    }
+                    else
+                    {
+                        WindowManager.WirteText(str1, Xpostion + j - Offset + 1, Ypostion + 1, SelectedTextColour,
+                            SelectedBackgroundColour);
+                    }
                 }
-                else if (!Selected)
-                {
-                    WindowManager.WirteText(str1, Xpostion + j - Offset + 1, Ypostion + 1, SelectedTextColour,
-                        BackgroundColour);
-                }
-                else
-                {
-                    WindowManager.WirteText(str1, Xpostion + j - Offset + 1, Ypostion + 1, SelectedTextColour,
-                        SelectedBackgroundColour);
-                }
-            }
-            (ParentWindow as MainWindow).StartTimer();
+            MainWindow.StartTimer();
+            
         }
 
         
         public override void Enter()
         {
-            
+            MainWindow.StopTimer();
             if (CursorX < 0 || CursorX >= CurrentList.Count ? false : !ShowingDrive)
             {
                 MediaPlayerController controller = MainWindow.controller;
@@ -157,25 +164,29 @@ namespace Console_MusicPlayer.View
                     //controller.CurrentSong = mediaPlayer.CurrentPlaylist.Tracks.FirstOrDefault();
                     //controller.SetFirstOrDefaultSong();
                     (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
-                    (ParentWindow as MainWindow).ReloadPlaylistsBrowser();                   
+                    //(ParentWindow as MainWindow).ReloadPlaylistsBrowser();                   
                 }
                 else if (iD.Equals("libraryBrowser"))
                 {
                     controller.Stop();
                     controller.SetCurrentLibrary(CurrentList.ElementAt(CursorX));
                     (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
-                    (ParentWindow as MainWindow).ReloadLibraryBrowser();
-                    (ParentWindow as MainWindow).ReloadPlaylistsBrowser();
+                    //(ParentWindow as MainWindow).ReloadLibraryBrowser();
+                    //(ParentWindow as MainWindow).ReloadPlaylistsBrowser();
                 }
                 else if (iD.Equals("addTrackToPlaylist"))
                 {
+                    string playlist;
+                    playlist = controller.GetPlaylists().ElementAt(cursorX);
                     (ParentWindow as AddTrackToPlaylistWindow).Apply();
+                    controller.AddTrackToPlaylist(rememberSongId, playlist);
                 }
             }
             else if (SelectFile == null ? false : !ShowingDrive)
             {
                 SelectFile();
             }
+            MainWindow.StartTimer();
         }
 
         public override void BackSpace()
@@ -227,21 +238,25 @@ namespace Console_MusicPlayer.View
         public override void CursorMoveLeft()
         {
             //base.CursorMoveLeft();
+            MainWindow.StopTimer();
             if (CursorX < 0 || CursorX >= CurrentList.Count ? false : !ShowingDrive)
             {
                 MediaPlayerController controller = MainWindow.controller;
                 if (iD.Equals("currentPlaylistBrowser"))
                 {
+                    //controller.SetSongId(cursorX);
+                    rememberSongId = cursorX;
                     //AddTrackToPlaylistWindow addTrackToPlaylistWindow = new AddTrackToPlaylistWindow(ParentWindow);
                     var tuple = (ParentWindow as MainWindow).RunAddToTrackWindow();
-                    if(tuple.Item1)
-                    //if ((ParentWindow as MainWindow).RunAddToTrackWindow())
-                    {
-                        var playlistName = tuple.Item2;
-                        controller.AddTrackToPlaylist(cursorX, playlistName);
-                    }
+                    //if(tuple.Item1)
+                    ////if ((ParentWindow as MainWindow).RunAddToTrackWindow())
+                    //{
+                    //    var playlistName = tuple.Item2;
+                    //    controller.AddTrackToPlaylist(controller.GetSongId(), playlistName);
+                    //}
                 }
             }
+            MainWindow.StartTimer();
         }
 
         private void GetCurrentlySelectedFileName()
@@ -288,7 +303,7 @@ namespace Console_MusicPlayer.View
             if (!Selected)
             {
                 Selected = true;
-                //Draw();
+                Draw();
             }
         }
 
@@ -309,7 +324,7 @@ namespace Console_MusicPlayer.View
             if (Selected)
             {
                 Selected = false;
-                //Draw();
+                Draw();
             }
         }
 

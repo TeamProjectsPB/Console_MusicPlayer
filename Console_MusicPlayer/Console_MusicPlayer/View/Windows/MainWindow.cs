@@ -21,8 +21,8 @@ namespace Console_MusicPlayer.View.Windows
         #region Members
 
         public static MediaPlayerController controller = new MediaPlayerController();
-        static public bool canScroolList = true;
-        Timer timer;
+        static Timer timer;
+        public static int songId = 0;
 
         private Label libraryTextBox;
         private Label playlistTextBox;
@@ -53,11 +53,14 @@ namespace Console_MusicPlayer.View.Windows
 
         private Button repeatAllBtn;
         private Button shufflePlayBtn;
+        private Button openWindow;
 
         private Label volumeLabel;
         private FileBrowser currentPlaylistBrowser;
         private FileBrowser playlistsBrowser;
         private FileBrowser libraryBrowser;
+
+        
 
         private AddTrackToPlaylistWindow addTrackToPlaylistWindow;
         #endregion
@@ -81,6 +84,8 @@ namespace Console_MusicPlayer.View.Windows
             currentSongLabel = new Label("Aktualna Piosenka", 41, 55, "currentSong", this);
             currentSongLabel.BackgroundColour = ConsoleColor.DarkGray;
 
+            openWindow = new Button(1, 33, "Dodaj utwor", "addTrackBtn", this) { Action = delegate () { new AddTrackToPlaylistWindow(openWindow.ParentWindow); } };
+
             addNewLibraryBtn = new Button(5, 3, "Dodaj biblioteke", "addNewLibraryBtn", this) { Action = delegate () { new AddNewLibraryWindow(addNewLibraryBtn.ParentWindow); } };
             addNewPlaylistBtn = new Button(21, 3, "Dodaj playliste", "addNewPlaylistBtn", this) { Action = delegate () { new AddNewPlaylistWindow(addNewPlaylistBtn.ParentWindow); } };
 
@@ -90,7 +95,7 @@ namespace Console_MusicPlayer.View.Windows
             //albumLabel = new Label("Album", 4, 85, "albumLabel", this);
             //rankLabel = new Label("Ocena", 4, 105, "rankLabel", this);
 
-            artistLabelBtn = new Button(4, 37, "Artysta", "artistBtn", this) {Action = delegate() { Sort("Author"); }};
+            artistLabelBtn = new Button(4, 37, "Artysta", "artistBtn", this) { Action = delegate () { Sort("Author"); } };
             nameLabelBtn = new Button(4, 55, "Nazwa utworu", "titleBtn", this) { Action = delegate () { Sort("Title"); } };
             albumLabelBtn = new Button(4, 95, "Album", "albumBtn", this) { Action = delegate () { Sort("Album"); } };
             //rankBtn = new Button(4, 105, "Ocena", "rankBtn", this);
@@ -107,7 +112,7 @@ namespace Console_MusicPlayer.View.Windows
 
             controlsLabel = new Label("Sterowanie", 40, 65, "controlLabel", this);
 
-            repeatAllBtn = new Button(44, 13, "Repeat All", "stopBtn", this) {Action = delegate () { ChangeRepeatAllStatement(); } };
+            repeatAllBtn = new Button(44, 13, "Repeat All", "stopBtn", this) { Action = delegate () { ChangeRepeatAllStatement(); } };
             shufflePlayBtn = new Button(44, 3, "Random", "stopBtn", this) { Action = delegate () { ChangeRandomPlayStatement(); } };
 
             stopBtn = new Button(44, 55, "  ■  ", "stopBtn", this) { Action = delegate () { Stop(); } };
@@ -136,8 +141,10 @@ namespace Console_MusicPlayer.View.Windows
             CurrentlySelected = playBtn;
             Draw();
             MainLoop();
-            
+
         }
+
+
         #region Adders
 
         public void CreatePlaylist(string name)
@@ -151,7 +158,7 @@ namespace Console_MusicPlayer.View.Windows
         public void Sort(string attribute)
         {
             controller.Sort(attribute);
-            ReloadCurrentPlaylistBrowser();   
+            ReloadCurrentPlaylistBrowser();
         }
         #endregion
         #region MediaPlayerControls
@@ -220,9 +227,9 @@ namespace Console_MusicPlayer.View.Windows
         }
         #endregion
         #region Timer
-        private void UpdateCurrentPosition(object sender, ElapsedEventArgs elapsedEventArgs)
+        public void UpdateCurrentPosition(object sender, ElapsedEventArgs elapsedEventArgs)
         {
-            canScroolList = false;
+
             currentSongLabel.SetText("                                                                              ");
             currentSongLabel.SetText(controller.GetCurrentSongLabel());
             startLabel.SetText(controller.GetCurrentPosition());
@@ -230,23 +237,23 @@ namespace Console_MusicPlayer.View.Windows
             double start = controller.GetCurrentPositionDouble();
             double end = controller.GetDurationDouble();
             UpdateSeekBar(start, end);
-            canScroolList = true;
+
         }
-        public void StartTimer()
+        public static void StartTimer()
         {
             if (!timer.Enabled)
             {
-                canScroolList = false;
+
                 timer.Start();
             }
         }
 
-        public void StopTimer()
+        public static void StopTimer()
         {
             if (timer.Enabled)
             {
                 timer.Stop();
-                canScroolList = true;
+
             }
         }
         #endregion
@@ -288,7 +295,7 @@ namespace Console_MusicPlayer.View.Windows
             {
                 e.ToString();
             }
-           
+
         }
 
         public void AddAllInputs()
@@ -322,12 +329,13 @@ namespace Console_MusicPlayer.View.Windows
             Inputs.Add(nameLabelBtn);
             Inputs.Add(albumLabelBtn);
             Inputs.Add(currentSongLabel);
+            Inputs.Add(openWindow);
 
             Inputs.Add(currentPlaylistBrowser);
             Inputs.Add(playlistsBrowser);
             Inputs.Add(libraryBrowser);
 
-            
+
         }
 
         private void ExitApp(Window parent)
@@ -367,8 +375,5 @@ namespace Console_MusicPlayer.View.Windows
         }
         #endregion
 
-
     }
-
-
 }
