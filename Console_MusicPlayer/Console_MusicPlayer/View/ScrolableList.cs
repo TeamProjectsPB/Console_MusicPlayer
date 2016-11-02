@@ -232,10 +232,12 @@ namespace Console_MusicPlayer.View
                 MediaPlayerController controller = MainWindow.controller;
                 if (iD.Equals("currentPlaylistBrowser"))
                 {
-                    AddTrackToPlaylistWindow addTrackToPlaylistWindow = new AddTrackToPlaylistWindow(ParentWindow);
-                    if (addTrackToPlaylistWindow.DialogResult)
+                    //AddTrackToPlaylistWindow addTrackToPlaylistWindow = new AddTrackToPlaylistWindow(ParentWindow);
+                    var tuple = (ParentWindow as MainWindow).RunAddToTrackWindow();
+                    if(tuple.Item1)
+                    //if ((ParentWindow as MainWindow).RunAddToTrackWindow())
                     {
-                        var playlistName = addTrackToPlaylistWindow.SelectedPlaylist;
+                        var playlistName = tuple.Item2;
                         controller.AddTrackToPlaylist(cursorX, playlistName);
                     }
                 }

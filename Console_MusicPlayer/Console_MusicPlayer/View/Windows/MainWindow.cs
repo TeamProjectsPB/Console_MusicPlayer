@@ -58,6 +58,8 @@ namespace Console_MusicPlayer.View.Windows
         private FileBrowser currentPlaylistBrowser;
         private FileBrowser playlistsBrowser;
         private FileBrowser libraryBrowser;
+
+        private AddTrackToPlaylistWindow addTrackToPlaylistWindow;
         #endregion
 
         public MainWindow()
@@ -248,6 +250,11 @@ namespace Console_MusicPlayer.View.Windows
         }
         #endregion
         #region UI_Draw
+        public Tuple<bool, string> RunAddToTrackWindow()
+        {
+            addTrackToPlaylistWindow = new Windows.AddTrackToPlaylistWindow(this);
+            return Tuple.Create(addTrackToPlaylistWindow.DialogResult, addTrackToPlaylistWindow.SelectedPlaylist);
+        }
 
         public override void ReDraw()
         {

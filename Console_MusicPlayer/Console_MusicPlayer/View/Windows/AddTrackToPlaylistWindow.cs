@@ -29,8 +29,8 @@ namespace Console_MusicPlayer.View.Windows
                 Action = delegate() { ExitWindow(); }
             };
 
-            Inputs.Add(playlistBrowser);
             Inputs.Add(cancelButton);
+            Inputs.Add(playlistBrowser);
 
             CurrentlySelected = cancelButton;
 

@@ -20,6 +20,7 @@ namespace Console_MusicPlayer.Controller
             player.AddPlaylist("dziendobry");
             player.AddPlaylist("elo5");
             player.AddPlaylist("superplaylista");
+            player.SetAllMediaPlaylist();
             //player.SetCurrentLibrary("Mix");
             
         }

@@ -65,7 +65,7 @@ namespace Console_MusicPlayer.Model
             currentPlaylistSongUrl = new List<string>();
             Playlists = new List<IWMPPlaylist>();
             Libraries = new List<Library>();
-            SetAllMediaPlaylist();
+            //SetAllMediaPlaylist();
         }
         ~MediaPlayer()
         {
@@ -378,7 +378,8 @@ namespace Console_MusicPlayer.Model
             }
             for (int i = 0; i < audio.count; i++)
             {
-                playlist.appendItem(audio.Item[i]);
+                var audioItem = audio.Item[i];
+                Libraries.ForEach(x => { if (audioItem.sourceURL.Contains(x.Url)) { playlist.appendItem(audioItem); } });
             }
             SetCurrentPlaylistSongUrl(playlist);
             CurrentPlaylist = playlist;
@@ -442,9 +443,12 @@ namespace Console_MusicPlayer.Model
                 Libraries.Add(new Library(name, url));
                 var songsUrl = new List<string>(Directory.EnumerateFiles(url, "*.*", SearchOption.AllDirectories).
                     Where(
+                        s => mediaExtensions.Contains(Path.GetExtension(s), StringComparer.OrdinalIgnoreCase)));
+                /*var songsUrl = new List<string>(Directory.EnumerateFiles(url, "*.*", SearchOption.AllDirectories).
+                    Where(
                         s =>
                             s.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase) ||
-                            s.EndsWith(".wav", StringComparison.OrdinalIgnoreCase)));
+                            s.EndsWith(".wav", StringComparison.OrdinalIgnoreCase)));*/
                 songsUrl.ForEach(x =>
                 {
                     if (!SongInfo.ContainsKey(x))
@@ -480,15 +484,17 @@ namespace Console_MusicPlayer.Model
         }
         private void LoadMediaInfo()
         {
-            for (var i = 0; i < mPlayer.mediaCollection.getAll().count; i++)
+            var mediaCollection = mPlayer.mediaCollection.getByAttribute("MediaType", "audio");
+            var count = mediaCollection.count;
+            for (var i = 0; i < mediaCollection.count; i++)
             {
-                var media = mPlayer.mediaCollection.getAll().Item[i];
+                var media = mediaCollection.Item[i];
                 var url = media.sourceURL;
-                if (mediaExtensions.Contains(Path.GetExtension(media.sourceURL), StringComparer.OrdinalIgnoreCase))
-                {
+                //if (mediaExtensions.Contains(Path.GetExtension(media.sourceURL), StringComparer.OrdinalIgnoreCase))
+                //{
                     var mediaInfo = Song.Create(media.sourceURL);
                     SongInfo.Add(media.sourceURL, mediaInfo);
-                }
+                //}
             }
         }
         #endregion
