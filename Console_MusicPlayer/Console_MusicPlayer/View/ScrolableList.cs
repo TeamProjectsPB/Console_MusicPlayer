@@ -181,7 +181,6 @@ namespace Console_MusicPlayer.View
                         controller.LoadCurrentLibrary(CurrentList.ElementAt(CursorX));
                     }
                     (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
-                    
                     //(ParentWindow as MainWindow).ReloadLibraryBrowser();
                     //(ParentWindow as MainWindow).ReloadPlaylistsBrowser();
                 }
@@ -237,7 +236,12 @@ namespace Console_MusicPlayer.View
                     Confirm confirm = new Confirm("Czy na pewno chcesz usunąć bibliotekę?", ParentWindow, ConsoleColor.Gray);
                     if (confirm.ShowDialog() == DialogResult.OK)
                     {
-
+                        if (controller.RemoveLibrary(CurrentList.ElementAt(CursorX)))
+                        {
+                            (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
+                        }
+                        (ParentWindow as MainWindow).ReloadLibraryBrowser();
+                        ResetCursorX();
                     }
                 }
             }

@@ -8,7 +8,6 @@ namespace Console_MusicPlayer.Controller
     {
         public MediaPlayerController()
         {
-            sortAsc = false;
             if (File.Exists(fileUrl))
             {
                 LoadCurrentVolume(fileUrl);
@@ -45,7 +44,6 @@ namespace Console_MusicPlayer.Controller
         {
             ConfigFile.SaveNewPlaylist(fileUrl, name);
             player.CreatePlaylist(name);
-            sortAsc = false;
         }
 
         public void CreateLibrary(string name, string url)
@@ -56,13 +54,11 @@ namespace Console_MusicPlayer.Controller
         public void AddLibrary(string name, string url)
         {
             player.AddLibrary(name, url);
-            sortAsc = false;
         }
 
         public void AddPlaylist(string name)
         {
             player.AddPlaylist(name);
-            sortAsc = false;
         }
         public void AddTrackToPlaylist(int trackIndex, string playlistName)
         {
@@ -71,14 +67,12 @@ namespace Console_MusicPlayer.Controller
         #region SortPlaylist
         public void Sort(string attribute)
         {
-            sortAsc = !sortAsc;
-            player.Sort(attribute, sortAsc);
+            player.Sort(attribute);
         }
         #endregion
 
         #region Members
-        public static MediaPlayer player = new MediaPlayer();
-        private bool sortAsc;
+        public static MediaPlayer player = new MediaPlayer();        
         private readonly string fileUrl = Directory.GetCurrentDirectory() + "\\config.dat";
         #endregion
         #region Properties
@@ -189,6 +183,11 @@ namespace Console_MusicPlayer.Controller
         public bool RemovePlaylist(string name)
         {
             return player.RemovePlaylist(name);
+        }
+
+        public bool RemoveLibrary(string name)
+        {
+            return player.RemoveLibrary(name);
         }
 
       

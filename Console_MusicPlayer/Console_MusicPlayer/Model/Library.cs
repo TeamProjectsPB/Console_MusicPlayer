@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WMPLib;
 using Song = TagLib.File;
 
 namespace Console_MusicPlayer.Model
@@ -14,6 +15,7 @@ namespace Console_MusicPlayer.Model
         #region Members
         private string name;
         private string url;
+        private IWMPPlaylist playlist;
         #endregion
 
         #region Properties
@@ -30,7 +32,11 @@ namespace Console_MusicPlayer.Model
             set { url = value; }
         }
 
-       
+        public IWMPPlaylist Playlist
+        {
+            get { return playlist; }
+            set { playlist = value; }
+        }
 
         #endregion
         #region Constructor
@@ -39,6 +45,13 @@ namespace Console_MusicPlayer.Model
         {
             this.name = name;
             this.url = url;
+        }
+
+        public Library(string name, string url, IWMPPlaylist playlist)
+        {
+            this.name = name;
+            this.url = url;
+            this.playlist = playlist;
         }
 
         #endregion
