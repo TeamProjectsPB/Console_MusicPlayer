@@ -74,7 +74,7 @@ namespace Console_MusicPlayer
         }
         public static List<string> GetPlaylists(string url)
         {
-            List<string> libraries = new List<string>();
+            List<string> playlists = new List<string>();
             try
             {
                 XmlDocument document = new XmlDocument();
@@ -88,13 +88,13 @@ namespace Console_MusicPlayer
                     {
                         if (xmlNode2.Name.Equals("playlist"))
                         {
-                            libraries.Add(xmlNode2.InnerText);
+                            playlists.Add(xmlNode2.InnerText);
                         }
                     }
                 }
             }
             catch { }
-            return libraries;
+            return playlists;
         }
         #endregion
 
@@ -102,7 +102,7 @@ namespace Console_MusicPlayer
 
         public static void SaveVolume(string url, int volume)
         {
-            //XDocument xDocument = XDocument.Load(url);
+            //XDocument xDocument = XDocument.Load(fileUrl);
             //XElement root = xDocument.Element("player");
             //IEnumerable<XElement> rows = root.Descendants("head");
             if (File.Exists(url))
@@ -111,6 +111,7 @@ namespace Console_MusicPlayer
                 {
                     XmlDocument document = new XmlDocument();
                     document.Load(url);
+                    
                     XmlNodeList xmlNodeList = document.GetElementsByTagName("head");
                     foreach (XmlNode xmlNode in xmlNodeList)
                     {
@@ -136,8 +137,94 @@ namespace Console_MusicPlayer
                 catch { }
             }
         }
+        public static void SaveNewPlaylist(string url, string name)
+        {
+            //XDocument xDocument = XDocument.Load(fileUrl);
+            //XElement root = xDocument.Element("player");
+            //IEnumerable<XElement> rows = root.Descendants("head");
+            if (File.Exists(url))
+            {
+                try
+                {
+                    XmlDocument document = new XmlDocument();
+                    document.Load(url);
+
+                    XmlNode playlists = document.GetElementsByTagName("playlists")[0];
+
+                    XmlNode node = document.CreateNode(XmlNodeType.Element, "playlist", "");
+                    node.InnerText = name;
+                    playlists.AppendChild(node);
+                    document.Save(url);
+                }
+                catch { }
+            }
+        }
+        public static void SaveNewLibrary(string url, string name, string libUrl)
+        {
+            //XDocument xDocument = XDocument.Load(fileUrl);
+            //XElement root = xDocument.Element("player");
+            //IEnumerable<XElement> rows = root.Descendants("head");
+            if (File.Exists(url))
+            {
+                try
+                {
+                    XmlDocument document = new XmlDocument();
+                    document.Load(url);
+
+                    XmlNode playlists = document.GetElementsByTagName("libraries")[0];
+
+                    XmlNode node = document.CreateNode(XmlNodeType.Element, "library", "");
+                    {
+                        XmlAttribute nameAttribute = document.CreateAttribute("", "name", "");
+                        nameAttribute.Value = name;
+                        node.Attributes.Append(nameAttribute);
+
+                        XmlAttribute urlAttribute = document.CreateAttribute("", "url", "");
+                        urlAttribute.Value = libUrl;
+                        node.Attributes.Append(urlAttribute);
+                    }
+
+                    playlists.AppendChild(node);
+                    document.Save(url);
+                }
+                catch { }
+            }
+        }
         #endregion
 
+        public static void CreateNewFile(string url)
+        {
+            XmlTextWriter writer = new XmlTextWriter(url, null);
+            writer.WriteStartDocument();
+            writer.WriteWhitespace("\n");
+            {
+                writer.WriteStartElement("player");
+                {
+                    writer.WriteWhitespace("\n\t");
+                    writer.WriteStartElement("head");
+                    {
+
+                    }
+                    writer.WriteEndElement();
+                    writer.WriteWhitespace("\n\t");
+                    writer.WriteStartElement("playlists");
+                    {
+
+                    }
+                    writer.WriteEndElement();
+                    writer.WriteWhitespace("\n\t");
+                    writer.WriteStartElement("libraries");
+                    {
+     
+                    }
+                    writer.WriteEndElement();
+                }
+                writer.WriteWhitespace("\n");
+                writer.WriteEndElement();
+            }
+            writer.WriteEndDocument();
+            writer.Close();
+        }
         private static void SaveNewFile(string url, int volume, List<string> playlists, List<Library> libraries)
         {
             XmlTextWriter writer = new XmlTextWriter(url, null);

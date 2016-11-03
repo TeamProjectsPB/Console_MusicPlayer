@@ -60,7 +60,6 @@
     <Compile Include="Model\MediaPlayer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="View\FileInfo.cs" />
     <Compile Include="View\ScrolableList.cs" />
     <Compile Include="View\Windows\AddNewLibraryWindow.cs" />
     <Compile Include="View\Windows\AddNewPlaylistWindow.cs" />

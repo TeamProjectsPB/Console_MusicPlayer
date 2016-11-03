@@ -49,11 +49,11 @@ namespace Console_MusicPlayer.View.Windows
         private Button artistLabelBtn;
         private Button nameLabelBtn;
         private Button albumLabelBtn;
-        private Button rankBtn;
+        //private Button rankBtn;
 
         private Button repeatAllBtn;
         private Button shufflePlayBtn;
-        private Button openWindow;
+        //private Button openWindow;
 
         private Label volumeLabel;
         private FileBrowser currentPlaylistBrowser;
@@ -74,9 +74,9 @@ namespace Console_MusicPlayer.View.Windows
 
             #region Elementy Interfejsu Inicjalizacja
 
-            currentPlaylistBrowser = new FileBrowser(5, 33, 90, 32, controller.GetCurrentSongs(), "currentPlaylistBrowser", this, true);
-            playlistsBrowser = new FileBrowser(22, 3, 26, 11, controller.GetPlaylists(), "playlistsBrowser", this, true);
-            libraryBrowser = new FileBrowser(6, 3, 26, 12, controller.GetLibraries(), "libraryBrowser", this, true);
+            currentPlaylistBrowser = new FileBrowser(5, 33, 90, 32, controller.CurrentSongs, "currentPlaylistBrowser", this, true);
+            playlistsBrowser = new FileBrowser(22, 3, 26, 11, controller.PlaylistsToString, "playlistsBrowser", this, true);
+            libraryBrowser = new FileBrowser(6, 3, 26, 12, controller.LibrariesToString, "libraryBrowser", this, true);
 
             libraryTextBox = new Label("Biblioteka", 3, 10, "libraryTextBox", this);
             playlistTextBox = new Label("Playlisty", 19, 10, "playlistTextBox", this);
@@ -84,7 +84,7 @@ namespace Console_MusicPlayer.View.Windows
             currentSongLabel = new Label("Aktualna Piosenka", 41, 55, "currentSong", this);
             currentSongLabel.BackgroundColour = ConsoleColor.DarkGray;
 
-            openWindow = new Button(1, 33, "Dodaj utwor", "addTrackBtn", this) { Action = delegate () { new AddTrackToPlaylistWindow(openWindow.ParentWindow); } };
+            //openWindow = new Button(1, 33, "Dodaj utwor", "addTrackBtn", this) { Action = delegate () { new AddTrackToPlaylistWindow(openWindow.ParentWindow); } };
 
             addNewLibraryBtn = new Button(5, 3, "Dodaj biblioteke", "addNewLibraryBtn", this) { Action = delegate () { new AddNewLibraryWindow(addNewLibraryBtn.ParentWindow); } };
             addNewPlaylistBtn = new Button(21, 3, "Dodaj playliste", "addNewPlaylistBtn", this) { Action = delegate () { new AddNewPlaylistWindow(addNewPlaylistBtn.ParentWindow); } };
@@ -123,7 +123,7 @@ namespace Console_MusicPlayer.View.Windows
 
             volumeDownBtn = new Button(44, 110, " - ", "volumeDown", this) { Action = delegate () { VolumeDown(); } };
             volumeUpBtn = new Button(44, 123, " + ", "volumeDown", this) { Action = delegate () { VolumeUp(); } };
-            volumeLabel = new Label(controller.GetCurrentVolume(), 44, 117, "volumeLabel", this);
+            volumeLabel = new Label(controller.CurrentVolumeToString, 44, 117, "volumeLabel", this);
             //volumeLabel.SetText(controller.CurrentVolume());
 
             previousTrackBtn = new Button(44, 45, "  |<  ", "previousTrackBtn", this) { Action = delegate () { PreviousTrack(); } };
@@ -231,11 +231,11 @@ namespace Console_MusicPlayer.View.Windows
         {
 
             currentSongLabel.SetText("                                                                              ");
-            currentSongLabel.SetText(controller.GetCurrentSongLabel());
-            startLabel.SetText(controller.GetCurrentPosition());
-            endLabel.SetText(controller.GetDuration());
-            double start = controller.GetCurrentPositionDouble();
-            double end = controller.GetDurationDouble();
+            currentSongLabel.SetText(controller.CurrentSong);
+            startLabel.SetText(controller.CurrentPositionToString);
+            endLabel.SetText(controller.DurationToString);
+            double start = controller.CurrentPosition;
+            double end = controller.Duration;
             UpdateSeekBar(start, end);
 
         }
@@ -329,7 +329,7 @@ namespace Console_MusicPlayer.View.Windows
             Inputs.Add(nameLabelBtn);
             Inputs.Add(albumLabelBtn);
             Inputs.Add(currentSongLabel);
-            Inputs.Add(openWindow);
+            //Inputs.Add(openWindow);
 
             Inputs.Add(currentPlaylistBrowser);
             Inputs.Add(playlistsBrowser);
@@ -356,20 +356,20 @@ namespace Console_MusicPlayer.View.Windows
         #region FileBrowserReloaders
         public void ReloadCurrentPlaylistBrowser()
         {
-            currentPlaylistBrowser.CurrentList = controller.GetCurrentSongs();
+            currentPlaylistBrowser.CurrentList = controller.CurrentSongs;
             currentPlaylistBrowser.GetFileNames();
             currentPlaylistBrowser.Draw();
         }
 
         public void ReloadPlaylistsBrowser()
         {
-            playlistsBrowser.CurrentList = controller.GetPlaylists();
+            playlistsBrowser.CurrentList = controller.PlaylistsToString;
             playlistsBrowser.GetFileNames();
             playlistsBrowser.Draw();
         }
         public void ReloadLibraryBrowser()
         {
-            libraryBrowser.CurrentList = controller.GetLibraries();
+            libraryBrowser.CurrentList = controller.LibrariesToString;
             libraryBrowser.GetFileNames();
             libraryBrowser.Draw();
         }

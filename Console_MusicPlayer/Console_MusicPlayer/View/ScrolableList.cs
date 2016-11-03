@@ -15,7 +15,7 @@ namespace Console_MusicPlayer.View
     internal class FileBrowser : Input
     {
         private string iD;
-        private bool AtRoot = false;
+        //private bool AtRoot = false;
 
         private readonly ConsoleColor BackgroundColour = ConsoleColor.DarkGray;
 
@@ -148,9 +148,9 @@ namespace Console_MusicPlayer.View
                 if (iD.Equals("currentPlaylistBrowser"))
                 {
                     WindowManager.DrawColourBlock(ConsoleColor.Gray, 42, 10, 43, 120);//Seekbar domyslny szary
-                    //controller.SetCurrentSong(CurrentList.ElementAt(cursorX));
+                    //controller.LoadCurrentSong(CurrentList.ElementAt(cursorX));
                     controller.Stop();
-                    controller.SetCurrentSong(cursorX);
+                    controller.LoadCurrentSong(cursorX);
                     WindowManager.WirteText(CurrentlySelectedFile, 0, 0, this.TextColour, this.BackgroundColour);
                     //(ParentWindow as MainWindow).currentSongLabel.SetText("                                                                              ");
                     //(ParentWindow as MainWindow).currentSongLabel.SetText(controller.GetCurrentSongLabel(cursorX));
@@ -160,7 +160,7 @@ namespace Console_MusicPlayer.View
                 else if (iD.Equals("playlistsBrowser"))
                 {
                     controller.Stop();
-                    controller.SetCurrentPlaylist(CurrentList.ElementAt(cursorX));
+                    controller.LoadCurrentPlaylist(CurrentList.ElementAt(cursorX));
                     //controller.CurrentSong = mediaPlayer.CurrentPlaylist.Tracks.FirstOrDefault();
                     //controller.SetFirstOrDefaultSong();
                     (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
@@ -169,7 +169,14 @@ namespace Console_MusicPlayer.View
                 else if (iD.Equals("libraryBrowser"))
                 {
                     controller.Stop();
-                    controller.SetCurrentLibrary(CurrentList.ElementAt(CursorX));
+                    if (CursorX == 0)
+                    {
+                        controller.LoadLibraryMediaPlaylist();
+                    }
+                    else
+                    {
+                        controller.LoadCurrentLibrary(CurrentList.ElementAt(CursorX));
+                    }
                     (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
                     //(ParentWindow as MainWindow).ReloadLibraryBrowser();
                     //(ParentWindow as MainWindow).ReloadPlaylistsBrowser();
@@ -177,7 +184,7 @@ namespace Console_MusicPlayer.View
                 else if (iD.Equals("addTrackToPlaylist"))
                 {
                     string playlist;
-                    playlist = controller.GetPlaylists().ElementAt(cursorX);
+                    playlist = controller.PlaylistsToString.ElementAt(cursorX);
                     (ParentWindow as AddTrackToPlaylistWindow).Apply();
                     controller.AddTrackToPlaylist(rememberSongId, playlist);
                 }

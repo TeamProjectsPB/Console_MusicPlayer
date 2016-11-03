@@ -26,7 +26,7 @@ namespace Console_MusicPlayer.View.Windows
             controller = MainWindow.controller;
 
             DialogResult = false;
-            playlistBrowser = new FileBrowser(PostionX + 2, PostionY + 2, 29, 16,MainWindow.controller.GetPlaylists(), "addTrackToPlaylist", this, true);
+            playlistBrowser = new FileBrowser(PostionX + 2, PostionY + 2, 29, 16,MainWindow.controller.PlaylistsToString, "addTrackToPlaylist", this, true);
             cancelButton = new Button(PostionX + 18, PostionY + 12, "Anuluj", "cancelButton", this)
             {
                 Action = delegate() { ExitWindow(); }

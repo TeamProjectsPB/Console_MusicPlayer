@@ -56,7 +56,7 @@ namespace Console_MusicPlayer.View.Windows
             controller = MainWindow.controller;
             if (!urlTxtBox.GetText().Equals("") && !nameTxtBox.GetText().Equals(""))
             {
-                controller.AddLibrary(name, url);
+                controller.CreateLibrary(name, url);
             }
             ExitWindow();
             (ParentWindow as MainWindow).ReloadLibraryBrowser();
