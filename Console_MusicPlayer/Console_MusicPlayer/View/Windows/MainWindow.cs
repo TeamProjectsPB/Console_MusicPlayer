@@ -258,6 +258,7 @@ namespace Console_MusicPlayer.View.Windows
         }
         #endregion
         #region UI_Draw
+
         public Tuple<bool, string> RunAddToTrackWindow()
         {
             addTrackToPlaylistWindow = new Windows.AddTrackToPlaylistWindow(this);
@@ -356,6 +357,7 @@ namespace Console_MusicPlayer.View.Windows
         #region FileBrowserReloaders
         public void ReloadCurrentPlaylistBrowser()
         {
+            currentPlaylistBrowser.ResetCursorX();
             currentPlaylistBrowser.CurrentList = controller.CurrentSongs;
             currentPlaylistBrowser.GetFileNames();
             currentPlaylistBrowser.Draw();

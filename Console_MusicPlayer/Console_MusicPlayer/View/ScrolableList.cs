@@ -152,6 +152,7 @@ namespace Console_MusicPlayer.View
                     controller.Stop();
                     controller.LoadCurrentSong(cursorX);
                     WindowManager.WirteText(CurrentlySelectedFile, 0, 0, this.TextColour, this.BackgroundColour);
+                    //ResetCursorX();
                     //(ParentWindow as MainWindow).currentSongLabel.SetText("                                                                              ");
                     //(ParentWindow as MainWindow).currentSongLabel.SetText(controller.GetCurrentSongLabel(cursorX));
                     //(ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
@@ -164,6 +165,8 @@ namespace Console_MusicPlayer.View
                     //controller.CurrentSong = mediaPlayer.CurrentPlaylist.Tracks.FirstOrDefault();
                     //controller.SetFirstOrDefaultSong();
                     (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
+                    
+                    //ResetCursorX();
                     //(ParentWindow as MainWindow).ReloadPlaylistsBrowser();                   
                 }
                 else if (iD.Equals("libraryBrowser"))
@@ -178,6 +181,7 @@ namespace Console_MusicPlayer.View
                         controller.LoadCurrentLibrary(CurrentList.ElementAt(CursorX));
                     }
                     (ParentWindow as MainWindow).ReloadCurrentPlaylistBrowser();
+                    
                     //(ParentWindow as MainWindow).ReloadLibraryBrowser();
                     //(ParentWindow as MainWindow).ReloadPlaylistsBrowser();
                 }
@@ -187,6 +191,7 @@ namespace Console_MusicPlayer.View
                     playlist = controller.PlaylistsToString.ElementAt(cursorX);
                     (ParentWindow as AddTrackToPlaylistWindow).Apply();
                     controller.AddTrackToPlaylist(rememberSongId, playlist);
+                    ResetCursorX();
                 }
             }
             else if (SelectFile == null ? false : !ShowingDrive)
