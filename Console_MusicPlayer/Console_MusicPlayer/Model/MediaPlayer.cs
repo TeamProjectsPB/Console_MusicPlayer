@@ -198,6 +198,11 @@ namespace Console_MusicPlayer.Model
             mPlayer.settings.setMode("loop", repeatAll);
             return repeatAll;
         }
+
+        public void MoveTrack(int songIndex, int newIndex)
+        {
+            mPlayer.currentPlaylist.moveItem(songIndex, newIndex);
+        }
         #endregion       
         #region SortPlaylist
         public void Sort(string attribute)
@@ -365,7 +370,7 @@ namespace Console_MusicPlayer.Model
             }
         }
         #endregion
-
+        #region Loaders
         public void LoadLibraryMediaPlaylist()
         {
             if (!PlaylistsUrl.ContainsKey(allLibrariesPlaylistName))
@@ -391,7 +396,7 @@ namespace Console_MusicPlayer.Model
         {
             mPlayer.controls.playItem(mPlayer.currentPlaylist.Item[index]);
         }
-        
+        #endregion
         #region Remove
         public void RemoveTrack(int index)
         {
