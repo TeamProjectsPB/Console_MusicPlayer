@@ -10,7 +10,7 @@ using Console_MusicPlayer.Controller;
 using Console_MusicPlayer.Model;
 using WMPLib;
 
-namespace Console_MusicPlayer
+namespace Console_MusicPlayer.Model
 {
     public static class ConfigFile
     {

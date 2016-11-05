@@ -50,7 +50,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigFile.cs" />
+    <Compile Include="Model\ConfigFile.cs" />
     <Compile Include="Controller\MediaPlayerController.cs" />
     <Compile Include="Model\Library.cs" />
     <Compile Include="Model\MediaPlayer.cs" />
