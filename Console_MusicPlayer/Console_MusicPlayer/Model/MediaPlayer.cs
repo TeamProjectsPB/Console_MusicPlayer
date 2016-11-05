@@ -165,15 +165,6 @@ namespace Console_MusicPlayer.Model
             allLibrariesPlaylist = GetPlaylistFromMediaCollection(allLibrariesPlaylistName);
         }
 
-        ~MediaPlayer()
-        {
-            //var temporaryPlaylists = mPlayer.playlistCollection.getByName("temporaryPlaylist");
-            /*for (int i = 0; i < temporaryPlaylists.count; i++)
-            {
-                mPlayer.playlistCollection.remove(temporaryPlaylists.Item(i));
-            }*/
-        }
-
         #endregion
 
         #region MediaPlayerControls
