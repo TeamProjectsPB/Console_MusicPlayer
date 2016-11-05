@@ -10,7 +10,7 @@ using Song = TagLib.File;
 
 namespace Console_MusicPlayer.Model
 {
-    class Library
+    public class Library
     {
         #region Members
         private string name;

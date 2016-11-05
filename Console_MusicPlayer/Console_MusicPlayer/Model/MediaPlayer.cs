@@ -11,7 +11,7 @@ using Song = TagLib.File;
 
 namespace Console_MusicPlayer.Model
 {
-    internal class MediaPlayer
+    public class MediaPlayer
     {
         #region Members
 
@@ -38,16 +38,19 @@ namespace Console_MusicPlayer.Model
         {
             get { return mPlayer; }
         }
+
         public IWMPPlaylist CurrentPlaylist
         {
             get { return mPlayer.currentPlaylist; }
             set { mPlayer.currentPlaylist = value; }
         }
+
         public static Dictionary<string, Song> SongInfo { get; set; }
         public List<IWMPPlaylist> Playlists { get; set; }
-        
+
         public Dictionary<string, List<string>> PlaylistsUrl { get; set; }
         public List<Library> Libraries { get; set; }
+
         public bool LibraryCurrentlyPlaying
         {
             get { return libraryCurrentlyPlaying; }
@@ -60,6 +63,7 @@ namespace Console_MusicPlayer.Model
                 libraryCurrentlyPlaying = value;
             }
         }
+
         public int CurrentVolume
         {
             get { return mPlayer.settings.volume; }
@@ -70,16 +74,35 @@ namespace Console_MusicPlayer.Model
         {
             get { return mPlayer.controls.currentItem != null ? mPlayer.controls.currentPositionString : "00:00"; }
         }
-        public double CurrentPosition { get
+
+        public double CurrentPosition
         {
-            return mPlayer.controls.currentItem != null ? mPlayer.controls.currentPosition : 0;
-        } }
+            get { return mPlayer.controls.currentItem != null ? mPlayer.controls.currentPosition : 0; }
+            set
+            {
+                if (mPlayer.controls.currentItem != null)
+                {
+                    mPlayer.controls.currentPosition = value;
+                }
+            }
+        }
+        
 
-        public string DurationToString { get { return mPlayer.controls.currentItem != null ? mPlayer.controls.currentItem.durationString : "00:00"; } }
-        public double Duration { get { return mPlayer.controls.currentItem != null ? mPlayer.controls.currentItem.duration : 0; } }
+        public string DurationToString
+        {
+            get { return mPlayer.controls.currentItem != null ? mPlayer.controls.currentItem.durationString : "00:00"; }
+        }
+
+        public double Duration
+        {
+            get { return mPlayer.controls.currentItem != null ? mPlayer.controls.currentItem.duration : 0; }
+        }
 
 
-        public List<string> CurrentSongs { get {
+        public List<string> CurrentSongs
+        {
+            get
+            {
                 var currentSongs = new List<string>();
                 currentPlaylistSongUrl.ForEach(x =>
                 {
@@ -87,7 +110,8 @@ namespace Console_MusicPlayer.Model
                     currentSongs.Add(FormatedViewSong(song));
                 });
                 return currentSongs;
-            } }
+            }
+        }
 
         public List<string> PlaylistsToString
         {
@@ -98,6 +122,7 @@ namespace Console_MusicPlayer.Model
                 return playlistName;
             }
         }
+
         public List<string> LibrariesToString
         {
             get
@@ -125,7 +150,9 @@ namespace Console_MusicPlayer.Model
         }
 
         #endregion
+
         #region  Constructors
+
         public MediaPlayer()
         {
             SongInfo = new Dictionary<string, Song>();
@@ -137,38 +164,45 @@ namespace Console_MusicPlayer.Model
             allLibrariesPlaylistName = "allLibrariesPlaylist";
             allLibrariesPlaylist = GetPlaylistFromMediaCollection(allLibrariesPlaylistName);
         }
+
         ~MediaPlayer()
         {
-            var temporaryPlaylists = mPlayer.playlistCollection.getByName("temporaryPlaylist");
-            for (int i = 0; i < temporaryPlaylists.count; i++)
+            //var temporaryPlaylists = mPlayer.playlistCollection.getByName("temporaryPlaylist");
+            /*for (int i = 0; i < temporaryPlaylists.count; i++)
             {
                 mPlayer.playlistCollection.remove(temporaryPlaylists.Item(i));
-            }
-            
+            }*/
         }
+
         #endregion
+
         #region MediaPlayerControls
 
         public void Play()
         {
             mPlayer.controls.play();
         }
+
         public void Pause()
         {
             mPlayer.controls.pause();
         }
+
         public void Stop()
         {
             mPlayer.controls.stop();
         }
+
         public void NextTrack()
         {
             mPlayer.controls.next();
         }
+
         public void PreviousTrack()
         {
             mPlayer.controls.previous();
         }
+
         public int VolumeUp()
         {
             if (MPlayer.settings.volume < 100)
@@ -177,6 +211,7 @@ namespace Console_MusicPlayer.Model
             }
             return mPlayer.settings.volume;
         }
+
         public int VolumeDown()
         {
             if (MPlayer.settings.volume > 0)
@@ -185,12 +220,14 @@ namespace Console_MusicPlayer.Model
             }
             return mPlayer.settings.volume;
         }
+
         public bool ChangeRandomPlayStatement()
         {
             randomPlay = !randomPlay;
             mPlayer.settings.setMode("shuffle", randomPlay);
             return randomPlay;
         }
+
         public bool ChangeRepeatAllStatement()
         {
             repeatAll = !repeatAll;
@@ -202,8 +239,11 @@ namespace Console_MusicPlayer.Model
         {
             mPlayer.currentPlaylist.moveItem(songIndex, newIndex);
         }
-        #endregion       
+
+        #endregion
+
         #region SortPlaylist
+
         public void Sort(string attribute)
         {
             bool sortAsc = bool.Parse(CurrentPlaylist.getItemInfo("SortAscending"));
@@ -219,8 +259,11 @@ namespace Console_MusicPlayer.Model
             SetCurrentPlaylistSongUrl(CurrentPlaylist);
             currentPlaylistSongUrl = PlaylistsUrl[CurrentPlaylist.name];
         }
+
         #endregion
+
         #region Getters
+
         public string FormatedViewSong(Song s)
         {
             var spaces = 21;
@@ -325,6 +368,7 @@ namespace Console_MusicPlayer.Model
                 return artist + title + album;
             }
         }
+
         public IWMPPlaylist GetPlaylistFromMediaCollection(string playlistName)
         {
             IWMPPlaylist playlist;
@@ -339,8 +383,11 @@ namespace Console_MusicPlayer.Model
             }
             return playlist;
         }
+
         #endregion
+
         #region Setters
+
         public void LoadCurrentPlaylist(string newCurrentPlaylist)
         {
             libraryCurrentlyPlaying = false;
@@ -352,6 +399,7 @@ namespace Console_MusicPlayer.Model
             currentPlaylistSongUrl = PlaylistsUrl[newCurrentPlaylist];
             CurrentPlaylist = temporaryPlaylist;
         }
+
         private void SetCurrentPlaylistSongUrl(IWMPPlaylist playlist)
         {
             var urls = new List<string>();
@@ -368,8 +416,11 @@ namespace Console_MusicPlayer.Model
                 PlaylistsUrl.Add(playlist.name, urls);
             }
         }
+
         #endregion
+
         #region Loaders
+
         public void LoadLibraryMediaPlaylist()
         {
             if (!PlaylistsUrl.ContainsKey(allLibrariesPlaylistName))
@@ -379,6 +430,7 @@ namespace Console_MusicPlayer.Model
             currentPlaylistSongUrl = PlaylistsUrl[allLibrariesPlaylistName];
             CurrentPlaylist = allLibrariesPlaylist;
         }
+
         public void LoadCurrentLibrary(string newCurrentLibrary)
         {
             libraryCurrentlyPlaying = true;
@@ -391,12 +443,16 @@ namespace Console_MusicPlayer.Model
             currentPlaylistSongUrl = PlaylistsUrl[playlist.name];
             CurrentPlaylist = playlist;
         }
+
         public void LoadCurrentSong(int index)
         {
             mPlayer.controls.playItem(mPlayer.currentPlaylist.Item[index]);
         }
+
         #endregion
+
         #region Remove
+
         public void RemoveTrack(int index)
         {
             var media = mPlayer.currentPlaylist.Item[index];
@@ -405,6 +461,7 @@ namespace Console_MusicPlayer.Model
             var countafter = CurrentPlaylist.count;
             SetCurrentPlaylistSongUrl(CurrentPlaylist);
         }
+
         //return: true - current playlist was removed;
         public bool RemovePlaylist(string name)
         {
@@ -454,8 +511,11 @@ namespace Console_MusicPlayer.Model
             }
             SetCurrentPlaylistSongUrl(allLibrariesPlaylist);
         }
+
         #endregion
+
         #region Library
+
         public void AddLibrary(string name, string url)
         {
             if (Directory.Exists(url))
@@ -482,8 +542,8 @@ namespace Console_MusicPlayer.Model
         private static void LoadMediaInfoFromNewLibrary(string url)
         {
             var songsUrl = new List<string>(Directory.EnumerateFiles(url, "*.*", SearchOption.AllDirectories).
-                                Where(
-                                    s => mediaExtensions.Contains(Path.GetExtension(s), StringComparer.OrdinalIgnoreCase)));
+                Where(
+                    s => mediaExtensions.Contains(Path.GetExtension(s), StringComparer.OrdinalIgnoreCase)));
             songsUrl.ForEach(x =>
             {
                 if (!SongInfo.ContainsKey(x.ToLower()))
@@ -505,10 +565,12 @@ namespace Console_MusicPlayer.Model
             }
             SetCurrentPlaylistSongUrl(playlists.Item(0));
         }
+
         public void CreatePlaylist(string name)
         {
-           Playlists.Add(mPlayer.playlistCollection.newPlaylist(name));
+            Playlists.Add(mPlayer.playlistCollection.newPlaylist(name));
         }
+
         public void AddPlaylist(string name)
         {
             if (mPlayer.playlistCollection.getByName(name).count > 0)
@@ -516,6 +578,7 @@ namespace Console_MusicPlayer.Model
                 Playlists.Add(mPlayer.playlistCollection.getByName(name).Item(0));
             }
         }
+
         private void LoadMediaInfo()
         {
             var mediaCollection = mPlayer.mediaCollection.getByAttribute("MediaType", "audio");
@@ -528,6 +591,7 @@ namespace Console_MusicPlayer.Model
                 SongInfo.Add(media.sourceURL.ToLower(), mediaInfo);
             }
         }
+
         #endregion
     }
 }
