@@ -6,7 +6,6 @@ using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Messaging;
 using System.Threading;
-using ConsoleDraw.Windows.Base;
 using WMPLib;
 using Song = TagLib.File;
 
