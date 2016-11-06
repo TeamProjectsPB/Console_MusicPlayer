@@ -37,7 +37,7 @@ namespace Console_MusicPlayer.Model
                         }
                     }
                 }
-                catch{ }
+                catch { }
             }
             return volume;
         }
@@ -111,7 +111,7 @@ namespace Console_MusicPlayer.Model
                 {
                     XmlDocument document = new XmlDocument();
                     document.Load(url);
-                    
+
                     XmlNodeList xmlNodeList = document.GetElementsByTagName("head");
                     foreach (XmlNode xmlNode in xmlNodeList)
                     {
@@ -191,6 +191,61 @@ namespace Console_MusicPlayer.Model
             }
         }
         #endregion
+        #region Remove
+        public static void RemoveLibrary(string fileUrl, string libName)
+        {
+            try
+            {
+                XmlDocument document = new XmlDocument();
+                document.Load(fileUrl);
+
+                XmlNodeList xmlNodeList = document.GetElementsByTagName("libraries");
+                foreach (XmlNode xmlNode in xmlNodeList)
+                {
+                    var xmlNodeList2 = xmlNode.ChildNodes;
+                    foreach (XmlNode xmlNode2 in xmlNodeList2)
+                    {
+                        if (xmlNode2.Name.Equals("library"))
+                        {
+                            if (xmlNode2.Attributes["name"].Value.Equals(libName))
+                            {
+                                xmlNode.RemoveChild(xmlNode2);
+                            }
+                        }
+                    }
+                }
+                document.Save(fileUrl);
+            }
+            catch { }
+        }
+
+        public static void RemovePlaylist(string fileUrl, string playlistName)
+        {
+            try
+            {
+                XmlDocument document = new XmlDocument();
+                document.Load(fileUrl);
+
+                XmlNodeList xmlNodeList = document.GetElementsByTagName("playlists");
+                foreach (XmlNode xmlNode in xmlNodeList)
+                {
+                    var xmlNodeList2 = xmlNode.ChildNodes;
+                    foreach (XmlNode xmlNode2 in xmlNodeList2)
+                    {
+                        if (xmlNode2.Name.Equals("playlist"))
+                        {
+                            if (xmlNode2.Attributes["name"].Value.Equals(playlistName))
+                            {
+                                xmlNode.RemoveChild(xmlNode2);
+                            }
+                        }
+                    }
+                }
+                document.Save(fileUrl);
+            }
+            catch { }
+        }
+        #endregion
 
         public static void CreateNewFile(string url)
         {
@@ -215,7 +270,7 @@ namespace Console_MusicPlayer.Model
                     writer.WriteWhitespace("\n\t");
                     writer.WriteStartElement("libraries");
                     {
-     
+
                     }
                     writer.WriteEndElement();
                 }
@@ -262,9 +317,9 @@ namespace Console_MusicPlayer.Model
                     }
                     writer.WriteEndElement();
                 }
-            } 
+            }
         }
 
-        
+
     }
 }

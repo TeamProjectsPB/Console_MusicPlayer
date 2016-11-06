@@ -86,7 +86,7 @@ namespace Console_MusicPlayer.Model
                 }
             }
         }
-        
+
 
         public string DurationToString
         {
@@ -99,7 +99,7 @@ namespace Console_MusicPlayer.Model
         }
 
 
-        public List<string> CurrentSongs
+        public List<string> CurrentSongsToString
         {
             get
             {
@@ -108,6 +108,20 @@ namespace Console_MusicPlayer.Model
                 {
                     var song = SongInfo[x.ToLower()];
                     currentSongs.Add(FormatedViewSong(song));
+                });
+                return currentSongs;
+            }
+        }
+
+        public List<Song> CurrentSongs
+        {
+            get
+            {
+                var currentSongs = new List<Song>();
+                currentPlaylistSongUrl.ForEach(x =>
+                {
+                    var song = SongInfo[x.ToLower()];
+                    currentSongs.Add(song);
                 });
                 return currentSongs;
             }
@@ -163,6 +177,15 @@ namespace Console_MusicPlayer.Model
             Libraries = new List<Library>();
             allLibrariesPlaylistName = "allLibrariesPlaylist";
             allLibrariesPlaylist = GetPlaylistFromMediaCollection(allLibrariesPlaylistName);
+        }
+
+        ~MediaPlayer()
+        {
+            //var temporaryPlaylists = mPlayer.playlistCollection.getByName("temporaryPlaylist");
+            /*for (int i = 0; i < temporaryPlaylists.count; i++)
+            {
+                mPlayer.playlistCollection.remove(temporaryPlaylists.Item(i));
+            }*/
         }
 
         #endregion
@@ -406,6 +429,7 @@ namespace Console_MusicPlayer.Model
             {
                 PlaylistsUrl.Add(playlist.name, urls);
             }
+            currentPlaylistSongUrl = PlaylistsUrl[playlist.name];
         }
 
         #endregion

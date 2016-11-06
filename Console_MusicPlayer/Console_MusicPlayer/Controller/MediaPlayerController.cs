@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Console_MusicPlayer.Model;
+using Song = TagLib.File;
 
 namespace Console_MusicPlayer.Controller
 {
@@ -96,9 +97,14 @@ namespace Console_MusicPlayer.Controller
         {
             get { return player.Duration; }
         }
-        public List<string> CurrentSongs
+        public List<Song> CurrentSongs
         {
             get { return player.CurrentSongs; }
+        }
+
+        public List<string> CurrentSongsToString
+        {
+            get { return player.CurrentSongsToString; }
         }
         public List<string> PlaylistsToString
         {
@@ -172,7 +178,6 @@ namespace Console_MusicPlayer.Controller
             player.LoadCurrentSong(index);
         }
 
-
         #region Remove
 
         public void RemoveTrack(int index)
@@ -182,12 +187,16 @@ namespace Console_MusicPlayer.Controller
 
         public bool RemovePlaylist(string name)
         {
-            return player.RemovePlaylist(name);
+            bool returnedValue = player.RemovePlaylist(name);
+            ConfigFile.RemovePlaylist(fileUrl, name);
+            return returnedValue;
         }
 
         public bool RemoveLibrary(string name)
         {
-            return player.RemoveLibrary(name);
+            bool returnedValue = player.RemoveLibrary(name);
+            ConfigFile.RemoveLibrary(fileUrl, name);
+            return returnedValue;
         }
 
       

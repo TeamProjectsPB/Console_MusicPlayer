@@ -74,7 +74,7 @@ namespace Console_MusicPlayer.View.Windows
 
             #region Elementy Interfejsu Inicjalizacja
 
-            currentPlaylistBrowser = new FileBrowser(5, 33, 90, 32, controller.CurrentSongs, "currentPlaylistBrowser", this, true);
+            currentPlaylistBrowser = new FileBrowser(5, 33, 90, 32, controller.CurrentSongsToString, "currentPlaylistBrowser", this, true);
             playlistsBrowser = new FileBrowser(22, 3, 26, 11, controller.PlaylistsToString, "playlistsBrowser", this, true);
             libraryBrowser = new FileBrowser(6, 3, 26, 12, controller.LibrariesToString, "libraryBrowser", this, true);
 
@@ -358,7 +358,7 @@ namespace Console_MusicPlayer.View.Windows
         public void ReloadCurrentPlaylistBrowser()
         {
             currentPlaylistBrowser.ResetCursorX();
-            currentPlaylistBrowser.CurrentList = controller.CurrentSongs;
+            currentPlaylistBrowser.CurrentList = controller.CurrentSongsToString;
             currentPlaylistBrowser.GetFileNames();
             currentPlaylistBrowser.Draw();
         }
